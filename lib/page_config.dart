@@ -1,0 +1,34 @@
+
+import 'package:get/get.dart';
+import 'package:loto/page/home/home_controller.dart';
+import 'package:loto/page/home/home_page.dart';
+import 'package:loto/page/menu/menu_controller.dart';
+import 'package:loto/page/menu/menu_page.dart';
+import 'package:loto/page/room/room_controller.dart';
+import 'package:loto/page/room/room_page.dart';
+
+class PageConfig {
+  static String ROOM = '/room';
+  static String MENU = '/menu';
+  static String HOME = '/home';
+
+  static List<GetPage> listPage(){
+    return [
+      GetPage(
+        name: HOME,
+        page: () => HomePage(),
+        binding: HomeBinding(),
+      ),
+      GetPage(
+      name: ROOM,
+        page: () => RoomPage(),
+        binding: RoomBinding(),
+      ),
+      GetPage(
+        name: MENU,
+        page: () => MenuPage(),
+        binding: MenuBinding(),
+      ),
+    ];
+  }
+}
