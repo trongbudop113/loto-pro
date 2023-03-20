@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "223090207254",
+    "project_id": "loto-fb7ac",
+    "storage_bucket": "loto-fb7ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223090207254:android:8f8455ba21f146227ce337",
+        "android_client_info": {
+          "package_name": "com.trong.loto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223090207254-ik5fspo88jgnk4mtnv19b99trj2g2l8k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trong.loto",
+            "certificate_hash": "c1aef3ea5f1d5a3e1eb681cbed0825efd55eb81f"
+          }
+        },
+        {
+          "client_id": "223090207254-rtrmn07khmu264gu4545dci1lr8ofn1n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGz6LJbAKoaxWjjhsWU8a3jeDypOK_zP8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223090207254-rtrmn07khmu264gu4545dci1lr8ofn1n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

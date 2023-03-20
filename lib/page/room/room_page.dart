@@ -7,6 +7,30 @@ class RoomPage extends GetView<RoomController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Spacer(flex: 1),
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                child: Row(
+                  children: [
+                    Icon(Icons.add, color: Colors.blue),
+                    SizedBox(width: 5),
+                    Text("Tạo phòng", style: TextStyle(color: Colors.blue)),
+                  ],
+                ),
+              )
+            ],
+          ),
+          SizedBox(width: 20)
+        ],
+      ),
       body: Container(),
     );
   }

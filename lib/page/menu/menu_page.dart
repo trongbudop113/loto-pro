@@ -26,13 +26,21 @@ class MenuPage extends GetView<MenuController>{
           DeviceScreen.tablet: 3,
           DeviceScreen.desktop: 3,
         },
-        child: GestureDetector(
+        child: InkWell(
           onTap: (){
             Get.toNamed(PageConfig.ROOM);
           },
           child: Container(
             color: Colors.transparent,
-            child: Image.asset('images/loto.png'),
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.transparent,
+                  child: Image.asset('images/loto.png'),
+                ),
+                Text(controller.listMenu[i].name ?? '', style: TextStyle(fontSize: 50))
+              ],
+            ),
           ),
         ),
       ));

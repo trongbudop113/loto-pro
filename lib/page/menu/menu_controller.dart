@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/page/menu/model/menu.dart';
 import 'package:loto/responsive/response_layout.dart';
 
 class MenuBinding extends Bindings{
@@ -11,7 +12,7 @@ class MenuBinding extends Bindings{
 
 class MenuController extends GetxController with WidgetsBindingObserver {
 
-  List<int> listMenu = [1, 2, 3];
+  List<MenuCategory> listMenu = MenuCategory.listEx();
 
   @override
   void onInit() {
@@ -30,3 +31,4 @@ class MenuController extends GetxController with WidgetsBindingObserver {
   }
 
 }
+
