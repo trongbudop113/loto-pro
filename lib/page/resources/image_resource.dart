@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 
-const ICON_PNG_PATH = "assets/images/";
-const ICON_SVG_PATH = "assets/images/icon_svg/";
+const ICON_PNG_PATH_WEB = "images/";
+const ICON_PNG_PATH_MOBILE = "assets/images/";
+const ICON_SVG_PATH_WEB = "images/icon_svg/";
+const ICON_SVG_PATH_MOBILE = "assets/images/icon_svg/";
 
 const String EXTENSION_PNG = ".png";
 const String EXTENSION_SVG = ".svg";
@@ -16,5 +19,15 @@ class ImageResource {
 
 }
 
-String getPngSourcePath(String name) => ICON_PNG_PATH + name + EXTENSION_PNG;
-String getSvgSourcePath(String name) => ICON_SVG_PATH + name + EXTENSION_SVG;
+String getPngSourcePath(String name) {
+  if (kIsWeb) {
+    // running on the web!
+    return ICON_PNG_PATH_WEB + name + EXTENSION_PNG;
+  } else {
+    // NOT running on the web! You can check for additional platforms here.
+    return ICON_PNG_PATH_MOBILE + name + EXTENSION_PNG;
+  }
+}
+
+
+String getSvgSourcePath(String name) => ICON_SVG_PATH_MOBILE + name + EXTENSION_SVG;

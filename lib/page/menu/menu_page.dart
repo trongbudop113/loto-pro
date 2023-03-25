@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/menu/menu_controller.dart';
+import 'package:loto/page/resources/image_resource.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/responsive/response_layout.dart';
 import 'package:loto/responsive/screen_size_config.dart';
@@ -36,9 +37,9 @@ class MenuPage extends GetView<MenuController>{
               children: [
                 Container(
                   color: Colors.transparent,
-                  child: Image.asset('images/loto.png'),
+                  child: Image.asset(ImageResource.ic_app_loto),
                 ),
-                Text(controller.listMenu[i].name ?? '', style: TextStyle(fontSize: 50))
+                Text(controller.listMenu[i].name ?? '', style: TextStyle(fontSize: 18))
               ],
             ),
           ),

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/page/resources/image_resource.dart';
 import 'package:loto/page_config.dart';
 
 class SplashPage extends StatefulWidget {
@@ -19,8 +21,16 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void initData(){
+    if(FirebaseAuth.instance.currentUser != null){
+      goToPage(PageConfig.MENU);
+    }else{
+      goToPage(PageConfig.LOGIN);
+    }
+  }
+
+  void goToPage(String pageName){
     Future.delayed(const Duration(seconds: 2), (){
-      Get.toNamed(PageConfig.MENU);
+      Get.toNamed(pageName);
     });
   }
 
@@ -28,7 +38,7 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Center(
-        child: Image.asset('images/loto.png', width: Get.width * 0.5),
+        child: Image.asset(ImageResource.ic_app_loto, width: Get.width * 0.5),
       ),
     );
   }
