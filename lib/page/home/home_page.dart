@@ -23,7 +23,7 @@ class HomePage extends GetView<HomeController>{
     List<WidgetContainer> list = [];
     for (int i = 0; i < controller.listData.length; i++) {
       var element = controller.listData[i];
-      if(element.typeFull){
+      if(element.typeFull!){
         list.add(WidgetContainer(
           responsiveScreens: const {
             DeviceScreen.mobile : 9,
