@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/home/models/item_model.dart';
-import 'package:loto/responsive/response_layout.dart';
+import 'package:loto/page/select/models/select_paper.dart';
 
 
 class HomeBinding extends Bindings{
@@ -11,23 +10,31 @@ class HomeBinding extends Bindings{
   }
 }
 
-class HomeController extends GetxController with WidgetsBindingObserver {
+class HomeController extends GetxController {
 
-  List<ItemRowModel> listData = ItemRowModel.exData();
+  final RxList<SelectPaper> listData = <SelectPaper>[].obs;
 
   @override
   void onInit() {
-    WidgetsBinding.instance.addObserver(this);
+    getArgument();
     super.onInit();
-    ResponsiveLayout.updateKeyScreen();
+  }
+
+  void getArgument(){
+    var arguments = Get.arguments as List<SelectPaper>;
+    listData.addAll(arguments);
   }
 
 
-  void onTapNumber(int i, int j){
-    int number = listData[i].items![j].number!;
+  void onTapNumber(int i, int j, int k){
+    int number = listData[i].papers![j].items![k].number ?? 0;
+    if(number == 0){
+      return;
+    }
+    listData[i].papers![j].items![k].isCheck.value = !listData[i].papers![j].items![k].isCheck.value;
 
     int count = 0;
-    for(var data in listData[i].items!){
+    for(ItemModel data in listData[i].papers![j].items ?? []){
       if((data.number ?? 0) > 0 && data.isCheck.value){
         count++;
       }
@@ -44,14 +51,30 @@ class HomeController extends GetxController with WidgetsBindingObserver {
     }
   }
 
-  @override
-  void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.onClose();
+  void onRefreshData(){
+    for(var parent in listData){
+      for(ItemRowModel element in parent.papers ?? []){
+        if(!(element.typeFull ?? false)){
+          for(ItemModel child in element.items ?? []){
+            child.isCheck.value = false;
+          }
+        }
+      }
+    }
+  }
+
+  RxBool get isHasData {
+    return (listData.isNotEmpty).obs;
+  }
+
+  int convertColor(String color){
+    return int.parse(color);
   }
 
   @override
-  void didChangeMetrics() {
-    ResponsiveLayout.updateKeyScreen();
+  void onClose() {
+    onRefreshData();
+    super.onClose();
   }
+
 }

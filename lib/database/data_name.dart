@@ -1,5 +1,6 @@
 enum DataRowName{
   Users,
   Rooms,
-  Papers
+  Papers,
+  CategoryPaper,
 }

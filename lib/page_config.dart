@@ -6,6 +6,8 @@ import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
 import 'package:loto/page/menu/menu_controller.dart';
 import 'package:loto/page/menu/menu_page.dart';
+import 'package:loto/page/paper_manager/paper_manager_controller.dart';
+import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
@@ -17,6 +19,7 @@ class PageConfig {
   static String HOME = '/home';
   static String LOGIN = '/login';
   static String SELECT = '/select';
+  static String MANAGER = '/manager';
 
   static List<GetPage> listPage(){
     return [
@@ -44,6 +47,11 @@ class PageConfig {
         name: MENU,
         page: () => MenuPage(),
         binding: MenuBinding(),
+      ),
+      GetPage(
+        name: MANAGER,
+        page: () => PaperManagerPage(),
+        binding: PaperManagerBinding(),
       ),
     ];
   }

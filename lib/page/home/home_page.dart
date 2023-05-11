@@ -4,9 +4,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/home/home_controller.dart';
-import 'package:loto/responsive/response_layout.dart';
-import 'package:loto/responsive/screen_size_config.dart';
-import 'package:loto/responsive/screen_widget_model.dart';
 
 class HomePage extends GetView<HomeController>{
 
@@ -15,112 +12,128 @@ class HomePage extends GetView<HomeController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Obx(()=> buildContent()),
+      appBar: AppBar(
+        actions: [
+          GestureDetector(
+            child: Container(
+              width: 55,
+              color: Colors.transparent,
+              child: const Icon(Icons.refresh),
+            ),
+            onTap: (){
+              controller.onRefreshData();
+            },
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          buildCallNumber(),
+          Expanded(
+            child: buildContent(),
+          )
+        ],
+      ),
     );
   }
-  final List<Widget> listWidget=[];
-  initListWidget(){
-    List<WidgetContainer> list = [];
-    for (int i = 0; i < controller.listData.length; i++) {
-      var element = controller.listData[i];
-      if(element.typeFull!){
-        list.add(WidgetContainer(
-          responsiveScreens: const {
-            DeviceScreen.mobile : 9,
-            DeviceScreen.tablet: 9,
-            DeviceScreen.desktop: 9,
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.black)
-            ),
-            padding: EdgeInsets.all(5),
-            height: 40,
-            alignment: Alignment.center,
-            child: Text("---- Lô tô ----", style: TextStyle(fontSize: 18)),
+
+  Widget buildCallNumber(){
+    return Container(
+        height: 40,
+        child: Container(
+          alignment: Alignment.center,
+          child: Row(
+            children: [
+              Text("22", style: TextStyle(fontSize: 16))
+            ],
           ),
-        ));
-      }else{
-        for(int j = 0; j < element.items!.length; j++){
-          list.add(WidgetContainer(
-            child: GestureDetector(
-              onTap: (){
-                element.items![j].isCheck.value = !element.items![j].isCheck.value;
-                controller.onTapNumber(i, j);
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: element.items![j].number! > 0 ? Colors.white : Colors.blue,
-                    border: Border.all(width: 1, color: Colors.black)
-                ),
-                alignment: Alignment.center,
-                height: 100,
-                child: Visibility(
-                    visible: element.items![j].number! > 0,
-                    child: Stack(
-                      children: [
-                        Container(
-                          // width: double.infinity,
-                          // height: double.infinity,
-                          alignment: Alignment.center,
-                          child: Text(element.items![j].number.toString(), style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                        ),
-                        Obx(() => Visibility(
-                          visible: element.items![j].isCheck.value,
-                          child: Positioned(
-                            top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(360)),
-                                      border: Border.all(
-                                          width: 3,
-                                          color: Colors.red
-                                      )
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ))
-                      ],
-                    )
-                ),
-              ),
-            ),
-          ));
-        }
-      }
-    }
-   listWidget.clear();
-   var listRp = ResponsiveLayout.getRowResponsive<WidgetContainer>(
-       list: list, createWidget: (WidgetContainer item, DeviceScreen key) => item
-   );
-   listWidget.addAll(listRp);
+        )
+    );
   }
 
   Widget buildContent(){
-    initListWidget();
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.black)
-      ),
-      //padding: EdgeInsets.all(10),
-      margin: EdgeInsets.all(10),
-      child: ListView.builder(
-        itemCount: listWidget.length,
-        itemBuilder: (ctx, index){
-          return listWidget[index];
-        },
-      ),
-    );
+    return Obx(() => Visibility(
+        visible: controller.isHasData.value,
+        child: SingleChildScrollView(
+          child: Column(
+            children: controller.listData.asMap().entries.map((parent) {
+              return Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    color: Colors.black38,
+                    alignment: Alignment.center,
+                    child: Text(" Tờ ${parent.key + 1}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                  ),
+                  CustomScrollView(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      slivers: (parent.value.papers ?? []).asMap().entries.map((e) {
+                        if(e.value.typeFull ?? true){
+                          return const SliverPadding(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                          );
+                        }else{
+                          return SliverGrid.count(
+                              crossAxisCount: 9,
+                              childAspectRatio: 0.5,
+                              children: (e.value.items ?? []).asMap().entries.map((child) {
+                                return GestureDetector(
+                                  onTap: (){
+                                    controller.onTapNumber(parent.key, e.key, child.key);
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            color: child.value.number == 0 ? Color(controller.convertColor(parent.value.color ?? '')) : Colors.white,
+                                            border: Border.all(width: 0.5)
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: Visibility(
+                                          visible: (child.value.number ?? 0) > 0,
+                                          child: Text((child.value.number ?? 0).toString()),
+                                        ),
+                                      ),
+                                      Obx(() => Visibility(
+                                        visible: child.value.isCheck.value,
+                                        child: Positioned(
+                                          top: 0,
+                                          bottom: 0,
+                                          left: 0,
+                                          right: 0,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(Radius.circular(360)),
+                                                    border: Border.all(
+                                                        width: 3,
+                                                        color: Colors.red
+                                                    )
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ))
+                                    ],
+                                  ),
+                                );
+                              }).toList()
+                          );
+                        }
+                      }).toList()
+                  )
+                ],
+              );
+            }).toList(),
+          ),
+        )
+    ));
   }
 }
 

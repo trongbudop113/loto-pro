@@ -7,6 +7,9 @@ class UserLogin {
   String? keyName;
   String? uuid;
   int? updateTime;
+  bool? isAdmin;
+
+  List<String>? listPaper;
 
   String? joinRoomID;
 
@@ -19,7 +22,9 @@ class UserLogin {
         this.keyName,
         this.uuid,
         this.updateTime,
-        this.joinRoomID
+        this.joinRoomID,
+        this.listPaper,
+        this.isAdmin
       });
 
   UserLogin.fromJson(Map<String, dynamic> json) {
@@ -32,6 +37,10 @@ class UserLogin {
     uuid = json['uuid'];
     updateTime = json['updateTime'];
     joinRoomID = json['joinRoomID'];
+    isAdmin = json['isAdmin'];
+    if(json['listPaper'] != null){
+      listPaper = (json['listPaper'] as List).map((item) => item as String).toList();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -41,10 +50,12 @@ class UserLogin {
     data['lastSignInTime'] = this.lastSignInTime;
     data['avatar'] = this.avatar;
     data['createTime'] = this.createTime;
-    data['keyName'] = this.keyName;
-    data['uuid'] = this.uuid;
+    data['keyName'] = this.keyName ?? '';
+    data['uuid'] = this.uuid ?? '';
     data['updateTime'] = this.updateTime;
     data['joinRoomID'] = this.joinRoomID;
+    data['listPaper'] = this.listPaper;
+    data['isAdmin'] = this.isAdmin;
     return data;
   }
 }

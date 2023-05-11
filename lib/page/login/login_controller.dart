@@ -53,6 +53,8 @@ class LoginController extends GetxController {
         userLogin.updateTime = DateTime.now().millisecondsSinceEpoch;
         userLogin.lastSignInTime = DateTime.now().millisecondsSinceEpoch;
         userLogin.avatar = user.user?.photoURL ?? '';
+        userLogin.joinRoomID = '';
+        userLogin.isAdmin = false;
 
         await usersReference.doc(user.user?.email ?? '').set(userLogin.toJson());
       }else{

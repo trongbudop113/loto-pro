@@ -72,8 +72,14 @@ class RoomController extends GetxController {
       CollectionReference userCollection = firestore.collection(DataRowName.Users.name);
       String userID = FirebaseAuth.instance.currentUser!.uid;
       String userEmail = FirebaseAuth.instance.currentUser!.email!;
-      await roomCollection.doc(roomModel.roomID.toString()).update({
-        "listUser" : [userID]
+      var room = roomCollection.doc(roomModel.roomID.toString());
+      List<String> listUser = roomModel.listUser ?? [];
+      if(!listUser.contains(userID)){
+        listUser.add(userID);
+      }
+
+      await room.update({
+        "listUser" : listUser
       });
 
       await userCollection.doc(userEmail).update({
