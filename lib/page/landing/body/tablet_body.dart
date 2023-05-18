@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
+import 'package:loto/page/landing/landing_controller.dart';
 
 class MyTabletBody extends StatelessWidget {
-  const MyTabletBody({Key? key}) : super(key: key);
+  final LandingController controller;
+  const MyTabletBody({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[200],
+      backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('T A B L E T'),
       ),

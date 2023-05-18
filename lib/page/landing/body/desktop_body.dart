@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
+import 'package:loto/page/landing/landing_controller.dart';
 
 class MyDesktopBody extends StatelessWidget {
-  const MyDesktopBody({Key? key}) : super(key: key);
+  final LandingController controller;
+  const MyDesktopBody({Key? key, required this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.deepPurple[200],
+      backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('D E S K T O P'),
       ),

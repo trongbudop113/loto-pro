@@ -44,6 +44,8 @@ dependencies:
   firebase_core_platform_interface: ^4.5.3
   google_sign_in: ^6.0.2
 
+  carousel_slider: ^4.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

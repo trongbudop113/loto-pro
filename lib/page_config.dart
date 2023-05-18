@@ -2,6 +2,8 @@
 import 'package:get/get.dart';
 import 'package:loto/page/home/home_controller.dart';
 import 'package:loto/page/home/home_page.dart';
+import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/page/landing/landing_page.dart';
 import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
 import 'package:loto/page/menu/menu_controller.dart';
@@ -20,6 +22,7 @@ class PageConfig {
   static String LOGIN = '/login';
   static String SELECT = '/select';
   static String MANAGER = '/manager';
+  static String LANDING = '/landing';
 
   static List<GetPage> listPage(){
     return [
@@ -52,6 +55,11 @@ class PageConfig {
         name: MANAGER,
         page: () => PaperManagerPage(),
         binding: PaperManagerBinding(),
+      ),
+      GetPage(
+        name: LANDING,
+        page: () => LandingPage(),
+        binding: LandingBinding(),
       ),
     ];
   }

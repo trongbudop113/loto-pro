@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loto/page/landing/body/desktop_body.dart';
 import 'package:loto/page/landing/body/mobile_body.dart';
 import 'package:loto/page/landing/body/tablet_body.dart';
+import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/responsive/responsive_layout.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
+class LandingPage extends GetView<LandingController>{
 
-class _HomePageState extends State<HomePage> {
+  const LandingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: ResponsiveLayout(
-        mobileBody: MyMobileBody(),
-        desktopBody: MyDesktopBody(),
-        tabletBody: MyTabletBody(),
+        mobileBody: MyMobileBody(
+          controller: controller,
+        ),
+        desktopBody: MyDesktopBody(
+          controller: controller,
+        ),
+        tabletBody: MyTabletBody(
+          controller: controller,
+        ),
       ),
     );
   }

@@ -21,16 +21,17 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void initData(){
-    if(FirebaseAuth.instance.currentUser != null){
-      goToPage(PageConfig.MENU);
-    }else{
-      goToPage(PageConfig.LOGIN);
-    }
+    goToPage(PageConfig.LANDING);
+    // if(FirebaseAuth.instance.currentUser != null){
+    //   goToPage(PageConfig.MENU);
+    // }else{
+    //   goToPage(PageConfig.LOGIN);
+    // }
   }
 
   void goToPage(String pageName){
     Future.delayed(const Duration(seconds: 2), (){
-      Get.toNamed(pageName);
+      Get.offNamed(pageName);
     });
   }
 

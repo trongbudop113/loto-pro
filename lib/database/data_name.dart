@@ -3,4 +3,6 @@ enum DataRowName{
   Rooms,
   Papers,
   CategoryPaper,
+  Contacts,
+  Menus
 }
