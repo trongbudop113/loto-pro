@@ -22,11 +22,6 @@ class _SplashPageState extends State<SplashPage> {
 
   void initData(){
     goToPage(PageConfig.LANDING);
-    // if(FirebaseAuth.instance.currentUser != null){
-    //   goToPage(PageConfig.MENU);
-    // }else{
-    //   goToPage(PageConfig.LOGIN);
-    // }
   }
 
   void goToPage(String pageName){

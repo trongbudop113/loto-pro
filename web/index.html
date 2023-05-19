@@ -20,6 +20,8 @@
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
 
+  <meta name="google-signin-client_id" content="1064013447200-qtkb75ht9p1sts52oig76otj9ohgvv2g.apps.googleusercontent.com" />
+
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -54,5 +56,33 @@
       });
     });
   </script>
+
+  <script src="/__/firebase/9.20.0/firebase-analytics.js"></script>
+
+  <script src="/__/firebase/init.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js"></script>
+
+
+  <script>
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+         apiKey: "AIzaSyBUsI48vfRjyTKehWwxv5DUpt1Sajiz1sE",
+         authDomain: "loto-fb7ac.firebaseapp.com",
+         projectId: "loto-fb7ac",
+         storageBucket: "loto-fb7ac.appspot.com",
+         messagingSenderId: "223090207254",
+         appId: "1:223090207254:web:6359fe5d6c4127447ce337",
+         measurementId: "G-GFQGZC5BQ1"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

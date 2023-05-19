@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:loto/page_config.dart';
 
 abstract class GameMenuProvider{
 
@@ -9,5 +12,13 @@ abstract class GameMenuProvider{
     var gameMenu = menuRef.doc("Games").collection('AllGame');
 
     return gameMenu.snapshots();
+  }
+
+  void goToRoomPage(String page){
+    if(FirebaseAuth.instance.currentUser != null){
+      Get.toNamed(page);
+    }else{
+      Get.toNamed(PageConfig.LOGIN);
+    }
   }
 }
