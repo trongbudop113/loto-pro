@@ -9,8 +9,6 @@ import 'package:loto/responsive/responsive_layout.dart';
 
 class LandingPage extends GetView<LandingController>{
 
-  const LandingPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -21,6 +21,9 @@ class BlockRight extends GetView<LandingController> {
                  return AspectRatio(
                    aspectRatio: 4,
                    child: BorderWidget(
+                     onTap: (){
+                       controller.onClickItemBlock(menu.page ?? '');
+                     },
                      color: Colors.amber,
                      child: Container(
                        alignment: Alignment.center,
@@ -32,6 +35,9 @@ class BlockRight extends GetView<LandingController> {
                return AspectRatio(
                  aspectRatio: 2,
                  child: BorderWidget(
+                   onTap: (){
+                     controller.onClickItemBlock(menu.page ?? '');
+                   },
                    color: Colors.amber,
                    child: Container(
                      alignment: Alignment.center,

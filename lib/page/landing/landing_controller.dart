@@ -30,4 +30,9 @@ class LandingController extends GetxController with BlockLeftProvider, BlockRigh
     var blockLeft = await menuRef.doc("Blocks").collection('BlockLeft').get();
     print(blockLeft);
   }
+
+  void onClickItemBlock(String page){
+    print(page);
+    Get.toNamed(page);
+  }
 }

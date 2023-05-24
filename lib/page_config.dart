@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+import 'package:loto/page/contact/contact_controller.dart';
+import 'package:loto/page/contact/contact_page.dart';
 import 'package:loto/page/home/home_controller.dart';
 import 'package:loto/page/home/home_page.dart';
 import 'package:loto/page/landing/landing_controller.dart';
@@ -14,6 +16,9 @@ import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/page/select/select_page.dart';
+import 'package:loto/page/stories/stories_controller.dart';
+
+import 'page/stories/stories_page.dart';
 
 class PageConfig {
   static String ROOM = '/room';
@@ -23,6 +28,10 @@ class PageConfig {
   static String SELECT = '/select';
   static String MANAGER = '/manager';
   static String LANDING = '/landing';
+  static String CONTACT = '/contact';
+  static String TRIP = '/trip';
+  static String STORIES = '/stories';
+  static String CHAT = '/chat';
 
   static List<GetPage> listPage(){
     return [
@@ -60,6 +69,16 @@ class PageConfig {
         name: LANDING,
         page: () => LandingPage(),
         binding: LandingBinding(),
+      ),
+      GetPage(
+        name: STORIES,
+        page: () => StoriesPage(),
+        binding: StoriesBinding(),
+      ),
+      GetPage(
+        name: CONTACT,
+        page: () => ContactPage(),
+        binding: ContactBinding(),
       ),
     ];
   }
