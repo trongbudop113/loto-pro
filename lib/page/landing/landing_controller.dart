@@ -31,8 +31,7 @@ class LandingController extends GetxController with BlockLeftProvider, BlockRigh
     print(blockLeft);
   }
 
-  void onClickItemBlock(String page){
-    print(page);
-    Get.toNamed(page);
+  void onClickItemBlock(String page, {required String argument}){
+    Get.toNamed(page, arguments: argument);
   }
 }
