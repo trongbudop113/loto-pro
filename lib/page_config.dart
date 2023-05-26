@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+import 'package:loto/page/chat/chat_list_controller.dart';
+import 'package:loto/page/chat/chat_list_page.dart';
 import 'package:loto/page/contact/contact_controller.dart';
 import 'package:loto/page/contact/contact_page.dart';
 import 'package:loto/page/home/home_controller.dart';
@@ -18,6 +20,8 @@ import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/page/select/select_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
 
+import 'page/chat/chat_detail_controller.dart';
+import 'page/chat/chat_detail_page.dart';
 import 'page/stories/stories_page.dart';
 
 class PageConfig {
@@ -32,6 +36,7 @@ class PageConfig {
   static String TRIP = '/trip';
   static String STORIES = '/stories';
   static String CHAT = '/chat';
+  static String CHAT_DETAIL = '/chat_detail';
 
   static List<GetPage> listPage(){
     return [
@@ -79,6 +84,16 @@ class PageConfig {
         name: CONTACT,
         page: () => ContactPage(),
         binding: ContactBinding(),
+      ),
+      GetPage(
+        name: CHAT,
+        page: () => ChatListPage(),
+        binding: ChatListBinding(),
+      ),
+      GetPage(
+        name: CHAT_DETAIL,
+        page: () => ChatDetailPage(),
+        binding: ChatDetailBinding(),
       ),
     ];
   }
