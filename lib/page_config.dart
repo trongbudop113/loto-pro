@@ -39,7 +39,7 @@ class PageConfig {
   static String STORIES = '/stories';
   static String CHAT = '/chat';
   static String CHAT_DETAIL = '/chat_detail';
-  static String CARO_CHESS = '/caro_chess';
+  static String CARO_CHESS = '/caro';
 
   static List<GetPage> listPage(){
     return [
