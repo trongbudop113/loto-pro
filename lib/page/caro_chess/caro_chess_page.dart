@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/stories/stories_controller.dart';
+import 'package:loto/page/caro_chess/caro_chess_controller.dart';
 
-class StoriesPage extends GetView<StoriesController>{
+class CaroChessPage extends GetView<CaroChessController>{
 
   @override
   Widget build(BuildContext context) {
@@ -12,4 +11,3 @@ class StoriesPage extends GetView<StoriesController>{
     );
   }
 }
-

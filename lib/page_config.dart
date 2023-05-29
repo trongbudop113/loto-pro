@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+import 'package:loto/page/caro_chess/caro_chess_controller.dart';
+import 'package:loto/page/caro_chess/caro_chess_page.dart';
 import 'package:loto/page/chat/chat_list_controller.dart';
 import 'package:loto/page/chat/chat_list_page.dart';
 import 'package:loto/page/contact/contact_controller.dart';
@@ -37,6 +39,7 @@ class PageConfig {
   static String STORIES = '/stories';
   static String CHAT = '/chat';
   static String CHAT_DETAIL = '/chat_detail';
+  static String CARO_CHESS = '/caro_chess';
 
   static List<GetPage> listPage(){
     return [
@@ -94,6 +97,11 @@ class PageConfig {
         name: CHAT_DETAIL,
         page: () => ChatDetailPage(),
         binding: ChatDetailBinding(),
+      ),
+      GetPage(
+        name: CARO_CHESS,
+        page: () => CaroChessPage(),
+        binding: CaroChessBinding(),
       ),
     ];
   }

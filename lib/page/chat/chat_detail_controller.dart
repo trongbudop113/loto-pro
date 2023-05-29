@@ -12,10 +12,15 @@ class ChatDetailBinding extends Bindings{
 class ChatDetailController extends GetxController {
 
   final RxList<SelectPaper> listData = <SelectPaper>[].obs;
+  final RxBool isShowChatMenu = false.obs;
 
   @override
   void onInit() {
     super.onInit();
+  }
+
+  void onTapMenu(){
+    isShowChatMenu.value = !isShowChatMenu.value;
   }
 
 }
