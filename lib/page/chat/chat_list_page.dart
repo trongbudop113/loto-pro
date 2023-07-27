@@ -18,6 +18,32 @@ class ChatListPage extends GetView<ChatListController>{
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     children: [
+                      GestureDetector(
+                        onTap: (){
+                          Get.back();
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(360),
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            color: Colors.white,
+                            alignment: Alignment.center,
+                            child: const Icon(Icons.arrow_back_ios),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Container(
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(360),
                         child: Container(
@@ -28,21 +54,11 @@ class ChatListPage extends GetView<ChatListController>{
                           child: Text("T"),
                         ),
                       ),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.white,
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
                 const SizedBox(height: 15),
-                Container(
+                SizedBox(
                   height: 60,
                   child: ListView.separated(
                     padding: EdgeInsets.symmetric(horizontal: 10),
@@ -70,7 +86,6 @@ class ChatListPage extends GetView<ChatListController>{
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15)
                     ),
                     child: Container(
                       color: Colors.white,

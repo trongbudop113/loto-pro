@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loto/page/landing/blocks/block_banner.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
@@ -36,15 +37,7 @@ class MyDesktopBody extends StatelessWidget {
                 child: Column(
                   children: [
                     // youtube video
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Container(
-                          color: Colors.deepPurple[400],
-                        ),
-                      ),
-                    ),
+                    const BlockBanner(),
 
                     Container(
                       margin: EdgeInsets.only(top: 10),

@@ -4,11 +4,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/splash/splash_page.dart';
 import 'package:loto/page_config.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  //await GetStorage.init();
+  if(kIsWeb){
+    await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyBUsI48vfRjyTKehWwxv5DUpt1Sajiz1sE",
+            authDomain: "loto-fb7ac.firebaseapp.com",
+            projectId: "loto-fb7ac",
+            storageBucket: "loto-fb7ac.appspot.com",
+            messagingSenderId: "223090207254",
+            appId: "1:223090207254:web:6359fe5d6c4127447ce337",
+            measurementId: "G-GFQGZC5BQ1"
+        )
+    );
+  }else{
+    await Firebase.initializeApp();
+  }
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
 }

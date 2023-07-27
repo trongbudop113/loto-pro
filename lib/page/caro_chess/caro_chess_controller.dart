@@ -20,8 +20,17 @@ class CaroChessController extends GetxController {
     super.onInit();
   }
 
-  void getArgument(){
+  Future<void> getArgument() async {
     var data = randomize(49, 1, 50);
+    int i = 0;
+    timer = Timer.periodic(Duration(seconds: 4), (Timer t) {
+      if(i >= data.length){
+        t.cancel();
+        return;
+      }
+      print('[${data[i]}]');
+      i++;
+    });
   }
 
   Timer? timer;
@@ -45,6 +54,12 @@ class CaroChessController extends GetxController {
       print("Select another boundaries or number count");
     }
     return result;
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
   }
 
 }

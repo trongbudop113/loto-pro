@@ -7,6 +7,7 @@ class ChatDetailPage extends GetView<ChatDetailController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Container(
         child: Column(
           children: [

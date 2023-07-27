@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/page/landing/models/banner_menu.dart';
 
 class BlockBanner extends GetView<LandingController> {
   const BlockBanner({Key? key}) : super(key: key);
@@ -14,28 +15,51 @@ class BlockBanner extends GetView<LandingController> {
         builder: (context, snapshot) {
           if(snapshot.hasData){
             return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: AspectRatio(
-                aspectRatio: 16 / 9,
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    viewportFraction: 1.0,
+              padding: const EdgeInsets.all(4.0),
+              child: Stack(
+                children: [
+                  CarouselSlider(
+                    options: CarouselOptions(
+                      autoPlay: true,
+                      aspectRatio: 16 / 9,
+                      viewportFraction: 1,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    ),
+                    items: snapshot.data?.docs.map((e) {
+
+                      BannerMenu banner = BannerMenu.fromJson(e.data() as Map<String, dynamic>);
+
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.amber,
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Text('text ${banner.bannerID}', style: TextStyle(fontSize: 16.0),)
+                          );
+                        },
+                      );
+                    }).toList(),
                   ),
-                  items: [1,2,3,4,5].map((i) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            decoration: BoxDecoration(
-                                color: Colors.amber
-                            ),
-                            child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                        );
-                      },
-                    );
-                  }).toList(),
-                )
+                  Positioned(
+                    bottom: 15,
+                    left: 5,
+                    right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: (snapshot.data?.docs ?? []).asMap().entries.map((e) => Container(
+                        margin: const EdgeInsets.only(right: 5),
+                        width: 8,
+                        height: 8,
+                        color: Colors.white,
+                      )).toList(),
+                    ),
+                  ),
+                ],
               ),
             );
           }else{

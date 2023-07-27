@@ -17,6 +17,9 @@ class BlockRight extends GetView<LandingController> {
            return Column(
              children: snapshot.data!.docs.map((e) {
                BlockMenu menu = BlockMenu.fromJson(e.data() as Map<String, dynamic>);
+               if(!(menu.isShow ?? false)){
+                 return const SizedBox();
+               }
                if(menu.blockType == 2){
                  return AspectRatio(
                    aspectRatio: 4,

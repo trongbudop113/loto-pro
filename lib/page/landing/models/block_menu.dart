@@ -4,13 +4,15 @@ class BlockMenu {
   int? blockType;
   String? page;
   String? blockIcon;
+  bool? isShow;
 
   BlockMenu(
       {this.blockID,
         this.blockName,
         this.blockType,
         this.page,
-        this.blockIcon
+        this.blockIcon,
+        this.isShow
       });
 
   BlockMenu.fromJson(Map<String, dynamic> json) {
@@ -19,6 +21,7 @@ class BlockMenu {
     blockType = json['block_type'];
     page = json['page'];
     blockIcon = json['block_icon'];
+    isShow = json['is_show'];
   }
 
   Map<String, dynamic> toJson() {
@@ -28,6 +31,7 @@ class BlockMenu {
     data['block_type'] = this.blockType;
     data['page'] = this.page;
     data['block_icon'] = this.blockIcon;
+    data['is_show'] = this.isShow;
     return data;
   }
 }
