@@ -2,3 +2,9 @@
 
 const mobileWidth = 600;
 const tabletWidth = 1000;
+
+enum LayoutEnum{
+  mobile,
+  tablet,
+  desktop
+}

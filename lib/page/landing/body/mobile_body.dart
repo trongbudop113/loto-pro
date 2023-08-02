@@ -5,6 +5,7 @@ import 'package:loto/page/landing/blocks/block_game.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/responsive/dimensions.dart';
 
 class MyMobileBody extends StatelessWidget {
   final LandingController controller;
@@ -24,12 +25,12 @@ class MyMobileBody extends StatelessWidget {
             children: [
               // youtube video
               const BlockBanner(),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
-                child: BlockLeft(),
+                child: BlockLeft(layout: LayoutEnum.mobile),
               ),
 
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: BlockRight(),
               ),

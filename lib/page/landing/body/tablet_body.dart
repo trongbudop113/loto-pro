@@ -3,6 +3,7 @@ import 'package:loto/page/landing/blocks/block_banner.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/responsive/dimensions.dart';
 
 class MyTabletBody extends StatelessWidget {
   final LandingController controller;
@@ -27,14 +28,14 @@ class MyTabletBody extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: BlockLeft(),
+                      padding: EdgeInsets.all(8.0),
+                      child: BlockLeft(layout: LayoutEnum.tablet),
                     ),
                   ),
                   Expanded(
                     flex: 1,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: BlockRight(),
                     ),
                   ),

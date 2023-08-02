@@ -7,7 +7,7 @@ import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 
 class BlockRight extends GetView<LandingController> with BlockItemBase {
-  const BlockRight({Key? key}) : super(key: key);
+  BlockRight({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

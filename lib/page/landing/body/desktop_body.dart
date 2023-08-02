@@ -5,6 +5,7 @@ import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/responsive/dimensions.dart';
 
 class MyDesktopBody extends StatelessWidget {
   final LandingController controller;
@@ -28,7 +29,7 @@ class MyDesktopBody extends StatelessWidget {
                 flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: BlockLeft(),
+                  child: BlockLeft(layout: LayoutEnum.desktop),
                 ),
               ),
 
