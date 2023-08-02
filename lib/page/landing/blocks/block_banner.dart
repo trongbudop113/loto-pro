@@ -19,12 +19,16 @@ class BlockBanner extends GetView<LandingController> {
               child: Stack(
                 children: [
                   CarouselSlider(
+                    carouselController: controller.bannerController,
                     options: CarouselOptions(
                       autoPlay: true,
                       aspectRatio: 16 / 9,
                       viewportFraction: 1,
                       enlargeCenterPage: true,
                       enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      onPageChanged: (index, c){
+                         controller.onPageChange(index);
+                      }
                     ),
                     items: snapshot.data?.docs.map((e) {
 
@@ -47,17 +51,22 @@ class BlockBanner extends GetView<LandingController> {
                   ),
                   Positioned(
                     bottom: 15,
-                    left: 5,
+                    left: 8,
                     right: 0,
-                    child: Row(
+                    child: Obx(() => Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: (snapshot.data?.docs ?? []).asMap().entries.map((e) => Container(
-                        margin: const EdgeInsets.only(right: 5),
-                        width: 8,
-                        height: 8,
-                        color: Colors.white,
+                      children: (snapshot.data?.docs ?? []).asMap().entries.map((e) => GestureDetector(
+                        onTap: (){
+                          controller.tapToIndex(e.key);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          width: 8,
+                          height: 8,
+                          color: e.key == controller.currentIndex.value ? Colors.black : Colors.white,
+                        ),
                       )).toList(),
-                    ),
+                    )),
                   ),
                 ],
               ),

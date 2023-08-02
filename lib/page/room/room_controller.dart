@@ -26,7 +26,11 @@ class RoomController extends GetxController {
 
   Future<void> checkExistedInRoom() async {
     CollectionReference userCollection = firestore.collection(DataRowName.Users.name);
-    String userEmail = FirebaseAuth.instance.currentUser!.email!;
+    String userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+    if(userEmail.isEmpty){
+      Get.back();
+      return;
+    }
     var userData = await userCollection.doc(userEmail).get();
     UserLogin userLogin = UserLogin.fromJson(userData.data() as Map<String, dynamic>);
     if((userLogin.joinRoomID ?? '').isNotEmpty){

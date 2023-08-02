@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_banner.dart';
+import 'package:loto/page/landing/blocks/block_game.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
@@ -39,31 +40,7 @@ class MyDesktopBody extends StatelessWidget {
                     // youtube video
                     const BlockBanner(),
 
-                    Container(
-                      margin: EdgeInsets.only(top: 10),
-                      child: Text("Trò Chơi", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AspectRatio(
-                        aspectRatio: 2,
-                        child: GridView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: 8,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10
-                          ),
-                          itemBuilder: (BuildContext context, int index) {
-                            return BorderWidget(
-                              child: Icon(Icons.add, size: 50),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
+                    const BlockGame(),
 
                     ListView.builder(
                       itemCount: 8,

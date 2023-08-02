@@ -35,6 +35,7 @@ class MyMobileBody extends StatelessWidget {
               ),
 
               const BlockGame(),
+              const SizedBox(height: 10),
               // comment section & recommended videos
               ListView.builder(
                 shrinkWrap: true,

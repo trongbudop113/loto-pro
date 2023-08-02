@@ -20,13 +20,16 @@ class BlockGame extends GetView<LandingController> {
                 children: [
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text("Trò chơi"),
+                    child: Text(
+                      "Trò chơi",
+                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: (snapshot.data?.size ?? 0) + (8 - (snapshot.data?.size ?? 0)),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
@@ -46,7 +49,7 @@ class BlockGame extends GetView<LandingController> {
                           },
                         );
                       }
-                      return BorderWidget(
+                      return const BorderWidget(
                         margin: EdgeInsets.zero,
                         child: Icon(Icons.add, size: 50),
                       );
