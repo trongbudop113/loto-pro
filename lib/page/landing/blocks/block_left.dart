@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/page/landing/blocks/block_item_base.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 
-class BlockLeft extends GetView<LandingController> {
+class BlockLeft extends GetView<LandingController> with BlockItemBase {
   const BlockLeft({Key? key}) : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class BlockLeft extends GetView<LandingController> {
                       color: Colors.amber,
                       child: Container(
                         alignment: Alignment.center,
-                        child: Text(menu.blockName ?? ''),
+                        child: buildBlockItem(context, menu),
                       ),
                     ),
                   );
@@ -44,7 +45,7 @@ class BlockLeft extends GetView<LandingController> {
                     color: Colors.amber,
                     child: Container(
                       alignment: Alignment.center,
-                      child: Text(menu.blockName ?? ''),
+                      child: buildBlockItem(context, menu),
                     ),
                   ),
                 );
@@ -56,57 +57,6 @@ class BlockLeft extends GetView<LandingController> {
             );
           }
         }
-    );
-  }
-
-  Widget test(){
-    return Column(
-      children: [
-        AspectRatio(
-          aspectRatio: 1,
-          child: BorderWidget(
-            color: Colors.amber,
-            child: Container(),
-          ),
-        ),
-        SizedBox(height: 16),
-        AspectRatio(
-          aspectRatio: 2,
-          child: Row(
-            children: [
-              Expanded(
-                child: BorderWidget(
-                  color: Colors.greenAccent,
-                  child: Container(),
-                ),
-              ),
-              SizedBox(width: 16),
-              Expanded(
-                child: BorderWidget(
-                  color: Colors.black,
-                  child: Container(),
-                ),
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 16),
-        AspectRatio(
-            aspectRatio: 2,
-            child: BorderWidget(
-              color: Colors.white,
-              child: Container(),
-            )
-        ),
-        SizedBox(height: 16),
-        AspectRatio(
-            aspectRatio: 2,
-            child: BorderWidget(
-              color: Colors.white,
-              child: Container(),
-            )
-        )
-      ],
     );
   }
 }

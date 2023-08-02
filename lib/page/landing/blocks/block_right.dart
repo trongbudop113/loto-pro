@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/page/landing/blocks/block_item_base.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 
-class BlockRight extends GetView<LandingController> {
+class BlockRight extends GetView<LandingController> with BlockItemBase {
   const BlockRight({Key? key}) : super(key: key);
 
   @override
@@ -30,7 +31,7 @@ class BlockRight extends GetView<LandingController> {
                      color: Colors.amber,
                      child: Container(
                        alignment: Alignment.center,
-                       child: Text(menu.blockName ?? ''),
+                       child: buildBlockItem(context, menu),
                      ),
                    ),
                  );
@@ -44,7 +45,7 @@ class BlockRight extends GetView<LandingController> {
                    color: Colors.amber,
                    child: Container(
                      alignment: Alignment.center,
-                     child: Text(menu.blockName ?? ''),
+                     child: buildBlockItem(context, menu),
                    ),
                  ),
                );
