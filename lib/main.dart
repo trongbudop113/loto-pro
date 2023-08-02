@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:loto/page/splash/splash_page.dart';
 import 'package:loto/page_config.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:loto/src/theme_resource.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,9 +37,8 @@ class MyApp extends StatelessWidget  {
     return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeResource.lightTheme(),
+      darkTheme: ThemeResource.darkTheme(),
       home: const SplashPage(),
       getPages: PageConfig.listPage(),
     );

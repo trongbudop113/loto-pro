@@ -24,9 +24,9 @@ class BlockGame extends GetView<LandingController> {
                   ),
                   GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: (snapshot.data?.size ?? 0) + (8 - (snapshot.data?.size ?? 0)),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 4,
                         crossAxisSpacing: 5,
                         mainAxisSpacing: 5,
@@ -37,9 +37,12 @@ class BlockGame extends GetView<LandingController> {
                       if(index <= (snapshot.data!.size - 1)){
                         final GameMenu gameMenu = GameMenu.fromJson(snapshot.data?.docs[index].data() as Map<String, dynamic>);
                         return GestureDetector(
-                          child: const BorderWidget(
-                            margin: EdgeInsets.zero,
-                            child: Icon(Icons.abc, size: 50),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: BorderWidget(
+                              margin: EdgeInsets.zero,
+                              child: Image.network(gameMenu.gameIcon ?? '', fit: BoxFit.fill),
+                            ),
                           ),
                           onTap: (){
                             controller.goToRoomPage(gameMenu.page ?? "");
