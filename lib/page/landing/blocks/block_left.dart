@@ -9,7 +9,7 @@ import 'package:loto/responsive/dimensions.dart';
 
 class BlockLeft extends GetView<LandingController> with BlockItemBase {
   final LayoutEnum layout;
-  BlockLeft({required this.layout});
+  BlockLeft({Key? key, required this.layout}): super(key: key);
 
   @override
   Widget build(BuildContext context) {

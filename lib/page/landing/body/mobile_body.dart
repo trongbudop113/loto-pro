@@ -4,6 +4,7 @@ import 'package:loto/page/landing/blocks/block_banner.dart';
 import 'package:loto/page/landing/blocks/block_game.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
+import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/responsive/dimensions.dart';
 
@@ -17,6 +18,9 @@ class MyMobileBody extends StatelessWidget {
       backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('M O B I L E'),
+        actions: const [
+          AvatarWidget()
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -32,7 +36,7 @@ class MyMobileBody extends StatelessWidget {
 
               Padding(
                 padding: EdgeInsets.all(8.0),
-                child: BlockRight(),
+                child: BlockRight(layout: LayoutEnum.mobile),
               ),
 
               const BlockGame(),

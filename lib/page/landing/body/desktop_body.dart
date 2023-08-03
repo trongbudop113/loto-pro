@@ -17,6 +17,9 @@ class MyDesktopBody extends StatelessWidget {
       backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('D E S K T O P'),
+        actions: const [
+          AvatarWidget()
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,7 +69,7 @@ class MyDesktopBody extends StatelessWidget {
                 flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: BlockRight(),
+                  child: BlockRight(layout: LayoutEnum.desktop),
                 ),
               )
             ],
