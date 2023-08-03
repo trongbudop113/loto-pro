@@ -21,6 +21,9 @@ class ThemeResource{
           color: ColorResource.color_white_light,
           fontWeight: FontWeight.w500
         )
+      ),
+      appBarTheme: AppBarTheme(
+        color: Colors.white
       )
     );
   }
@@ -32,6 +35,9 @@ class ThemeResource{
       brightness: Brightness.light,
       backgroundColor: Colors.grey[100],
       visualDensity: VisualDensity.adaptivePlatformDensity,
+      appBarTheme: AppBarTheme(
+        color: Colors.black
+      )
     );
   }
 }

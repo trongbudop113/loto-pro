@@ -11,7 +11,7 @@ class ProfilePage extends GetView<ProfileController>{
 
     return Scaffold(
       body: GridView.builder(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         itemCount: 3,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           childAspectRatio: 1,
@@ -20,8 +20,13 @@ class ProfilePage extends GetView<ProfileController>{
             mainAxisSpacing: 10.0
         ),
         itemBuilder: (BuildContext context, int index){
-          return Container(
-            color: Colors.amber,
+          return GestureDetector(
+            onTap: (){
+              controller.onChangeThemeMode(context);
+            },
+            child: Container(
+              color: Colors.amber,
+            ),
           );
         },
       )

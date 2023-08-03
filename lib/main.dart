@@ -6,6 +6,9 @@ import 'package:loto/page/splash/splash_page.dart';
 import 'package:loto/page_config.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:loto/src/theme_resource.dart';
+import 'package:provider/provider.dart';
+
+import 'theme/theme_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,14 +36,23 @@ class MyApp extends StatelessWidget  {
 
   @override
   Widget build(BuildContext context) {
-   // Get.put(HomeController());
-    return GetMaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeResource.lightTheme(),
-      darkTheme: ThemeResource.darkTheme(),
-      home: const SplashPage(),
-      getPages: PageConfig.listPage(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => ThemeProvider(),
+        ),
+      ],
+      child: Consumer<ThemeProvider>(
+          builder: (ctx, themeObject, _) => GetMaterialApp(
+            title: 'Flutter Demo',
+            themeMode: themeObject.mode,
+            debugShowCheckedModeBanner: false,
+            theme: ThemeResource.lightTheme(),
+            darkTheme: ThemeResource.darkTheme(),
+            home: const SplashPage(),
+            getPages: PageConfig.listPage(),
+          )
+      )
     );
   }
 }
