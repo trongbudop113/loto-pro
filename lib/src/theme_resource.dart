@@ -20,6 +20,16 @@ class ThemeResource{
           fontSize: 16,
           color: ColorResource.color_white_light,
           fontWeight: FontWeight.w500
+        ),
+        caption: GoogleFonts.pacifico(
+            fontSize: 18,
+            color: ColorResource.color_black_light,
+            fontWeight: FontWeight.bold
+        ),
+        headline1: GoogleFonts.pacifico(
+            fontSize: 14,
+            color: ColorResource.color_grey_light,
+            fontWeight: FontWeight.w400
         )
       ),
       appBarTheme: AppBarTheme(

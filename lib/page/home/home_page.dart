@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/home/home_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class HomePage extends GetView<HomeController>{
 
@@ -18,7 +19,7 @@ class HomePage extends GetView<HomeController>{
             child: Container(
               width: 55,
               color: Colors.transparent,
-              child: const Icon(Icons.refresh),
+              child: const Icon(Icons.refresh, color: Colors.black),
             ),
             onTap: (){
               controller.onRefreshData();
@@ -28,30 +29,31 @@ class HomePage extends GetView<HomeController>{
       ),
       body: Column(
         children: [
-          buildCallNumber(),
+          buildCallNumber(context),
           Expanded(
-            child: buildContent(),
+            child: buildContent(context),
           )
         ],
       ),
     );
   }
 
-  Widget buildCallNumber(){
+  Widget buildCallNumber(BuildContext context){
     return Container(
         height: 40,
         child: Container(
           alignment: Alignment.center,
           child: Row(
             children: [
-              Text("22", style: TextStyle(fontSize: 16))
+              Text("22", style: TextStyleResource.textStyleBlack(context)
+              )
             ],
           ),
         )
     );
   }
 
-  Widget buildContent(){
+  Widget buildContent(BuildContext context){
     return Obx(() => Visibility(
         visible: controller.isHasData.value,
         child: SingleChildScrollView(
@@ -63,7 +65,7 @@ class HomePage extends GetView<HomeController>{
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     color: Colors.black38,
                     alignment: Alignment.center,
-                    child: Text(" Tờ ${parent.key + 1}", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+                    child: Text(" Tờ ${parent.key + 1}", style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 15)),
                   ),
                   CustomScrollView(
                       shrinkWrap: true,
@@ -92,7 +94,10 @@ class HomePage extends GetView<HomeController>{
                                         alignment: Alignment.center,
                                         child: Visibility(
                                           visible: (child.value.number ?? 0) > 0,
-                                          child: Text((child.value.number ?? 0).toString()),
+                                          child: Text(
+                                              (child.value.number ?? 0).toString(),
+                                            style: TextStyleResource.textStyleBlack(context),
+                                          ),
                                         ),
                                       ),
                                       Obx(() => Visibility(
@@ -109,7 +114,7 @@ class HomePage extends GetView<HomeController>{
                                                 width: 40,
                                                 height: 40,
                                                 decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(Radius.circular(360)),
+                                                    borderRadius: const BorderRadius.all(Radius.circular(360)),
                                                     border: Border.all(
                                                         width: 3,
                                                         color: Colors.red

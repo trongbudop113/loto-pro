@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:loto/page/room/room_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class RoomPage extends GetView<RoomController>{
 
@@ -59,13 +60,13 @@ class RoomPage extends GetView<RoomController>{
                             margin: const EdgeInsets.only(bottom: 10),
                             child: Text(
                                 "Số người ${(data.listUser ?? []).length}",
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                                style: TextStyleResource.textStyleBlack(context)
                             ),
                           ),
                         ),
                         Text(
                             data.roomName ?? '',
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                            style: TextStyleResource.textStyleCaption(context).copyWith(fontSize: 20)
                         ),
                         const SizedBox(height: 10),
                         const Divider(thickness: 2),

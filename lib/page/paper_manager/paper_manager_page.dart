@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class PaperManagerPage extends GetView<PaperManagerController>{
 
@@ -9,7 +10,7 @@ class PaperManagerPage extends GetView<PaperManagerController>{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Chỉnh sửa", style: TextStyle(color: Colors.white)),
+          title: Text("Chỉnh sửa", style: TextStyleResource.textStyleBlack(context)),
           actions: [
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -25,12 +26,12 @@ class PaperManagerPage extends GetView<PaperManagerController>{
                       borderRadius: BorderRadius.circular(360),
                       color: Colors.white,
                     ),
-                    child: Icon(Icons.done, color: Colors.green,),
+                    child: const Icon(Icons.done, color: Colors.green,),
                   ),
                 )
               ],
             ),
-            SizedBox(width: 15)
+            const SizedBox(width: 15)
           ],
         ),
         body: SingleChildScrollView(
@@ -44,9 +45,9 @@ class PaperManagerPage extends GetView<PaperManagerController>{
                       color: Colors.transparent,
                       child: Row(
                         children: [
-                          SizedBox(width: 10),
-                          Text("Chọn màu:", style: TextStyle(fontSize: 18)),
-                          SizedBox(width: 20),
+                          const SizedBox(width: 10),
+                          Text("Chọn màu:", style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18)),
+                          const SizedBox(width: 20),
                           Obx(() => Container(
                             width: 100,
                             height: 30,
@@ -64,14 +65,14 @@ class PaperManagerPage extends GetView<PaperManagerController>{
                   Obx(() => Container(
                     child: Row(
                       children: [
-                        SizedBox(width: 10),
-                        Text("Tên tờ:", style: TextStyle(fontSize: 18)),
-                        SizedBox(width: 20),
-                        Text(controller.namePaper.value, style: TextStyle(fontSize: 18))
+                        const SizedBox(width: 10),
+                        Text("Tên tờ:", style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18)),
+                        const SizedBox(width: 20),
+                        Text(controller.namePaper.value, style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18))
                       ],
                     ),
                   )),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
               Obx(() => buildContent1(context))
@@ -87,7 +88,7 @@ class PaperManagerPage extends GetView<PaperManagerController>{
         visible: controller.isHasData.value,
         child: CustomScrollView(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           slivers: controller.listRow.asMap().entries.map((e) {
             if(e.value.typeFull ?? true){
               return const SliverPadding(padding: EdgeInsets.symmetric(vertical: 10));
@@ -108,7 +109,10 @@ class PaperManagerPage extends GetView<PaperManagerController>{
                       alignment: Alignment.center,
                       child: Visibility(
                         visible: (child.value.number?.value ?? 0) > 0,
-                        child: Text((child.value.number?.value ?? 0).toString()),
+                        child: Text(
+                            (child.value.number?.value ?? 0).toString(),
+                            style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 16)
+                        ),
                       ),
                     ),
                   ));

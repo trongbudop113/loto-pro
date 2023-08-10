@@ -57,6 +57,10 @@ class SelectController extends GetxController {
     Get.toNamed(PageConfig.MANAGER);
   }
 
+  void goToCallNumber(){
+    Get.toNamed(PageConfig.CALL);
+  }
+
   List<String> yourPicked = [];
 
   Future<void> onSelectPaper(SelectPaper selectPaper) async {

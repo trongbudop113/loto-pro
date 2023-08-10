@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/select/select_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class SelectPage extends GetView<SelectController>{
 
@@ -17,20 +18,36 @@ class SelectPage extends GetView<SelectController>{
               children: [
                 GestureDetector(
                   onTap: (){
+                    controller.goToCallNumber();
+                  },
+                  child: Container(
+                    width: 60,
+                    alignment: Alignment.center,
+                    color: Colors.amberAccent,
+                    child: Icon(Icons.abc_outlined),
+                  ),
+                ),
+                const SizedBox(width: 15),
+                GestureDetector(
+                  onTap: (){
                     controller.goToAddPaper();
                   },
                   child: Container(
                     width: 60,
+                    alignment: Alignment.center,
+                    color: Colors.amberAccent,
                     child: Icon(Icons.add_box_outlined),
                   ),
                 ),
-                SizedBox(width: 15),
+                const SizedBox(width: 15),
                 GestureDetector(
                   onTap: (){
                     controller.goToManager();
                   },
                   child: Container(
                     width: 60,
+                    alignment: Alignment.center,
+                    color: Colors.amberAccent,
                     child: Icon(Icons.edit_calendar_rounded),
                   ),
                 )
@@ -43,10 +60,13 @@ class SelectPage extends GetView<SelectController>{
               controller.onPlayGame();
             },
             child: Container(
-              color: Colors.transparent,
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              color: Colors.amberAccent,
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               alignment: Alignment.center,
-              child: Text('Vào chơi', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              child: Text(
+                  'Vào chơi',
+                  style: TextStyleResource.textStyleBlack(context)
+              ),
             ),
           )
         ],

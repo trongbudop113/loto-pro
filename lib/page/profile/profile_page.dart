@@ -10,6 +10,7 @@ class ProfilePage extends GetView<ProfileController>{
     final int crossAxisCount = MediaQuery.of(context).size.width > 1000 ? 5 : (MediaQuery.of(context).size.width <= 600 ? 2 : 3);
 
     return Scaffold(
+      appBar: AppBar(),
       body: GridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: 3,

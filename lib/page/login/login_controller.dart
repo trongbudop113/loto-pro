@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loto/database/data_name.dart';
@@ -17,8 +18,20 @@ class LoginController extends GetxController {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   Future<void> onClickLogin() async {
     var user = await signInWithGoogle();
+    await saveUserInfo(user);
+    Get.toNamed(PageConfig.MENU);
+  }
+
+  Future<void> onClickLoginEmail() async {
+    if(userNameController.text.isEmpty && passwordController.text.isEmpty){
+      return;
+    }
+    var user = await signInWithEmail();
     await saveUserInfo(user);
     Get.toNamed(PageConfig.MENU);
   }
@@ -38,6 +51,17 @@ class LoginController extends GetxController {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<UserCredential> signInWithEmail() async {
+    final email = userNameController.text;
+    final password = passwordController.text;
+
+    final userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return userCredential;
   }
 
   Future<void> saveUserInfo(UserCredential user) async {
