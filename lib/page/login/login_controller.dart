@@ -84,7 +84,7 @@ class LoginController extends GetxController {
       }else{
         await usersReference.doc(user.user?.email ?? '').update({
           "lastSignInTime":
-          user.user!.metadata.lastSignInTime!.toIso8601String(),
+          DateTime.now().millisecondsSinceEpoch,
         });
       }
     }catch(e){

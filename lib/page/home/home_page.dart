@@ -1,14 +1,16 @@
 import 'dart:async';
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/page/call_number/model/call_number_data.dart';
 import 'package:loto/page/home/home_controller.dart';
 import 'package:loto/src/style_resource.dart';
 
 class HomePage extends GetView<HomeController>{
 
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +41,28 @@ class HomePage extends GetView<HomeController>{
   }
 
   Widget buildCallNumber(BuildContext context){
-    return Container(
-        height: 40,
-        child: Container(
-          alignment: Alignment.center,
-          child: Row(
-            children: [
-              Text("22", style: TextStyleResource.textStyleBlack(context)
-              )
-            ],
-          ),
-        )
+    return StreamBuilder<DocumentSnapshot<Object?>>(
+      stream: controller.streamGetDataRoom(),
+      builder: (context, snapShot) {
+        if (snapShot.connectionState == ConnectionState.active) {
+          var numberData = CallNumberData.fromJson(snapShot.data?.data() as Map<String, dynamic>);
+          return Container(
+            height: 50,
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(numberData.currentNumber ?? '', style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 20)
+                )
+              ],
+            ),
+          );
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 

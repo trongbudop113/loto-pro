@@ -34,7 +34,7 @@ class RoomController extends GetxController {
     var userData = await userCollection.doc(userEmail).get();
     UserLogin userLogin = UserLogin.fromJson(userData.data() as Map<String, dynamic>);
     if((userLogin.joinRoomID ?? '').isNotEmpty){
-      Get.toNamed(PageConfig.SELECT);
+      Get.toNamed(PageConfig.SELECT, arguments: userLogin.joinRoomID);
     }
   }
 
@@ -90,7 +90,7 @@ class RoomController extends GetxController {
         "joinRoomID" : roomModel.roomID.toString()
       });
 
-      Get.toNamed(PageConfig.SELECT);
+      Get.toNamed(PageConfig.SELECT, arguments: roomModel.roomID.toString());
     }catch(e){
       e.printInfo(info: "joinRoom");
     }

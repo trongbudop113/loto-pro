@@ -46,7 +46,9 @@ class SelectController extends GetxController {
   }
 
   void onPlayGame(){
-    Get.toNamed(PageConfig.HOME, arguments: listSelected);
+    Get.toNamed(PageConfig.HOME, arguments: [
+      listSelected, roomID
+    ]);
   }
 
   void goToManager(){
@@ -58,7 +60,8 @@ class SelectController extends GetxController {
   }
 
   void goToCallNumber(){
-    Get.toNamed(PageConfig.CALL);
+    if(roomID.isEmpty) return;
+    Get.toNamed(PageConfig.CALL, arguments: roomID);
   }
 
   List<String> yourPicked = [];
@@ -107,7 +110,14 @@ class SelectController extends GetxController {
   @override
   void onInit() {
     checkAndRemovePaper();
+    getRoomData();
     super.onInit();
+  }
+
+  late String roomID;
+
+  void getRoomData(){
+    roomID = Get.arguments as String ?? '';
   }
 
   checkAndRemovePaper() async {

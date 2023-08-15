@@ -2,10 +2,13 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:loto/database/data_name.dart';
+import 'package:loto/page/call_number/model/call_number_data.dart';
 
 class CallNumberBinding extends Bindings{
   @override
@@ -38,10 +41,21 @@ class CallNumberController extends GetxController {
   bool get isWindows => !kIsWeb && Platform.isWindows;
   bool get isWeb => kIsWeb;
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late CollectionReference roomCollection;
+  late String roomID;
+
   @override
   void onInit() {
     initTts();
+    getRoomID();
     super.onInit();
+  }
+
+  Future<void> getRoomID() async {
+    roomID = Get.arguments as String ?? '';
+    roomCollection = firestore.collection(DataRowName.Rooms.name);
+    await setDefaultData();
   }
 
   initTts() {
@@ -177,7 +191,7 @@ class CallNumberController extends GetxController {
 
   Future<void> getArgument() async {
     isPlay = true;
-    timer = Timer.periodic(Duration(seconds: timeDelay.value), (Timer t) {
+    timer = Timer.periodic(Duration(seconds: timeDelay.value), (Timer t) async {
       if(isPlay == false){
         t.cancel();
         return;
@@ -189,9 +203,30 @@ class CallNumberController extends GetxController {
       print('[${listRandom[stt]}]');
       newVoiceText.value = 'số ${listRandom[stt]}';
       listTextNumber.add('${listRandom[stt]} ');
+      await saveCallNumber(listRandom[stt].toString());
       _speak();
       stt++;
     });
+  }
+
+  Future<void> setDefaultData() async {
+    try{
+      await roomCollection.doc(roomID).collection(roomID).doc(roomID).set(
+          {"listNumber" : [], "isWin" : false, "currentNumber" : ""}
+      );
+    }catch(e){
+      e.printInfo(info: "setDefaultData");
+    }
+  }
+
+  Future<void> saveCallNumber(String number) async {
+    try{
+      await roomCollection.doc(roomID).collection(roomID).doc(roomID).set(
+        {"listNumber" : listTextNumber, "currentNumber" : number}
+      );
+    }catch(e){
+      e.printInfo(info: "createRoom");
+    }
   }
 
   Timer? timer;

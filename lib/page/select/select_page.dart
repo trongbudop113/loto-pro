@@ -6,6 +6,8 @@ import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/src/style_resource.dart';
 
 class SelectPage extends GetView<SelectController>{
+  const SelectPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
