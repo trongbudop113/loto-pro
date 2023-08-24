@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/models/game_menu.dart';
+import 'package:loto/src/style_resource.dart';
 
 class BlockGame extends GetView<LandingController> {
   const BlockGame({Key? key}) : super(key: key);
@@ -21,8 +22,8 @@ class BlockGame extends GetView<LandingController> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      "Trò chơi",
-                      style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      "game".tr,
+                      style: TextStyleResource.textStyleCaption(context).copyWith(fontSize: 25),
                     ),
                   ),
                   GridView.builder(

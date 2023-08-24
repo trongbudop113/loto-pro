@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:loto/language/localization_service.dart';
 import 'package:loto/page/splash/splash_page.dart';
 import 'package:loto/page_config.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -51,6 +52,9 @@ class MyApp extends StatelessWidget  {
             darkTheme: ThemeResource.darkTheme(),
             home: const SplashPage(),
             getPages: PageConfig.listPage(),
+            locale: LocalizationService.locale,
+            fallbackLocale: LocalizationService.fallbackLocale,
+            translations: LocalizationService(),
           )
       )
     );

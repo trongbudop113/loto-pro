@@ -42,7 +42,7 @@ class BlockBanner extends GetView<LandingController> {
                                   alignment: Alignment.center,
                                   margin: const EdgeInsets.symmetric(horizontal: 5.0),
                                   decoration: BoxDecoration(
-                                    color: Colors.amber,
+                                    color: Theme.of(context).cardColor,
                                     borderRadius: BorderRadius.circular(10)
                                   ),
                                   //child: Image.network(banner.bannerImage ?? '', fit: BoxFit.fill)

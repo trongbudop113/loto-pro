@@ -13,7 +13,6 @@ class MyTabletBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('T A B L E T'),
         actions: const [

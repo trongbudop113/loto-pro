@@ -12,6 +12,7 @@ class LandingPage extends GetView<LandingController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: ResponsiveLayout(
         mobileBody: MyMobileBody(
           controller: controller,

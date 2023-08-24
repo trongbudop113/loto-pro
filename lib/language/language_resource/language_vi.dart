@@ -1,0 +1,18 @@
+const Map<String, String> vi = {
+  'theme_mode': 'Giao điện',
+  'language' : 'Ngôn Ngữ',
+  'en' : 'Tiếng Anh',
+  'vi' : 'Tiếng Việt',
+  'ja' : 'Tiếng Nhật',
+  'dark' : 'Tối',
+  'lighte' : 'Sáng',
+  'contact' : 'Liện Hệ',
+  'trip' : 'Chuyến Đi',
+  'chat' : 'Trò Chuyện',
+  'setting' : 'Cài Đặt',
+  'game' : 'Trò Chơi',
+  'login' : 'Đăng Nhập',
+  'stories' : 'Cậu Chuyện',
+  'shop' : 'Cửa Hàng',
+  'portfolior' : 'Giới Thiệu Bản Thân',
+};

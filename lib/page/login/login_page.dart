@@ -10,6 +10,9 @@ class LoginPage extends GetView<LoginController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Đăng Nhập"),
+      ),
       body: Center(
         child: Container(
           width: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width : 600,

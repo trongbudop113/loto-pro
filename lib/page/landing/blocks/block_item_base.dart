@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/responsive/dimensions.dart';
 import 'package:loto/src/style_resource.dart';
@@ -15,7 +16,7 @@ abstract class BlockItemBase{
         children: [
           buildImage(menu.blockIcon ?? ''),
           const SizedBox(height: 10),
-          buildTitle(context, name: menu.blockName ?? '')
+          buildTitle(context, name: (menu.blockName ?? '').tr)
         ],
       );
     }
@@ -24,7 +25,7 @@ abstract class BlockItemBase{
       children: [
         buildImage(menu.blockIcon ?? ''),
         const SizedBox(width: 10),
-        buildTitle(context, name: menu.blockName ?? '')
+        buildTitle(context, name: (menu.blockName ?? '').tr)
       ],
     );
   }

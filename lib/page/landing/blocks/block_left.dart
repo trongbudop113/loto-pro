@@ -34,7 +34,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                       onTap: (){
                         controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
                       },
-                      color: Colors.amber,
+                      color: Theme.of(context).cardColor,
                       margin: EdgeInsets.zero,
                       child: Container(
                         alignment: Alignment.center,
@@ -57,7 +57,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                         onTap: (){
                           controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
                         },
-                        color: Colors.amber,
+                        color: Theme.of(context).cardColor,
                         child: Container(
                           alignment: Alignment.center,
                           child: buildBlockItem(context, menu),
@@ -73,7 +73,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                         onTap: (){
                           controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
                         },
-                        color: Colors.amber,
+                        color: Theme.of(context).cardColor,
                         child: Container(
                           alignment: Alignment.center,
                           child: buildBlockItem(context, menu),

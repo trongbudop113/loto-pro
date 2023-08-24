@@ -10,7 +10,9 @@ class ContactPage extends GetView<ContactController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Liên Hệ"),
+      ),
       body: Obx(() => Visibility(
         visible: (controller.contactData.value.phone ?? '').isNotEmpty,
         child: SingleChildScrollView(

@@ -14,7 +14,6 @@ class MyDesktopBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('D E S K T O P'),
         actions: const [

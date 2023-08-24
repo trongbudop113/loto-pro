@@ -15,7 +15,6 @@ class MyMobileBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: controller.bgColor,
       appBar: AppBar(
         title: Text('M O B I L E'),
         actions: const [
