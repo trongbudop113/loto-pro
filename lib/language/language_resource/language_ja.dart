@@ -15,4 +15,5 @@ const Map<String, String> ja = {
   'stories' : 'Stories',
   'shop' : 'Shops',
   'portfolior' : 'Portfolior',
+  'moon_cake' : 'Portfolior',
 };

@@ -11,6 +11,9 @@ class ThemeResource{
       backgroundColor: ColorResource.color_background_light,
       visualDensity: VisualDensity.adaptivePlatformDensity,
       cardColor: ColorResource.color_main_light,
+        bottomSheetTheme: const BottomSheetThemeData(
+            backgroundColor: ColorResource.color_white_light
+        ),
       textTheme: TextTheme(
         bodyText1: GoogleFonts.pacifico(
           fontSize: 16,
@@ -59,6 +62,9 @@ class ThemeResource{
         backgroundColor: ColorResource.color_background_dark,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         cardColor: ColorResource.color_main_dark,
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: ColorResource.color_white_dark
+        ),
         textTheme: TextTheme(
             bodyText1: GoogleFonts.pacifico(
                 fontSize: 16,

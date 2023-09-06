@@ -16,6 +16,8 @@ import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
 import 'package:loto/page/menu/menu_controller.dart';
 import 'package:loto/page/menu/menu_page.dart';
+import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/moon_cake/page/moon_cake_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/profile/profile_controller.dart';
@@ -46,6 +48,7 @@ class PageConfig {
   static String CARO_CHESS = '/caro';
   static String PROFILE = '/profile';
   static String CALL = '/call_number';
+  static String MOON_CAKE = '/moon_cake';
 
   static List<GetPage> listPage(){
     return [
@@ -118,6 +121,11 @@ class PageConfig {
         name: CALL,
         page: () => CallNumberPage(),
         binding: CallNumberBinding(),
+      ),
+      GetPage(
+        name: MOON_CAKE,
+        page: () => MoonCakePage(),
+        binding: MoonCakeBinding(),
       ),
     ];
   }

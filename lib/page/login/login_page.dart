@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
+import 'package:get/get.dart';
 import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/resources/image_resource.dart';
 import 'package:loto/src/style_resource.dart';
@@ -11,7 +11,7 @@ class LoginPage extends GetView<LoginController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Đăng Nhập"),
+        title: Text("login".tr),
       ),
       body: Center(
         child: Container(

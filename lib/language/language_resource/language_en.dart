@@ -15,5 +15,7 @@ const Map<String, String> en = {
   'stories' : 'Stories',
   'shop' : 'Shops',
   'portfolior' : 'Portfolior',
+  'moon_cake_order' : 'Moon Cake\nOrder',
+  'moon_cake' : 'Moon Cake',
 };
 
