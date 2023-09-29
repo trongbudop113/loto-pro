@@ -26,6 +26,8 @@ import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/page/select/select_page.dart';
+import 'package:loto/page/statistic/statistic_controller.dart';
+import 'package:loto/page/statistic/statistic_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
 
 import 'page/chat/chat_detail_controller.dart';
@@ -49,6 +51,7 @@ class PageConfig {
   static String PROFILE = '/profile';
   static String CALL = '/call_number';
   static String MOON_CAKE = '/moon_cake';
+  static String STATISTIC = '/statistic';
 
   static List<GetPage> listPage(){
     return [
@@ -126,6 +129,11 @@ class PageConfig {
         name: MOON_CAKE,
         page: () => MoonCakePage(),
         binding: MoonCakeBinding(),
+      ),
+      GetPage(
+        name: STATISTIC,
+        page: () => StatisticPage(),
+        binding: StatisticBinding(),
       ),
     ];
   }

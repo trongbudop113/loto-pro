@@ -13,11 +13,11 @@ class ProfilePage extends GetView<ProfileController>{
       appBar: AppBar(
         title: Text("setting".tr),
       ),
-      body: GridView.builder(
+      body: Obx(() => GridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: controller.listBlock.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 1,
+            childAspectRatio: 1,
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 10.0,
             mainAxisSpacing: 10.0
@@ -34,7 +34,7 @@ class ProfilePage extends GetView<ProfileController>{
             ),
           );
         },
-      )
+      ))
     );
   }
 }

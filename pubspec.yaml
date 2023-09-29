@@ -50,6 +50,7 @@ dependencies:
   flutter_tts: ^3.6.3
   add_to_cart_animation: ^2.0.3
   animations: ^2.0.0
+  fl_chart: ^0.60.0
 
 dev_dependencies:
   flutter_test:

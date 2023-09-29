@@ -17,4 +17,8 @@ const Map<String, String> vi = {
   'portfolior' : 'Giới Thiệu Bản Thân',
   'moon_cake_order' : 'Đặt Bánh\nTrung Thu',
   'moon_cake' : 'Bánh Trung Thu',
+  'products' : 'Hàng Hóa',
+  'product_management' : 'Quản Lý\nHàng Hóa',
+  'order_management' : 'Quản Lý\nĐặt Hàng',
+  'order_analytic' : 'Thông Kê\nDoanh Số',
 };
