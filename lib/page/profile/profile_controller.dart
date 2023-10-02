@@ -11,7 +11,6 @@ import 'package:loto/page/profile/dialog/select_option_layout.dart';
 import 'package:loto/page/profile/model/option_data.dart';
 import 'package:loto/page/profile/model/profile_block.dart';
 import 'package:loto/page_config.dart';
-import 'package:loto/src/style_resource.dart';
 import 'package:loto/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -119,14 +118,18 @@ class ProfileController extends GetxController {
   }
 
   Future<void> getDataUser() async {
-    CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-    final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
-    if(getUSer.data() == null) return;
-    var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
-    if(userLogin.isAdmin ?? false){
-      listBlock.addAll([
-        ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
-      ]);
+    try{
+      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
+      if(getUSer.data() == null) return;
+      var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      if(userLogin.isAdmin ?? false){
+        listBlock.addAll([
+          ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
+        ]);
+      }
+    }catch(e){
+
     }
   }
 }

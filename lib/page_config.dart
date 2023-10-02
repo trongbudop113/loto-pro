@@ -20,6 +20,7 @@ import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
 import 'package:loto/page/moon_cake/page/moon_cake_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
+import 'package:loto/page/portfolior/portfolior_controller.dart';
 import 'package:loto/page/profile/profile_controller.dart';
 import 'package:loto/page/profile/profile_page.dart';
 import 'package:loto/page/room/room_controller.dart';
@@ -32,6 +33,7 @@ import 'package:loto/page/stories/stories_controller.dart';
 
 import 'page/chat/chat_detail_controller.dart';
 import 'page/chat/chat_detail_page.dart';
+import 'page/portfolior/portfolior_page.dart';
 import 'page/stories/stories_page.dart';
 
 class PageConfig {
@@ -52,6 +54,7 @@ class PageConfig {
   static String CALL = '/call_number';
   static String MOON_CAKE = '/moon_cake';
   static String STATISTIC = '/statistic';
+  static String PORTFOLIOR = '/portfolior';
 
   static List<GetPage> listPage(){
     return [
@@ -134,6 +137,11 @@ class PageConfig {
         name: STATISTIC,
         page: () => StatisticPage(),
         binding: StatisticBinding(),
+      ),
+      GetPage(
+        name: PORTFOLIOR,
+        page: () => PortFoliorPage(),
+        binding: PortFoliorBinding(),
       ),
     ];
   }
