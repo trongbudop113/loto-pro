@@ -17,5 +17,9 @@ const Map<String, String> en = {
   'portfolior' : 'Portfolior',
   'moon_cake_order' : 'Moon Cake\nOrder',
   'moon_cake' : 'Moon Cake',
+  'products' : "Products",
+  'product_management' : 'Products Management',
+  'order_management' : 'Orders Management',
+  'order_analytic' : 'Sales Statistics',
 };
 

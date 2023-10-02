@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:loto/database/data_name.dart';
 import 'package:loto/language/localization_service.dart';
+import 'package:loto/models/user_login.dart';
 import 'package:loto/page/profile/dialog/select_option_layout.dart';
 import 'package:loto/page/profile/model/option_data.dart';
 import 'package:loto/page/profile/model/profile_block.dart';
-import 'package:loto/src/style_resource.dart';
+import 'package:loto/page_config.dart';
 import 'package:loto/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,13 +23,15 @@ class ProfileBinding extends Bindings{
 
 class ProfileController extends GetxController {
 
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   final box = GetStorage();
   bool get isDark => box.read('darkmode') ?? false;
 
-  List<ProfileBlock> listBlock = [
+  RxList<ProfileBlock> listBlock = [
     ProfileBlock(blockName: "theme_mode", page: "", icon: "", type: ProfileType.ThemeMode),
-    ProfileBlock(blockName: "language", page: "", icon: "", type: ProfileType.Language),
-  ];
+    ProfileBlock(blockName: "language", page: "", icon: "", type: ProfileType.Language)
+  ].obs;
 
   List<OptionData> listLanguage = [
     OptionData(value: "vi"),
@@ -56,6 +62,8 @@ class ProfileController extends GetxController {
       showDialogSelectThemeMode(context, block.blockName!);
     }else if(block.type == ProfileType.Language){
       showDialogSelectLanguage(context, block.blockName!);
+    }else if(block.type == ProfileType.Products){
+      Get.toNamed(PageConfig.STATISTIC);
     }
   }
 
@@ -96,6 +104,7 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     initValue();
+    getDataUser();
     super.onInit();
   }
 
@@ -105,6 +114,22 @@ class ProfileController extends GetxController {
       listThemeMode.firstWhere((e) => e.value! == mode).isSelected.value = true;
     }catch(e){
       e.printError(info: "aaaaaa");
+    }
+  }
+
+  Future<void> getDataUser() async {
+    try{
+      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
+      if(getUSer.data() == null) return;
+      var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      if(userLogin.isAdmin ?? false){
+        listBlock.addAll([
+          ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
+        ]);
+      }
+    }catch(e){
+
     }
   }
 }
