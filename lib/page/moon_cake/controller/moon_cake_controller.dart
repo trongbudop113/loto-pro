@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/moon_cake/models/egg_data.dart';
@@ -89,5 +90,26 @@ class MoonCakeController extends GetxController {
         e.isSelect.value = true;
       }
     }
+  }
+
+  void onClickAddToCart(GlobalKey widgetKey){
+    moonCakeProduct!.quantity = quantity.value;
+    if(currentProductInCart(moonCakeProduct!) != null){
+      currentProductInCart(moonCakeProduct!)!.quantity = moonCakeProduct!.quantity;
+      quantity.value = 1;
+      itemClick(widgetKey);
+      return;
+    }
+    ProductCommon.singleton.currentProductInCart.add(moonCakeProduct!);
+    quantity.value = 1;
+    itemClick(widgetKey);
+  }
+
+  MoonCakeProduct? currentProductInCart(MoonCakeProduct product){
+    var data = ProductCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
+    if(data != null){
+      return data;
+    }
+    return null;
   }
 }

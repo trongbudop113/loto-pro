@@ -188,7 +188,7 @@ class MoonCakeDetailPage extends StatelessWidget{
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => controller.itemClick(childKey!),
+                  onTap: () => controller.onClickAddToCart(childKey!),
                   child: Container(
                     alignment: Alignment.center,
                     color: Colors.transparent,
