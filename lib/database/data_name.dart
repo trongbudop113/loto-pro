@@ -4,5 +4,13 @@ enum DataRowName{
   Papers,
   CategoryPaper,
   Contacts,
-  Menus
+  Menus,
+  Cakes,
+}
+
+enum DataCollection{
+  Products,
+  Orders,
+  Boxs,
+  MoonCakes,
 }

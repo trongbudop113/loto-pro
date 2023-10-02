@@ -1,8 +1,11 @@
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/moon_cake/models/moon_cake_product.dart';
 import 'package:loto/page/moon_cake/widgets/animation_wrapper.dart';
+import 'package:loto/shapes/quater_circle.dart';
 import 'package:loto/src/style_resource.dart';
 
 class MoonCakePage extends GetView<MoonCakeController>{
@@ -76,18 +79,36 @@ class MoonCakePage extends GetView<MoonCakeController>{
               ),
             ),
             Expanded(
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 0.9
-                  ),
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  itemCount: controller.list.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    return controller.list[index];
-                  }),
+              child: StreamBuilder<QuerySnapshot>(
+                stream: controller.streamGetListProduct(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    return GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 0.9
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          MoonCakeProduct product = MoonCakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                          return AppListItem(
+                              onClick: controller.listClick,
+                              index: index,
+                              controller: controller,
+                            product: product
+                          );
+                        }
+                    );
+                  }else{
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }
+              ),
             )
           ],
         ),
@@ -101,8 +122,9 @@ class AppListItem extends StatelessWidget {
   final int index;
   final void Function(GlobalKey) onClick;
   final MoonCakeController controller;
+  final MoonCakeProduct product;
 
-  AppListItem({super.key, required this.onClick, required this.index, required this.controller});
+  AppListItem({super.key, required this.onClick, required this.index, required this.controller, required this.product});
   @override
   Widget build(BuildContext context) {
     //  Container is mandatory. It can hold images or whatever you want
@@ -111,8 +133,8 @@ class AppListItem extends StatelessWidget {
       child: Container(
         key: widgetKey,
         alignment: Alignment.center,
-        color: Theme.of(context).backgroundColor,
-        padding: EdgeInsets.all(20),
+        color: controller.getBackgroundColor(product.productColor, context),
+        padding: const EdgeInsets.all(20),
         child: Image.network(
             "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"
         ),
@@ -121,9 +143,14 @@ class AppListItem extends StatelessWidget {
 
     return OpenContainerWrapper(
       transitionType: controller.transitionType,
+      controller: controller,
+      widgetKey: widgetKey,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
         return GestureDetector(
-          onTap: openContainer,
+          onTap: (){
+            controller.onClickDetail(product);
+            openContainer.call();
+          },
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
@@ -133,63 +160,95 @@ class AppListItem extends StatelessWidget {
                   color: Colors.grey.withOpacity(0.5),
                   //spreadRadius: 1,
                   blurRadius: 1,
-                  offset: Offset(1, 1), // changes position of shadow
+                  offset: const Offset(1, 1), // changes position of shadow
                 ),
               ],
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
               children: [
-                Expanded(
-                  child: mandatoryContainer,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: mandatoryContainer,
+                    ),
+                    SizedBox(
+                      height: 60,
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 5),
+                                Text(
+                                  product.productName.toString(),
+                                  style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 18),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  controller.formatCurrency(product.productPrice ?? 0),
+                                  style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => onClick(widgetKey),
+                            child: Container(
+                              width: 60,
+                              decoration: const BoxDecoration(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8))
+                              ),
+                              alignment: Alignment.center,
+                              child: Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(360),
+                                    color: Theme.of(context).backgroundColor
+                                ),
+                                alignment: Alignment.center,
+                                child: const Icon(Icons.add_shopping_cart_outlined, color: Colors.white, size: 18),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                SizedBox(
-                  height: 60,
-                  child: Row(
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: Stack(
                     children: [
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 5),
-                            Text(
-                              "Bánh thập cẩm",
-                              style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 18),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              "65.000đ",
-                              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                      Container(
+                        width: 70,
+                        height: 70,
+                        alignment: Alignment.topRight,
+                        child: const QuarterCircle(
+                          circleAlignment: CircleAlignment.topRight,
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        bottom: 15,
+                        left: 10,
+                        right: 0,
+                        child: Center(
+                            child: Text(
+                                "${product.productType}g",
+                              style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 20, fontWeight: FontWeight.bold),
                             )
-                          ],
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () => onClick(widgetKey),
-                        child: Container(
-                          width: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.transparent,
-                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(8))
-                          ),
-                          alignment: Alignment.center,
-                          child: Container(
-                            width: 35,
-                            height: 35,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Theme.of(context).backgroundColor
-                            ),
-                            alignment: Alignment.center,
-                            child: Icon(Icons.add_shopping_cart_outlined, color: Colors.white, size: 18),
-                          ),
-                        ),
-                      ),
+                      )
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
