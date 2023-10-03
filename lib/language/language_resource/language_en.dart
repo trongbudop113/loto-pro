@@ -21,5 +21,6 @@ const Map<String, String> en = {
   'product_management' : 'Products Management',
   'order_management' : 'Orders Management',
   'order_analytic' : 'Sales Statistics',
+  'contact_manager' : 'Contact Manager',
 };
 

@@ -64,6 +64,8 @@ class ProfileController extends GetxController {
       showDialogSelectLanguage(context, block.blockName!);
     }else if(block.type == ProfileType.Products){
       Get.toNamed(PageConfig.STATISTIC);
+    }else if(block.type == ProfileType.Contacts){
+      Get.toNamed(PageConfig.CONTACT_MANAGER);
     }
   }
 
@@ -126,6 +128,7 @@ class ProfileController extends GetxController {
       if(userLogin.isAdmin ?? false){
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
+          ProfileBlock(blockName: "contact_manager", page: "/contact_manager", icon: "", type: ProfileType.Contacts),
         ]);
       }
     }catch(e){

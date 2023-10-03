@@ -4,7 +4,7 @@ class MoonCakeProduct {
   int? productType;
   String? productImage;
   String? productColor;
-  double? productPrice;
+  int? productPrice;
   bool? isShow;
 
   int numberEggs = 1;

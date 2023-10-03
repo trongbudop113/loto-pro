@@ -53,7 +53,7 @@ class MoonCakeController extends GetxController {
     return products.snapshots();
   }
 
-  String formatCurrency(double d) {
+  String formatCurrency(int d) {
     return "${FormatUtils.oCcy.format(d)}đ";
   }
 

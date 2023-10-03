@@ -21,4 +21,5 @@ const Map<String, String> vi = {
   'product_management' : 'Quản Lý\nHàng Hóa',
   'order_management' : 'Quản Lý\nĐặt Hàng',
   'order_analytic' : 'Thông Kê\nDoanh Số',
+  'contact_manager' : 'Phản Hồi',
 };

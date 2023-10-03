@@ -11,7 +11,7 @@ class ContactPage extends GetView<ContactController>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Liên Hệ"),
+        title: Text("contact".tr),
       ),
       body: Obx(() => Visibility(
         visible: (controller.contactData.value.phone ?? '').isNotEmpty,

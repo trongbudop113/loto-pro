@@ -10,5 +10,6 @@ class ProfileBlock{
 enum ProfileType{
   ThemeMode,
   Language,
-  Products
+  Products,
+  Contacts,
 }

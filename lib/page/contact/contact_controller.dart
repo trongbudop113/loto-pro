@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:loto/models/user_login.dart';
 import 'package:loto/page/contact/models/contact_data.dart';
 import 'package:loto/page/contact/models/send_contact.dart';
 
@@ -28,7 +30,24 @@ class ContactController extends GetxController {
   @override
   void onInit() {
     getArgument();
+    getDataUser();
     super.onInit();
+  }
+
+  Future<void> getDataUser() async {
+    try {
+      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
+      if (getUSer.data() == null) return;
+      var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      if (userLogin.isAdmin ?? false) {
+        return;
+      }
+      nameController.text = userLogin.name ?? '';
+      emailController.text = userLogin.email ?? '';
+    } catch (e) {
+
+    }
   }
 
   void getArgument(){

@@ -17,4 +17,8 @@ const Map<String, String> ja = {
   'portfolior' : 'Portfolior',
   'moon_cake' : 'Portfolior',
   'products' : 'Hàng Hóa',
+  'product_management' : 'Products Management',
+  'order_management' : 'Orders Management',
+  'order_analytic' : 'Sales Statistics',
+  'contact_manager' : 'Contact Manager',
 };
