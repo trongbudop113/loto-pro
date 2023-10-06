@@ -23,7 +23,7 @@ class CartPage extends GetView<CartController> {
             child: Column(
               children: [
                 Container(
-                  child: Text("Hộp trung thu", style: TextStyleResource.textStyleBlack(context)),
+                  child: Text("Hộp trung thu Nam Sư", style: TextStyleResource.textStyleBlack(context)),
                   alignment: Alignment.centerLeft,
                 ),
                 SizedBox(height: 10),

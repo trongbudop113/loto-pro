@@ -1,8 +1,7 @@
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 
 class OrderMoonCake {
-  List<CakeProduct>? productMoonCakeList;
-  CakeProduct? boxCake;
+  List<ProductOrder> listProduct = [];
   String? userName;
   String? phoneNumber;
   double? totalPrice;
@@ -15,8 +14,7 @@ class OrderMoonCake {
   int? statusOrder;
 
   OrderMoonCake(
-      {this.productMoonCakeList,
-        this.boxCake,
+      {
         this.userName,
         this.phoneNumber,
         this.totalPrice,
@@ -28,8 +26,7 @@ class OrderMoonCake {
       });
 
   OrderMoonCake.fromJson(Map<String, dynamic> json) {
-    productMoonCakeList = json['products'];
-    boxCake = json['box_cake'];
+    listProduct = json['products'];
     userName = json['user_name'];
     totalPrice = json['total_price'];
     discountPrice = json['discount_price'];
@@ -42,8 +39,7 @@ class OrderMoonCake {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['products'] = productMoonCakeList;
-    data['box_cake'] = boxCake;
+    data['products'] = listProduct;
     data['user_name'] = userName;
     data['total_price'] = totalPrice;
     data['discount_price'] = discountPrice;
@@ -52,6 +48,30 @@ class OrderMoonCake {
     data['receive_date'] = receiveDate;
     data['status_order'] = statusOrder;
     data['phone_number'] = phoneNumber;
+    return data;
+  }
+}
+
+class ProductOrder{
+  List<CakeProduct>? productMoonCakeList;
+  CakeProduct? boxCake;
+  int quantity = 1;
+
+  ProductOrder(
+      {this.productMoonCakeList,
+        this.boxCake
+      });
+
+  ProductOrder.fromJson(Map<String, dynamic> json) {
+    productMoonCakeList = json['products'];
+    boxCake = json['box_cake'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['products'] = productMoonCakeList;
+    data['box_cake'] = boxCake;
+    data['quantity'] = quantity;
     return data;
   }
 }
