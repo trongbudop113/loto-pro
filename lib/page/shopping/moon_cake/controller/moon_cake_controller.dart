@@ -1,14 +1,13 @@
 import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
-import 'package:loto/page/moon_cake/models/egg_data.dart';
-import 'package:loto/page/moon_cake/models/moon_cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 
 class MoonCakeBinding extends Bindings{
   @override
@@ -26,7 +25,7 @@ class MoonCakeController extends GetxController {
   late Function(GlobalKey) runAddToCartAnimation;
   var cartQuantityItems = 0;
 
-  MoonCakeProduct? moonCakeProduct;
+  CakeProduct? moonCakeProduct;
   final RxInt quantity = 1.obs;
 
   void listClick(GlobalKey widgetKey) async {
@@ -59,7 +58,7 @@ class MoonCakeController extends GetxController {
 
   List<EggData> listEgg = [];
 
-  void onClickDetail(MoonCakeProduct moonCakeProduct){
+  void onClickDetail(CakeProduct moonCakeProduct){
     this.moonCakeProduct = moonCakeProduct;
     listEgg = EggData.listTwo();
     if(moonCakeProduct.productType == 200){
@@ -105,7 +104,7 @@ class MoonCakeController extends GetxController {
     itemClick(widgetKey);
   }
 
-  MoonCakeProduct? currentProductInCart(MoonCakeProduct product){
+  CakeProduct? currentProductInCart(CakeProduct product){
     var data = ProductCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
     if(data != null){
       return data;

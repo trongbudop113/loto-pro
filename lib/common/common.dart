@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:loto/page/moon_cake/models/moon_cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 
 class ProductCommon {
   static final ProductCommon singleton = ProductCommon._internal();
@@ -10,7 +10,7 @@ class ProductCommon {
 
   ProductCommon._internal();
 
-  final RxList<MoonCakeProduct> currentProductInCart = <MoonCakeProduct>[].obs;
+  final RxList<CakeProduct> currentProductInCart = <CakeProduct>[].obs;
 
   RxInt get countCart{
     if(currentProductInCart.isEmpty) return 0.obs;

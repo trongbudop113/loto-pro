@@ -1,4 +1,4 @@
-class MoonCakeProduct {
+class CakeProduct {
   String? productID;
   String? productName;
   int? productType;
@@ -10,7 +10,7 @@ class MoonCakeProduct {
   int numberEggs = 1;
   int quantity = 1;
 
-  MoonCakeProduct(
+  CakeProduct(
       {this.productID,
         this.productColor,
         this.productImage,
@@ -20,7 +20,7 @@ class MoonCakeProduct {
         this.isShow
       });
 
-  MoonCakeProduct.fromJson(Map<String, dynamic> json) {
+  CakeProduct.fromJson(Map<String, dynamic> json) {
     productPrice = json['product_price'];
     productType = json['product_type'];
     productName = json['product_name'];

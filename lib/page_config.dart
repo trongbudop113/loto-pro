@@ -17,8 +17,6 @@ import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
 import 'package:loto/page/menu/menu_controller.dart';
 import 'package:loto/page/menu/menu_page.dart';
-import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
-import 'package:loto/page/moon_cake/page/moon_cake_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
@@ -28,14 +26,17 @@ import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/page/select/select_page.dart';
+import 'package:loto/page/shopping/cart/cart_controller.dart';
+import 'package:loto/page/shopping/cart/cart_page.dart';
 import 'package:loto/page/statistic/statistic_controller.dart';
 import 'package:loto/page/statistic/statistic_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
-
 import 'page/chat/chat_detail_controller.dart';
 import 'page/chat/chat_detail_page.dart';
 import 'page/contact_manager/contact_manager_page.dart';
 import 'page/portfolior/portfolior_page.dart';
+import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'page/stories/stories_page.dart';
 
 class PageConfig {
@@ -58,6 +59,7 @@ class PageConfig {
   static String STATISTIC = '/statistic';
   static String PORTFOLIOR = '/portfolior';
   static String CONTACT_MANAGER = '/contact_manager';
+  static String CART = '/cart_moon_cake';
 
   static List<GetPage> listPage(){
     return [
@@ -150,6 +152,11 @@ class PageConfig {
         name: CONTACT_MANAGER,
         page: () => ContactManagerPage(),
         binding: ContactManagerBinding(),
+      ),
+      GetPage(
+        name: CART,
+        page: () => CartPage(),
+        binding: CartBinding(),
       ),
     ];
   }

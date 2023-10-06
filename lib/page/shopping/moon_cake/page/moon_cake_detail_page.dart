@@ -1,7 +1,7 @@
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'package:loto/src/style_resource.dart';
 
 class MoonCakeDetailPage extends StatelessWidget{

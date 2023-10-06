@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
-import 'package:loto/page/moon_cake/page/moon_cake_detail_page.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/shopping/moon_cake/page/moon_cake_detail_page.dart';
 
 class OpenContainerWrapper extends StatelessWidget {
   const OpenContainerWrapper({super.key,

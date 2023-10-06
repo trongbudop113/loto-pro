@@ -2,9 +2,10 @@ import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/moon_cake/controller/moon_cake_controller.dart';
-import 'package:loto/page/moon_cake/models/moon_cake_product.dart';
-import 'package:loto/page/moon_cake/widgets/animation_wrapper.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/widgets/animation_wrapper.dart';
+import 'package:loto/page_config.dart';
 import 'package:loto/shapes/quater_circle.dart';
 import 'package:loto/src/style_resource.dart';
 
@@ -42,12 +43,17 @@ class MoonCakePage extends GetView<MoonCakeController>{
               },
             ),
             const SizedBox(width: 16),
-            AddToCartIcon(
-              key: controller.cartKey,
-              icon: const Icon(Icons.shopping_cart),
-              badgeOptions: const BadgeOptions(
-                active: true,
-                backgroundColor: Colors.red,
+            GestureDetector(
+              onTap: (){
+                Get.toNamed(PageConfig.CART);
+              },
+              child: AddToCartIcon(
+                key: controller.cartKey,
+                icon: const Icon(Icons.shopping_cart),
+                badgeOptions: const BadgeOptions(
+                  active: true,
+                  backgroundColor: Colors.red,
+                ),
               ),
             ),
             const SizedBox(
@@ -93,7 +99,7 @@ class MoonCakePage extends GetView<MoonCakeController>{
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext ctx, index) {
-                          MoonCakeProduct product = MoonCakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                          CakeProduct product = CakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
                           return AppListItem(
                               onClick: controller.listClick,
                               index: index,
@@ -122,7 +128,7 @@ class AppListItem extends StatelessWidget {
   final int index;
   final void Function(GlobalKey) onClick;
   final MoonCakeController controller;
-  final MoonCakeProduct product;
+  final CakeProduct product;
 
   AppListItem({super.key, required this.onClick, required this.index, required this.controller, required this.product});
   @override

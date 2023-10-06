@@ -1,7 +1,8 @@
-import 'package:loto/page/moon_cake/models/moon_cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 
 class OrderMoonCake {
-  List<MoonCakeProduct>? productList;
+  List<CakeProduct>? productMoonCakeList;
+  CakeProduct? boxCake;
   String? userName;
   String? phoneNumber;
   double? totalPrice;
@@ -9,11 +10,13 @@ class OrderMoonCake {
   String? discountCode;
   int? orderDate;
   int? receiveDate;
+  int? typeOrder;
 
   int? statusOrder;
 
   OrderMoonCake(
-      {this.productList,
+      {this.productMoonCakeList,
+        this.boxCake,
         this.userName,
         this.phoneNumber,
         this.totalPrice,
@@ -25,7 +28,8 @@ class OrderMoonCake {
       });
 
   OrderMoonCake.fromJson(Map<String, dynamic> json) {
-    productList = json['product_price'];
+    productMoonCakeList = json['products'];
+    boxCake = json['box_cake'];
     userName = json['user_name'];
     totalPrice = json['total_price'];
     discountPrice = json['discount_price'];
@@ -38,15 +42,16 @@ class OrderMoonCake {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_id'] = productList;
-    data['product_type'] = userName;
-    data['product_name'] = totalPrice;
-    data['product_image'] = discountPrice;
-    data['product_id'] = discountCode;
-    data['product_color'] = orderDate;
-    data['is_show'] = receiveDate;
-    data['number_eggs'] = statusOrder;
-    data['number_eggs'] = phoneNumber;
+    data['products'] = productMoonCakeList;
+    data['box_cake'] = boxCake;
+    data['user_name'] = userName;
+    data['total_price'] = totalPrice;
+    data['discount_price'] = discountPrice;
+    data['discount_code'] = discountCode;
+    data['order_date'] = orderDate;
+    data['receive_date'] = receiveDate;
+    data['status_order'] = statusOrder;
+    data['phone_number'] = phoneNumber;
     return data;
   }
 }
