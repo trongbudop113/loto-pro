@@ -34,15 +34,6 @@ class MoonCakePage extends GetView<MoonCakeController>{
           title: Text("moon_cake".tr),
           centerTitle: false,
           actions: [
-            //  Adding 'clear-cart-button'
-            IconButton(
-              icon: const Icon(Icons.cleaning_services),
-              onPressed: () {
-                controller.cartQuantityItems = 0;
-                controller.cartKey.currentState!.runClearCartAnimation();
-              },
-            ),
-            const SizedBox(width: 16),
             GestureDetector(
               onTap: (){
                 Get.toNamed(PageConfig.CART);
@@ -61,59 +52,84 @@ class MoonCakePage extends GetView<MoonCakeController>{
             )
           ],
         ),
-        body: Column(
+        body: Stack(
           children: [
-            Container(
-              height: 50,
-              color: Colors.red,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text("Lọc theo:"),
-                    ),
-                  ),
-                  Container(height: 50, width: 1, color: Colors.grey),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.center,
-                      child: Text("Loại"),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: controller.streamGetListProduct(),
-                builder: (context, snapshot) {
-                  if(snapshot.hasData){
-                    return GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                            childAspectRatio: 0.9
+            Column(
+              children: [
+                Container(
+                  height: 50,
+                  color: Colors.red,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text("Lọc theo:"),
                         ),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          CakeProduct product = CakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
-                          return AppListItem(
-                              onClick: controller.listClick,
-                              index: index,
-                              controller: controller,
-                            product: product
+                      ),
+                      Container(height: 50, width: 1, color: Colors.grey),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text("Loại"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: controller.streamGetListProduct(),
+                      builder: (context, snapshot) {
+                        if(snapshot.hasData){
+                          return GridView.builder(
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 0.9
+                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10).copyWith(
+                                bottom: MediaQuery.of(context).padding.bottom + 80
+                              ),
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (BuildContext ctx, index) {
+                                CakeProduct product = CakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                                return AppListItem(
+                                    onClick: controller.listClick,
+                                    index: index,
+                                    controller: controller,
+                                    product: product
+                                );
+                              }
+                          );
+                        }else{
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
                         }
-                    );
-                  }else{
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }
+                      }
+                  ),
+                )
+              ],
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).padding.bottom + 10,
+              left: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: (){
+
+                },
+                child: Container(
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: Colors.amber
+                  ),
+                  alignment: Alignment.center,
+                  child: Text("Mua Theo Hộp"),
+                ),
               ),
             )
           ],
@@ -191,12 +207,12 @@ class AppListItem extends StatelessWidget {
                                 const SizedBox(height: 5),
                                 Text(
                                   product.productName.toString(),
-                                  style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 18),
+                                  style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 15),
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
                                   controller.formatCurrency(product.productPrice ?? 0),
-                                  style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18, fontWeight: FontWeight.bold),
+                                  style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 16, fontWeight: FontWeight.bold),
                                 )
                               ],
                             ),

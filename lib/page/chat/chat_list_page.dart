@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/models/user_login.dart';
 import 'package:loto/page/chat/chat_list_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class ChatListPage extends GetView<ChatListController>{
 
@@ -51,7 +54,10 @@ class ChatListPage extends GetView<ChatListController>{
                           height: 40,
                           color: Colors.white,
                           alignment: Alignment.center,
-                          child: Text("T"),
+                          child: Text(
+                            controller.nameUser.substring(0, 1),
+                            style: TextStyleResource.textStyleBlack(context)
+                          ),
                         ),
                       ),
                     ],
@@ -72,7 +78,9 @@ class ChatListPage extends GetView<ChatListController>{
                           height: 60,
                           color: Colors.white,
                           alignment: Alignment.center,
-                          child: Text("T"),
+                          child: Text(
+                              "T", style: TextStyleResource.textStyleBlack(context),
+                          ),
                         ),
                       );
                     },
@@ -89,50 +97,64 @@ class ChatListPage extends GetView<ChatListController>{
                     ),
                     child: Container(
                       color: Colors.white,
-                      child: ListView.separated(
-                        padding: EdgeInsets.zero.copyWith(bottom: 70),
-                        itemBuilder: (c, i){
-                          return GestureDetector(
-                            onTap: (){
-                              controller.goToChatDetail();
-                            },
-                            child: Container(
-                              color: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(360),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: controller.streamGetListUser(),
+                        builder: (context, snapshot){
+                          if(snapshot.hasData){
+                            return ListView.separated(
+                                padding: EdgeInsets.zero.copyWith(bottom: 70),
+                                itemBuilder: (c, i){
+                                  UserLogin user = UserLogin.fromJson(snapshot.data!.docs[i].data() as Map<String, dynamic>);
+                                  return GestureDetector(
+                                    onTap: (){
+                                      controller.goToChatDetail(user);
+                                    },
                                     child: Container(
-                                      width: 50,
-                                      height: 50,
-                                      color: Colors.grey,
-                                      alignment: Alignment.center,
-                                      child: Text("T"),
+                                      color: Colors.transparent,
+                                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                      child: Row(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(360),
+                                            child: Container(
+                                              width: 50,
+                                              height: 50,
+                                              color: Colors.grey,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                  (user.name ?? "U").substring(0, 1).toUpperCase(), style: TextStyleResource.textStyleBlack(context)
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 15),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("Title", style: TextStyleResource.textStyleBlack(context).copyWith(fontWeight: FontWeight.bold)),
+                                              SizedBox(height: 5),
+                                              Text("Content", style: TextStyleResource.textStyleBlack(context))
+                                            ],
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 15),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Title", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                                      SizedBox(height: 5),
-                                      Text("Content", style: TextStyle(fontSize: 16))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          );
+                                  );
+                                },
+                                separatorBuilder: (c, i){
+                                  return Container(
+                                    margin: EdgeInsets.only(left: 60),
+                                    height: 1,
+                                    color: Colors.grey,
+                                  );
+                                },
+                                itemCount: snapshot.data!.docs.length
+                            );
+                          }else{
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
                         },
-                        separatorBuilder: (c, i){
-                          return Container(
-                            margin: EdgeInsets.only(left: 60),
-                            height: 1,
-                            color: Colors.grey,
-                          );
-                        },
-                        itemCount: 20
                       ),
                     )
                   ),
