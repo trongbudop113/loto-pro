@@ -125,7 +125,7 @@ class SelectPage extends GetView<SelectController>{
                                     child: Icon(Icons.done, color: Colors.white),
                                   ),
                                   SizedBox(height: 15),
-                                  Text((data.selectedName ?? '') + "\nđã chọn", style: TextStyle(color: Colors.white, fontSize: 18), textAlign: TextAlign.center)
+                                  Text("${data.selectedName ?? ''}\nđã chọn", style: TextStyle(color: Colors.white, fontSize: 18), textAlign: TextAlign.center)
                                 ],
                               ),
                             ),

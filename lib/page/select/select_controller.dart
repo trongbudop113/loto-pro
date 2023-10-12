@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
+import 'package:loto/page/room/model/room_model.dart';
 import 'package:loto/page/select/models/select_paper.dart';
 import 'package:loto/page_config.dart';
 
@@ -143,6 +144,36 @@ class SelectController extends GetxController {
     }
     userLogin?.listPaper = [];
     await userCollection.doc(userEmail).update(userLogin!.toJson());
+  }
+
+  @override
+  void onClose() {
+    removeCurrentRoom();
+    super.onClose();
+  }
+
+  Future<void> removeCurrentRoom() async {
+    CollectionReference userCollection = firestore.collection(DataRowName.Users.name);
+    CollectionReference roomCollection = firestore.collection(DataRowName.Rooms.name);
+    String userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+    String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    var room = roomCollection.doc(roomID);
+
+    var roomData = await room.get();
+    RoomModel roomModel = RoomModel.fromJson(roomData.data() as Map<String, dynamic>);
+    if((roomModel.listUser ?? []).contains(userID)){
+      roomModel.listUser!.remove(userID);
+    }
+
+    await userCollection.doc(userEmail).update({
+      "joinRoomID" : ""
+    });
+
+    await room.update({
+      "listUser" : roomModel.listUser
+    });
+    checkAndRemovePaper();
   }
 
 }
