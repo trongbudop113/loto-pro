@@ -6,6 +6,7 @@ enum DataRowName{
   Contacts,
   Menus,
   Cakes,
+  Chats,
 }
 
 enum DataCollection{

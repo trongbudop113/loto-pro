@@ -126,13 +126,13 @@ class ChatListPage extends GetView<ChatListController>{
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 15),
+                                          const SizedBox(width: 15),
                                           Column(
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
-                                              Text("Title", style: TextStyleResource.textStyleBlack(context).copyWith(fontWeight: FontWeight.bold)),
-                                              SizedBox(height: 5),
-                                              Text("Content", style: TextStyleResource.textStyleBlack(context))
+                                              Text(user.name.toString(), style: TextStyleResource.textStyleBlack(context).copyWith(fontWeight: FontWeight.bold)),
+                                              const SizedBox(height: 5),
+                                              _getContentChatUser(user, context)
                                             ],
                                           )
                                         ],
@@ -176,6 +176,30 @@ class ChatListPage extends GetView<ChatListController>{
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getContentChatUser(UserLogin user, BuildContext context){
+    return StreamBuilder<QuerySnapshot>(
+      stream: controller.streamGetContentListUser(user.uuid ?? ''),
+      builder: (c, snapshot){
+        if(snapshot.hasData){
+          String content = "";
+          String whoChat = "";
+          if(snapshot.data!.docs.isNotEmpty){
+            var chatUser = controller.parseChatData(snapshot.data!.docs[0].data() as Map<String, dynamic>);
+            content = chatUser.content ?? '';
+            if(chatUser.fromId == controller.currentUserID){
+              whoChat = "Bạn: ";
+            }else{
+              whoChat = "${user.name ?? ''}: ";
+            }
+          }
+          return Text("$whoChat ${content.toString()}", style: TextStyleResource.textStyleBlack(context));
+        }else{
+          return Text("...", style: TextStyleResource.textStyleBlack(context));
+        }
+      },
     );
   }
 }
