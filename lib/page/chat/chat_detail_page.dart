@@ -16,7 +16,9 @@ class ChatDetailPage extends GetView<ChatDetailController>{
       appBar: AppBar(),
       body: Column(
         children: [
-          _buildListMessage(),
+          Expanded(
+            child: _buildListMessage(),
+          ),
           Column(
             children: [
               Obx(() => AnimatedOpacity(
@@ -95,16 +97,14 @@ class ChatDetailPage extends GetView<ChatDetailController>{
             );
           } else {
             controller.listMessage.addAll(snapshot.data!.docs);
-            return Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(10.0),
-                itemBuilder: (context, index) {
-                  return _buildItem(index, snapshot.data!.docs[index], context);
-                },
-                itemCount: snapshot.data!.docs.length,
-                reverse: true,
-                controller: controller.listScrollController,
-              ),
+            return ListView.builder(
+              padding: const EdgeInsets.all(10.0),
+              itemBuilder: (context, index) {
+                return _buildItem(index, snapshot.data!.docs[index], context);
+              },
+              itemCount: snapshot.data!.docs.length,
+              reverse: true,
+              controller: controller.listScrollController,
             );
           }
         },

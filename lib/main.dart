@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget  {
       ],
       child: Consumer<ThemeProvider>(
           builder: (ctx, themeObject, _) => GetMaterialApp(
-            title: 'Flutter Demo',
+            title: 'SS App',
             themeMode: themeObject.mode,
             debugShowCheckedModeBanner: false,
             theme: ThemeResource.lightTheme(),
