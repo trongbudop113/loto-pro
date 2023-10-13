@@ -23,6 +23,7 @@ class ChatDetailController extends GetxController {
   final RxString groupChatID = "".obs;
   String peerID = "";
   String peerAvatar = "";
+  String peerName = "";
 
   final RxBool isShowSticker = false.obs;
   final RxInt limit = 20.obs;
@@ -77,6 +78,7 @@ class ChatDetailController extends GetxController {
     var argument = Get.arguments as Map<String, dynamic>;
     peerID = argument['peerID'];
     peerAvatar = argument['peerAvatar'];
+    peerName = argument['peerName'];
 
     List<String> listUUID = [FirebaseAuth.instance.currentUser!.uid ?? '', peerID];
     listUUID.sort((a, b) => a.compareTo(b));

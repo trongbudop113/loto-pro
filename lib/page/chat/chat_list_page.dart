@@ -49,16 +49,16 @@ class ChatListPage extends GetView<ChatListController>{
                       const SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(360),
-                        child: Container(
+                        child: Obx(() => Container(
                           width: 40,
                           height: 40,
                           color: Colors.white,
                           alignment: Alignment.center,
                           child: Text(
-                            controller.nameUser.substring(0, 1),
-                            style: TextStyleResource.textStyleBlack(context)
+                              controller.nameUser.value.substring(0, 1),
+                              style: TextStyleResource.textStyleBlack(context)
                           ),
-                        ),
+                        )),
                       ),
                     ],
                   ),

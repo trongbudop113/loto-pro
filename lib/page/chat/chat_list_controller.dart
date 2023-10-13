@@ -18,11 +18,11 @@ class ChatListController extends GetxController {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  String get nameUser {
-    if(FirebaseAuth.instance.currentUser!= null && (FirebaseAuth.instance.currentUser!.displayName ?? '').isNotEmpty){
-      return FirebaseAuth.instance.currentUser!.displayName!;
+  RxString get nameUser {
+    if(FirebaseAuth.instance.currentUser != null && (FirebaseAuth.instance.currentUser!.displayName ?? '').isNotEmpty){
+      return FirebaseAuth.instance.currentUser!.displayName!.obs;
     }
-    return "U";
+    return "U".obs;
   }
 
   String get currentUserID => FirebaseAuth.instance.currentUser!.uid;
@@ -35,7 +35,8 @@ class ChatListController extends GetxController {
   void goToChatDetail(UserLogin user){
     Get.toNamed(PageConfig.CHAT_DETAIL, arguments: {
       "peerID" : user.uuid ?? '',
-      "peerAvatar" : user.avatar ?? ''
+      "peerAvatar" : user.avatar ?? '',
+      "peerName" : user.name ?? ''
     });
   }
 

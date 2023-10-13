@@ -13,7 +13,24 @@ class ChatDetailPage extends GetView<ChatDetailController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Container(
+              width: 30,
+              height: 30,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(360),
+                child: Container(
+                  color: Colors.amber,
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(controller.peerName)
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Expanded(
