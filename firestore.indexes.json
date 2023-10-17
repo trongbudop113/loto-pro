@@ -1,0 +1,19 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "CategoryPaper",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isAdd",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "paperID",
+          "order": "ASCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

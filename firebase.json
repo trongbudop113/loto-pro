@@ -5,7 +5,6 @@
   },
   "hosting": {
     "public": "build/web",
-    "site" : "daily-nikki",
     "ignore": [
       "firebase.json",
       "**/.*",
