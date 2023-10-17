@@ -88,8 +88,36 @@ class BlockRight extends GetView<LandingController> with BlockItemBase {
               children: list,
             );
           }else{
-            return const Center(
-              child: CircularProgressIndicator(),
+            layoutDesign = layout;
+            if(layout == LayoutEnum.mobile){
+              return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 1,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 5),
+                  itemCount: 4,
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return BorderWidget(
+                      color: Theme.of(context).cardColor,
+                      margin: EdgeInsets.zero,
+                    );
+                  });
+            }
+            return Column(
+                children: List.generate(4, (index) {
+                  return AspectRatio(
+                    aspectRatio: 2,
+                    child: BorderWidget(
+                      color: Theme.of(context).cardColor,
+                      child: Container(
+                        alignment: Alignment.center,
+                      ),
+                    ),
+                  );
+                }).toList()
             );
           }
         }
