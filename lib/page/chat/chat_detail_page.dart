@@ -23,6 +23,7 @@ class ChatDetailPage extends GetView<ChatDetailController>{
                 borderRadius: BorderRadius.circular(360),
                 child: Container(
                   color: Colors.amber,
+                  alignment: Alignment.center,
                   child: Visibility(
                     visible: controller.peerAvatar != "",
                     child: Image.network(controller.peerAvatar),

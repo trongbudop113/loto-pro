@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/common.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/room/model/room_model.dart';
@@ -20,17 +21,26 @@ class RoomController extends GetxController {
 
   @override
   void onInit() {
-    checkExistedInRoom();
+    checkLogin();
     super.onInit();
   }
 
+  Future<void> checkLogin() async {
+    if(AppCommon.singleton.isLogin){
+      checkExistedInRoom();
+    }else{
+      await Get.toNamed(PageConfig.LOGIN);
+      checkExistedInRoom();
+    }
+  }
+
   Future<void> checkExistedInRoom() async {
-    CollectionReference userCollection = firestore.collection(DataRowName.Users.name);
     String userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
     if(userEmail.isEmpty){
-      Get.back();
+      Get.offAllNamed(PageConfig.LANDING);
       return;
     }
+    CollectionReference userCollection = firestore.collection(DataRowName.Users.name);
     var userData = await userCollection.doc(userEmail).get();
     UserLogin userLogin = UserLogin.fromJson(userData.data() as Map<String, dynamic>);
     if((userLogin.joinRoomID ?? '').isNotEmpty){

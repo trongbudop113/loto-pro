@@ -99,13 +99,13 @@ class MoonCakeController extends GetxController {
       itemClick(widgetKey);
       return;
     }
-    ProductCommon.singleton.currentProductInCart.add(moonCakeProduct!);
+    AppCommon.singleton.currentProductInCart.add(moonCakeProduct!);
     quantity.value = 1;
     itemClick(widgetKey);
   }
 
   CakeProduct? currentProductInCart(CakeProduct product){
-    var data = ProductCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
+    var data = AppCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
     if(data != null){
       return data;
     }

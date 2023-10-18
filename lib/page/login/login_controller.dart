@@ -24,7 +24,7 @@ class LoginController extends GetxController {
   Future<void> onClickLogin() async {
     var user = await signInWithGoogle();
     await saveUserInfo(user);
-    Get.offNamed(PageConfig.MENU);
+    Get.back(result: true);
   }
 
   Future<void> onClickLoginEmail() async {
@@ -33,7 +33,7 @@ class LoginController extends GetxController {
     }
     var user = await signInWithEmail();
     await saveUserInfo(user);
-    Get.offNamed(PageConfig.MENU);
+    Get.back(result: true);
   }
 
   Future<UserCredential> signInWithGoogle() async {

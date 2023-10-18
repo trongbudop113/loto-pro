@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/resources/image_resource.dart';
@@ -32,9 +31,10 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Image.asset(ImageResource.ic_app_loto, width: Get.width * 0.5),
+    return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
+      body: Center(
+        child: Image.asset(ImageResource.ic_app_logo, width: Get.width * 0.5),
       ),
     );
   }

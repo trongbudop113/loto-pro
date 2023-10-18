@@ -28,6 +28,8 @@ class ProfileController extends GetxController {
   final box = GetStorage();
   bool get isDark => box.read('darkmode') ?? false;
 
+  final Rx<UserLogin> userLogin = UserLogin().obs;
+
   RxList<ProfileBlock> listBlock = [
     ProfileBlock(blockName: "theme_mode", page: "", icon: "", type: ProfileType.ThemeMode),
     ProfileBlock(blockName: "language", page: "", icon: "", type: ProfileType.Language)
@@ -124,8 +126,8 @@ class ProfileController extends GetxController {
       CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
       final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
       if(getUSer.data() == null) return;
-      var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
-      if(userLogin.isAdmin ?? false){
+      userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      if(userLogin.value.isAdmin ?? false){
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
           ProfileBlock(blockName: "contact_manager", page: "/contact_manager", icon: "", type: ProfileType.Contacts),
@@ -134,5 +136,10 @@ class ProfileController extends GetxController {
     }catch(e){
 
     }
+  }
+
+  Future<void> logOutApp() async {
+    await FirebaseAuth.instance.signOut();
+    Get.back();
   }
 }
