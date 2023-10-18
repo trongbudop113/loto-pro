@@ -2,13 +2,10 @@ import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
 import 'package:loto/src/style_resource.dart';
 
-class MoonCakeDetailPage extends StatelessWidget{
-  final MoonCakeController controller;
-  const MoonCakeDetailPage({Key? key, required this.controller, required this.childKey}) : super(key: key);
-
-  final GlobalKey? childKey;
+class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +50,7 @@ class MoonCakeDetailPage extends StatelessWidget{
               AspectRatio(
                 aspectRatio: 1,
                 child: Container(
-                  key: childKey,
+                  key: controller.cartKey,
                   color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(50),
@@ -188,7 +185,7 @@ class MoonCakeDetailPage extends StatelessWidget{
               ),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => controller.onClickAddToCart(childKey!),
+                  onTap: () => controller.onClickAddToCart,
                   child: Container(
                     alignment: Alignment.center,
                     color: Colors.transparent,

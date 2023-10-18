@@ -192,7 +192,7 @@ class ChatListPage extends GetView<ChatListController>{
             if(chatUser.fromId == controller.currentUserID){
               whoChat = "Bạn: ";
             }else{
-              whoChat = "${user.name ?? ''}: ";
+              whoChat = "";
             }
           }
           return Text("$whoChat ${content.toString()}", style: TextStyleResource.textStyleBlack(context));
