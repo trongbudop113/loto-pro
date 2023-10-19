@@ -33,7 +33,7 @@ class LoginController extends GetxController {
     }
     var user = await signInWithEmail();
     await saveUserInfo(user);
-    Get.offNamed(PageConfig.MENU);
+    Get.back();
   }
 
   Future<UserCredential> signInWithGoogle() async {

@@ -32,7 +32,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                     BlockMenu menu = BlockMenu.fromJson(snapshot.data?.docs[index].data() as Map<String, dynamic>);
                     return BorderWidget(
                       onTap: (){
-                        controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
+                        controller.onClickItemBlock(menu, argument: menu.blockID!);
                       },
                       color: Theme.of(context).cardColor,
                       margin: EdgeInsets.zero,
@@ -55,7 +55,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                       aspectRatio: 4,
                       child: BorderWidget(
                         onTap: (){
-                          controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
+                          controller.onClickItemBlock(menu, argument: menu.blockID!);
                         },
                         color: Theme.of(context).cardColor,
                         child: Container(
@@ -71,7 +71,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                       aspectRatio: 2,
                       child: BorderWidget(
                         onTap: (){
-                          controller.onClickItemBlock(menu.page ?? '', argument: menu.blockID!);
+                          controller.onClickItemBlock(menu, argument: menu.blockID!);
                         },
                         color: Theme.of(context).cardColor,
                         child: Container(
