@@ -13,10 +13,35 @@ class ChatDetailPage extends GetView<ChatDetailController>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Container(
+              width: 30,
+              height: 30,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(360),
+                child: Container(
+                  color: Colors.amber,
+                  alignment: Alignment.center,
+                  child: Visibility(
+                    visible: controller.peerAvatar != "",
+                    child: Image.network(controller.peerAvatar),
+                    replacement: Text(controller.peerName.substring(0, 1)),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(width: 10),
+            Text(controller.peerName)
+          ],
+        ),
+      ),
       body: Column(
         children: [
-          _buildListMessage(),
+          Expanded(
+            child: _buildListMessage(),
+          ),
           Column(
             children: [
               Obx(() => AnimatedOpacity(
@@ -28,10 +53,15 @@ class ChatDetailPage extends GetView<ChatDetailController>{
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (c, i){
-                      return Container(
-                        width: Get.width / 4,
-                        height: 30,
-                        child: Icon(Icons.add),
+                      return GestureDetector(
+                        onTap: (){
+                          controller.getImage();
+                        },
+                        child: Container(
+                          width: Get.width / 4,
+                          height: 30,
+                          child: Icon(Icons.photo_outlined),
+                        ),
                       );
                     },
                     separatorBuilder: (c, i){
@@ -95,16 +125,14 @@ class ChatDetailPage extends GetView<ChatDetailController>{
             );
           } else {
             controller.listMessage.addAll(snapshot.data!.docs);
-            return Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(10.0),
-                itemBuilder: (context, index) {
-                  return _buildItem(index, snapshot.data!.docs[index], context);
-                },
-                itemCount: snapshot.data!.docs.length,
-                reverse: true,
-                controller: controller.listScrollController,
-              ),
+            return ListView.builder(
+              padding: const EdgeInsets.all(10.0),
+              itemBuilder: (context, index) {
+                return _buildItem(index, snapshot.data!.docs[index], context);
+              },
+              itemCount: snapshot.data!.docs.length,
+              reverse: true,
+              controller: controller.listScrollController,
             );
           }
         },
@@ -140,9 +168,9 @@ class ChatDetailPage extends GetView<ChatDetailController>{
                   margin: EdgeInsets.only(left: 10.0),
                   child: GestureDetector(
                     child: Container(
-                      width: 200,
-                      height: 200,
-                      child: Image.network(chatData.content ?? ''),
+                      width: 100,
+                      height: 100,
+                      child: Image.network(chatData.content ?? '', fit: BoxFit.cover),
                     ),
                     onTap: () {
                       // Navigator.push(
@@ -191,9 +219,9 @@ class ChatDetailPage extends GetView<ChatDetailController>{
           Container(
             margin: EdgeInsets.only(bottom: controller.isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),
             child: Container(
-              width: 200,
-              height: 200,
-              child: Image.network(chatData.content ?? ''),
+              width: 100,
+              height: 100,
+              child: Image.network(chatData.content ?? '', fit: BoxFit.cover),
             ),
           ) : Container(
             margin: EdgeInsets.only(bottom: controller.isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),

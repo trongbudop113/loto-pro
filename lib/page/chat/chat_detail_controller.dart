@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/chat/models/chat_content_data.dart';
 import 'package:loto/page/select/models/select_paper.dart';
@@ -23,6 +27,7 @@ class ChatDetailController extends GetxController {
   final RxString groupChatID = "".obs;
   String peerID = "";
   String peerAvatar = "";
+  String peerName = "";
 
   final RxBool isShowSticker = false.obs;
   final RxInt limit = 20.obs;
@@ -31,6 +36,8 @@ class ChatDetailController extends GetxController {
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
   final FocusNode focusNode = FocusNode();
+
+  late String imageUrl;
 
   String get currentUserID => FirebaseAuth.instance.currentUser!.uid;
 
@@ -77,6 +84,7 @@ class ChatDetailController extends GetxController {
     var argument = Get.arguments as Map<String, dynamic>;
     peerID = argument['peerID'];
     peerAvatar = argument['peerAvatar'];
+    peerName = argument['peerName'];
 
     List<String> listUUID = [FirebaseAuth.instance.currentUser!.uid ?? '', peerID];
     listUUID.sort((a, b) => a.compareTo(b));
@@ -90,23 +98,29 @@ class ChatDetailController extends GetxController {
     isShowChatMenu.value = !isShowChatMenu.value;
   }
 
-  // Future uploadFile() async {
-  //   String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  //   StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
-  //   StorageUploadTask uploadTask = reference.putFile(imageFile);
-  //   StorageTaskSnapshot storageTaskSnapshot = await uploadTask.onComplete;
-  //   storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
-  //     imageUrl = downloadUrl;
-  //     setState(() {
-  //       isLoading = false;
-  //       onSendMessage(imageUrl, 1);
-  //     });
-  //   }, onError: (err) {
-  //     setState(() {
-  //       isLoading = false;
-  //     });
-  //   });
-  // }
+  Future getImage() async {
+    ImagePicker imagePicker = ImagePicker();
+
+    XFile? pickedFile = await imagePicker.pickImage(source: ImageSource.gallery, maxHeight: 500, maxWidth: 500);
+    var imageFile = File(pickedFile!.path);
+    imageFile.printError(info: "aaaaa");
+    uploadFile(imageFile);
+  }
+
+  Future uploadFile(File imageFile) async {
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference reference = FirebaseStorage.instance.ref().child("chats/" + fileName);
+    UploadTask uploadTask = reference.putFile(imageFile, SettableMetadata(
+      contentType: "image/jpeg",
+    ));
+    TaskSnapshot storageTaskSnapshot = await uploadTask.snapshot;
+    storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+      imageUrl = downloadUrl;
+      onSendMessage(imageUrl, 1);
+    }, onError: (err) {
+      err.toString().printError(info: "bbbbb-----");
+    });
+  }
 
   void onSendMessage(String content, int type) {
     // type: 0 = text, 1 = image, 2 = sticker
@@ -143,9 +157,9 @@ class ChatDetailController extends GetxController {
   }
 
   bool isLastMessageLeft(int index) {
-    if(index == 0) return false;
+    if(index == 0) return true;
     ChatContentData data = parseChatData(listMessage[index - 1].data() as Map<String, dynamic>);
-    if ((index > 0 && data.toId == peerID) || index == 0) {
+    if ((index > 0 && data.toId == peerID)) {
       return true;
     } else {
       return false;
@@ -153,9 +167,9 @@ class ChatDetailController extends GetxController {
   }
 
   bool isLastMessageRight(int index) {
-    if(index == 0) return false;
+    if(index == 0) return true;
     ChatContentData data = parseChatData(listMessage[index - 1].data() as Map<String, dynamic>);
-    if ((index > 0 && data.fromId != currentUserID) || index == 0) {
+    if ((index > 0 && data.fromId == currentUserID)) {
       return true;
     } else {
       return false;

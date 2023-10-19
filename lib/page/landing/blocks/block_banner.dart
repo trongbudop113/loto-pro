@@ -79,8 +79,20 @@ class BlockBanner extends GetView<LandingController> {
               ),
             );
           }else{
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: AspectRatio(
+                aspectRatio: 16 / 9,
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
+                  //child: Image.network(banner.bannerImage ?? '', fit: BoxFit.fill)
+                ),
+              ),
             );
           }
         }

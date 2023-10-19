@@ -4,8 +4,8 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "aio",
     "public": "build/web",
-    "site" : "daily-nikki",
     "ignore": [
       "firebase.json",
       "**/.*",

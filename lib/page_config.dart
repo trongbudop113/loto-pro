@@ -28,6 +28,8 @@ import 'package:loto/page/select/select_controller.dart';
 import 'package:loto/page/select/select_page.dart';
 import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/cart_page.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
+import 'package:loto/page/shopping/moon_cake/page/moon_cake_detail_page.dart';
 import 'package:loto/page/statistic/statistic_controller.dart';
 import 'package:loto/page/statistic/statistic_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
@@ -56,6 +58,7 @@ class PageConfig {
   static String PROFILE = '/profile';
   static String CALL = '/call_number';
   static String MOON_CAKE = '/moon_cake';
+  static String MOON_CAKE_DETAIL = '/moon_cake_detail';
   static String STATISTIC = '/statistic';
   static String PORTFOLIOR = '/portfolior';
   static String CONTACT_MANAGER = '/contact_manager';
@@ -157,6 +160,11 @@ class PageConfig {
         name: CART,
         page: () => CartPage(),
         binding: CartBinding(),
+      ),
+      GetPage(
+        name: MOON_CAKE_DETAIL,
+        page: () => MoonCakeDetailPage(),
+        binding: MoonCakeDetailBinding(),
       ),
     ];
   }

@@ -7,7 +7,7 @@ import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
-import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
+import 'package:loto/page_config.dart';
 
 class MoonCakeBinding extends Bindings{
   @override
@@ -25,19 +25,10 @@ class MoonCakeController extends GetxController {
   late Function(GlobalKey) runAddToCartAnimation;
   var cartQuantityItems = 0;
 
-  CakeProduct? moonCakeProduct;
-  final RxInt quantity = 1.obs;
-
   void listClick(GlobalKey widgetKey) async {
     await runAddToCartAnimation(widgetKey);
     await cartKey.currentState!
         .runCartAnimation((++cartQuantityItems).toString());
-  }
-
-  void itemClick(GlobalKey widgetKey) async {
-    await runAddToCartAnimation(widgetKey);
-    await cartKey.currentState!
-        .runCartAnimation((++quantity.value).toString());
   }
 
   @override
@@ -56,16 +47,8 @@ class MoonCakeController extends GetxController {
     return "${FormatUtils.oCcy.format(d)}đ";
   }
 
-  List<EggData> listEgg = [];
-
   void onClickDetail(CakeProduct moonCakeProduct){
-    this.moonCakeProduct = moonCakeProduct;
-    listEgg = EggData.listTwo();
-    if(moonCakeProduct.productType == 200){
-      listEgg = EggData.listThree();
-    }
-    listEgg[1].isSelect.value = true;
-    quantity.value = 1;
+    Get.toNamed(PageConfig.MOON_CAKE_DETAIL, arguments: moonCakeProduct);
   }
 
   Color getBackgroundColor(String? color, BuildContext context){
@@ -73,39 +56,8 @@ class MoonCakeController extends GetxController {
     return Color(int.parse("0xFF$color"));
   }
 
-  void onDecreaseQuantity() {
-    if(quantity.value <= 1) return;
-    quantity.value--;
-  }
-
-  void onIncreaseQuantity() {
-    quantity.value++;
-  }
-
-  void selectEgg(EggData data){
-    for (var e in listEgg) {
-      e.isSelect.value = false;
-      if(e.value == data.value){
-        e.isSelect.value = true;
-      }
-    }
-  }
-
-  void onClickAddToCart(GlobalKey widgetKey){
-    moonCakeProduct!.quantity = quantity.value;
-    if(currentProductInCart(moonCakeProduct!) != null){
-      currentProductInCart(moonCakeProduct!)!.quantity = moonCakeProduct!.quantity;
-      quantity.value = 1;
-      itemClick(widgetKey);
-      return;
-    }
-    ProductCommon.singleton.currentProductInCart.add(moonCakeProduct!);
-    quantity.value = 1;
-    itemClick(widgetKey);
-  }
-
   CakeProduct? currentProductInCart(CakeProduct product){
-    var data = ProductCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
+    var data = AppCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
     if(data != null){
       return data;
     }

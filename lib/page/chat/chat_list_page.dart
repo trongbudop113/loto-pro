@@ -49,16 +49,16 @@ class ChatListPage extends GetView<ChatListController>{
                       const SizedBox(width: 10),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(360),
-                        child: Container(
+                        child: Obx(() => Container(
                           width: 40,
                           height: 40,
                           color: Colors.white,
                           alignment: Alignment.center,
                           child: Text(
-                            controller.nameUser.substring(0, 1),
-                            style: TextStyleResource.textStyleBlack(context)
+                              controller.nameUser.value.substring(0, 1),
+                              style: TextStyleResource.textStyleBlack(context)
                           ),
-                        ),
+                        )),
                       ),
                     ],
                   ),
@@ -188,14 +188,14 @@ class ChatListPage extends GetView<ChatListController>{
           String whoChat = "";
           if(snapshot.data!.docs.isNotEmpty){
             var chatUser = controller.parseChatData(snapshot.data!.docs[0].data() as Map<String, dynamic>);
-            content = chatUser.content ?? '';
+            content = controller.chatContentByType(chatUser);
             if(chatUser.fromId == controller.currentUserID){
               whoChat = "Bạn: ";
             }else{
-              whoChat = "${user.name ?? ''}: ";
+              whoChat = "";
             }
           }
-          return Text("$whoChat ${content.toString()}", style: TextStyleResource.textStyleBlack(context));
+          return Text("$whoChat${content.toString()}", style: TextStyleResource.textStyleBlack(context));
         }else{
           return Text("...", style: TextStyleResource.textStyleBlack(context));
         }
