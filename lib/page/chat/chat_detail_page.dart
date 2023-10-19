@@ -53,10 +53,15 @@ class ChatDetailPage extends GetView<ChatDetailController>{
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (c, i){
-                      return Container(
-                        width: Get.width / 4,
-                        height: 30,
-                        child: Icon(Icons.add),
+                      return GestureDetector(
+                        onTap: (){
+                          controller.getImage();
+                        },
+                        child: Container(
+                          width: Get.width / 4,
+                          height: 30,
+                          child: Icon(Icons.photo_outlined),
+                        ),
                       );
                     },
                     separatorBuilder: (c, i){
@@ -163,9 +168,9 @@ class ChatDetailPage extends GetView<ChatDetailController>{
                   margin: EdgeInsets.only(left: 10.0),
                   child: GestureDetector(
                     child: Container(
-                      width: 200,
-                      height: 200,
-                      child: Image.network(chatData.content ?? ''),
+                      width: 100,
+                      height: 100,
+                      child: Image.network(chatData.content ?? '', fit: BoxFit.cover),
                     ),
                     onTap: () {
                       // Navigator.push(
@@ -214,9 +219,9 @@ class ChatDetailPage extends GetView<ChatDetailController>{
           Container(
             margin: EdgeInsets.only(bottom: controller.isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),
             child: Container(
-              width: 200,
-              height: 200,
-              child: Image.network(chatData.content ?? ''),
+              width: 100,
+              height: 100,
+              child: Image.network(chatData.content ?? '', fit: BoxFit.cover),
             ),
           ) : Container(
             margin: EdgeInsets.only(bottom: controller.isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),

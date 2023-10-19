@@ -188,14 +188,14 @@ class ChatListPage extends GetView<ChatListController>{
           String whoChat = "";
           if(snapshot.data!.docs.isNotEmpty){
             var chatUser = controller.parseChatData(snapshot.data!.docs[0].data() as Map<String, dynamic>);
-            content = chatUser.content ?? '';
+            content = controller.chatContentByType(chatUser);
             if(chatUser.fromId == controller.currentUserID){
               whoChat = "Bạn: ";
             }else{
               whoChat = "";
             }
           }
-          return Text("$whoChat ${content.toString()}", style: TextStyleResource.textStyleBlack(context));
+          return Text("$whoChat${content.toString()}", style: TextStyleResource.textStyleBlack(context));
         }else{
           return Text("...", style: TextStyleResource.textStyleBlack(context));
         }

@@ -58,4 +58,18 @@ class ChatListController extends GetxController {
   ChatContentData parseChatData(Map<String, dynamic> inputData){
     return ChatContentData.fromJson(inputData);
   }
+
+  String chatContentByType(ChatContentData data){
+    if(data.type == 0){
+      return data.content ?? '';
+    }
+    if(data.type == 1){
+      return "Hình ảnh";
+    }
+    if(data.type == 1){
+      return "Sticker";
+    }
+
+    return data.content ?? '';
+  }
 }
