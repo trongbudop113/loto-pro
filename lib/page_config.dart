@@ -11,6 +11,8 @@ import 'package:loto/page/contact/contact_page.dart';
 import 'package:loto/page/contact_manager/contact_manager_controller.dart';
 import 'package:loto/page/home/home_controller.dart';
 import 'package:loto/page/home/home_page.dart';
+import 'package:loto/page/hpbd/hpbd_controller.dart';
+import 'package:loto/page/hpbd/hpbd_page.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/landing_page.dart';
 import 'package:loto/page/login/login_controller.dart';
@@ -63,6 +65,7 @@ class PageConfig {
   static String PORTFOLIOR = '/portfolior';
   static String CONTACT_MANAGER = '/contact_manager';
   static String CART = '/cart_moon_cake';
+  static String HPBD = '/hpbd';
 
   static List<GetPage> listPage(){
     return [
@@ -165,6 +168,11 @@ class PageConfig {
         name: MOON_CAKE_DETAIL,
         page: () => MoonCakeDetailPage(),
         binding: MoonCakeDetailBinding(),
+      ),
+      GetPage(
+        name: HPBD,
+        page: () => HPBDPage(),
+        binding: HPBDBinding(),
       ),
     ];
   }

@@ -35,13 +35,17 @@ class LandingController extends GetxController with BlockLeftProvider, BlockRigh
     print(blockLeft);
   }
 
-  void onClickItemBlock(BlockMenu menu, {required String argument}){
+  void onClickItemBlock(BlockMenu menu, {required String argument, String? documentID, String? image}){
     var isLogin = FirebaseAuth.instance.currentUser == null;
     print(isLogin);
     if((menu.isRequireLogin ?? false) && isLogin){
       Get.toNamed(PageConfig.LOGIN);
       return;
     }
-    Get.toNamed(menu.page ?? '', arguments: argument);
+    Get.toNamed(menu.page ?? '', arguments: {
+      "blockID" : argument,
+      "documentID" : documentID,
+      "image" :  image
+    });
   }
 }

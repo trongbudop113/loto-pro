@@ -6,6 +6,8 @@ class BlockMenu {
   String? blockIcon;
   bool? isShow;
   bool? isRequireLogin;
+  String? documentID;
+  String? image;
 
   BlockMenu(
       {this.blockID,
@@ -14,7 +16,9 @@ class BlockMenu {
         this.page,
         this.blockIcon,
         this.isShow,
-        this.isRequireLogin
+        this.isRequireLogin,
+        this.documentID,
+        this.image
       });
 
   BlockMenu.fromJson(Map<String, dynamic> json) {
@@ -25,6 +29,8 @@ class BlockMenu {
     blockIcon = json['block_icon'];
     isShow = json['is_show'];
     isRequireLogin = json['is_require_login'];
+    documentID = json['document_id'];
+    image = json['image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +42,8 @@ class BlockMenu {
     data['block_icon'] = this.blockIcon;
     data['is_show'] = this.isShow;
     data['is_require_login'] = this.isRequireLogin;
+    data['document_id'] = this.documentID;
+    data['image'] = this.image;
     return data;
   }
 }
