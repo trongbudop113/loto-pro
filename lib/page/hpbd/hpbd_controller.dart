@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/hpbd/models/hpbd_data.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
@@ -28,6 +29,10 @@ class HPBDController extends GetxController {
   RxBool isLoading = true.obs;
   Widget imageWaiting = Container();
 
+  final box = GetStorage();
+  bool get isSelected => box.read('select_gift') ?? false;
+  bool get isBack => box.read('is_back') ?? false;
+
   @override
   void onInit() {
     initData();
@@ -49,5 +54,15 @@ class HPBDController extends GetxController {
       mainData.refresh();
       isLoading.value = false;
     });
+  }
+
+  void onSelectGift(){
+    if(isSelected){
+      if(isBack){
+        return;
+      }
+      return;
+    }
+    box.write('select_gift', true);
   }
 }

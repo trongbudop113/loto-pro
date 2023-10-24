@@ -1,14 +1,17 @@
 class HPBDData {
   String? title;
   List<HPBDContent>? contents;
+  String? image;
 
   HPBDData(
       {this.title,
         this.contents,
+        this.image
       });
 
   HPBDData.fromJson(Map<String, dynamic> json) {
     title = json['title'];
+    image = json['image'];
     if (json['content'] != null) {
       contents = <HPBDContent>[];
       json['content'].forEach((v) {
