@@ -64,7 +64,7 @@ class HPBDPage extends GetView<HPBDController>{
                       Expanded(
                         child: GestureDetector(
                           onTap: (){
-
+                            controller.onSelectGift(context, 1);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -87,7 +87,7 @@ class HPBDPage extends GetView<HPBDController>{
                       Expanded(
                         child: GestureDetector(
                           onTap: (){
-
+                            controller.onSelectGift(context, 2);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -95,7 +95,7 @@ class HPBDPage extends GetView<HPBDController>{
                             child: Column(
                               children: [
                                 controller.mainData.value.image != null ?
-                                Image.network(controller.mainData.value.image ?? '') : Container(),
+                                  Image.network(controller.mainData.value.image ?? '') : Container(),
                                 SizedBox(height: 15),
                                 Text(
                                     "Nhận quà 2",

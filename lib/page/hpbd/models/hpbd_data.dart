@@ -1,30 +1,29 @@
 class HPBDData {
+  String? id;
   String? title;
   List<HPBDContent>? contents;
   String? image;
+  String? contentGif;
 
   HPBDData(
       {this.title,
         this.contents,
-        this.image
+        this.image,
+        this.id,
+        this.contentGif
       });
 
   HPBDData.fromJson(Map<String, dynamic> json) {
     title = json['title'];
     image = json['image'];
+    id = json['id'];
+    contentGif = json['content_gif'];
     if (json['content'] != null) {
       contents = <HPBDContent>[];
       json['content'].forEach((v) {
         contents?.add(HPBDContent.fromJson(v));
       });
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this.title;
-    data['content'] = this.contents;
-    return data;
   }
 }
 
