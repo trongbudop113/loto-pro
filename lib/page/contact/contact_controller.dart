@@ -51,7 +51,7 @@ class ContactController extends GetxController {
   }
 
   void getArgument(){
-    documentID = Get.arguments as String;
+    documentID = Get.arguments["blockID"];
     streamGetContact(documentID);
   }
 

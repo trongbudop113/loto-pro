@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/core/custom_get_controller.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/page/landing/provider/banner_provider.dart';
@@ -18,10 +19,13 @@ class LandingBinding extends Bindings{
   }
 }
 
-class LandingController extends GetxController with BlockLeftProvider, BlockRightProvider, GameMenuProvider, BannerMenuProvider {
+class LandingController extends CustomGetController with BlockLeftProvider, BlockRightProvider, GameMenuProvider, BannerMenuProvider {
 
   final Color bgColor = Colors.deepPurple[200]!;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  @override
+  String get textAppbar => "H O M E";
 
   @override
   void onInit() {
@@ -35,7 +39,7 @@ class LandingController extends GetxController with BlockLeftProvider, BlockRigh
     print(blockLeft);
   }
 
-  void onClickItemBlock(BlockMenu menu, {required String argument, String? documentID, String? image}){
+  void onClickItemBlock(BlockMenu menu, {required String argument, String? image}){
     var isLogin = FirebaseAuth.instance.currentUser == null;
     print(isLogin);
     if((menu.isRequireLogin ?? false) && isLogin){
@@ -44,7 +48,7 @@ class LandingController extends GetxController with BlockLeftProvider, BlockRigh
     }
     Get.toNamed(menu.page ?? '', arguments: {
       "blockID" : argument,
-      "documentID" : documentID,
+      "documentID" : menu.documentID,
       "image" :  image
     });
   }

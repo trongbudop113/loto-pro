@@ -13,12 +13,6 @@ class MyTabletBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('T A B L E T'),
-        actions: const [
-          AvatarWidget()
-        ],
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),

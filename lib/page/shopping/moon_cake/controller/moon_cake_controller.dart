@@ -51,6 +51,10 @@ class MoonCakeController extends GetxController {
     Get.toNamed(PageConfig.MOON_CAKE_DETAIL, arguments: moonCakeProduct);
   }
 
+  void goToCart(){
+    Get.toNamed(PageConfig.CART);
+  }
+
   Color getBackgroundColor(String? color, BuildContext context){
     if(color == null) return Theme.of(context).backgroundColor;
     return Color(int.parse("0xFF$color"));

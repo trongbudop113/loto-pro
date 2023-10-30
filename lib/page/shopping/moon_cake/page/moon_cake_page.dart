@@ -1,7 +1,9 @@
 import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/custom_icon_icons.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page_config.dart';
@@ -57,20 +59,33 @@ class MoonCakePage extends GetView<MoonCakeController>{
               children: [
                 Container(
                   height: 50,
-                  color: Colors.red,
                   child: Row(
                     children: [
                       Expanded(
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text("Lọc theo:"),
+                          child: Text(
+                            "Lọc theo:",
+                            style: TextStyleResource.textStyleBlack(context),
+                          ),
                         ),
                       ),
                       Container(height: 50, width: 1, color: Colors.grey),
                       Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text("Loại"),
+                        child: GestureDetector(
+                          onTap: (){
+
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1.5)
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Loại",
+                              style: TextStyleResource.textStyleBlack(context),
+                            ),
+                          ),
                         ),
                       )
                     ],
@@ -127,11 +142,35 @@ class MoonCakePage extends GetView<MoonCakeController>{
                     color: Colors.amber
                   ),
                   alignment: Alignment.center,
-                  child: Text("Mua Theo Hộp"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(CustomIcon.gift, color: Colors.white, size: 18),
+                      SizedBox(width: 10),
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: Text(
+                          "Mua Theo Hộp",
+                          style: TextStyleResource.textStyleWhite(context),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             )
           ],
+        ),
+        floatingActionButton: DraggableFab(
+          initPosition: Offset(Get.width - 10, Get.height - 70),
+          securityBottom: 80,
+          child: FloatingActionButton(
+            onPressed: (){
+              controller.goToCart();
+            },
+            child: Icon(CustomIcon.shopping_cart),
+          ),
         ),
       ),
     );

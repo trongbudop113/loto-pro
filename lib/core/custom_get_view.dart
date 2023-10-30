@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:loto/core/custom_get_controller.dart';
 
 abstract class CustomGetView<T extends CustomGetController> extends GetResponsiveView<T> {
+  CustomGetView({Key? key, this.isShowAppbar = true}) : super(key: key);
+  final bool isShowAppbar;
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: (isShowAppbar ?? false) ? AppBar(
         title: Text(controller.textAppbar),
-      ),
+      ) : null,
       body: buildBody(context)
     );
   }

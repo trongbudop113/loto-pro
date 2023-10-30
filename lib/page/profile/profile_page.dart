@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/page/profile/profile_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
 class ProfilePage extends GetView<ProfileController>{
 
@@ -47,10 +48,55 @@ class ProfilePage extends GetView<ProfileController>{
                   color: Colors.amber,
                   padding: EdgeInsets.all(10),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Xin chào:"),
-                      Text(controller.userLogin.value.name ?? ''),
-                      Text(controller.userLogin.value.email ?? ''),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(360),
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Column(
+                            children: [
+                              Text("Xin chào:"),
+                              Text(
+                                controller.userLogin.value.name ?? '',
+                                style: TextStyleResource.textStyleWhite(context),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                controller.userLogin.value.email ?? '',
+                                style: TextStyleResource.textStyleWhite(context),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 25),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: List.generate(4, (index) {
+                            return Container(
+                              width: 55,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(360),
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                            );
+                          }),
+                        ),
+                      )
                     ],
                   ),
                 )),
