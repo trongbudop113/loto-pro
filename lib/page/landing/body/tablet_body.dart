@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_banner.dart';
+import 'package:loto/page/landing/blocks/block_body.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
@@ -40,20 +41,7 @@ class MyTabletBody extends StatelessWidget {
               ),
 
               // comment section & recommended videos
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      color: Colors.deepPurple[300],
-                      height: 120,
-                    ),
-                  );
-                },
-              )
+              BlockBody()
             ],
           ),
         ),

@@ -22,4 +22,7 @@ const Map<String, String> vi = {
   'order_management' : 'Quản Lý\nĐặt Hàng',
   'order_analytic' : 'Thông Kê\nDoanh Số',
   'contact_manager' : 'Phản Hồi',
+  'gen_barcode' : "Tạo Barcode/QR Code",
+  'scan_barcode' : "Quét Barcode/QR code",
+  'scan_doc' : "Quét Tài Liệu",
 };

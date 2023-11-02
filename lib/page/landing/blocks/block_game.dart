@@ -19,6 +19,7 @@ class BlockGame extends GetView<LandingController> {
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Column(
                 children: [
+                  SizedBox(height: 30),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Text(

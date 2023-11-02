@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_banner.dart';
+import 'package:loto/page/landing/blocks/block_body.dart';
 import 'package:loto/page/landing/blocks/block_game.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
@@ -35,20 +36,7 @@ class MyMobileBody extends StatelessWidget {
               const BlockGame(),
               const SizedBox(height: 10),
               // comment section & recommended videos
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      color: Colors.deepPurple[300],
-                      height: 120,
-                    ),
-                  );
-                },
-              )
+              BlockBody()
             ],
           ),
         ),

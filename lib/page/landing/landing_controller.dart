@@ -6,6 +6,7 @@ import 'package:loto/core/custom_get_controller.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/page/landing/provider/banner_provider.dart';
+import 'package:loto/page/landing/provider/block_body_provider.dart';
 import 'package:loto/page/landing/provider/block_left_provider.dart';
 import 'package:loto/page/landing/provider/block_right_provider.dart';
 import 'package:loto/page/landing/provider/game_provider.dart';
@@ -19,7 +20,7 @@ class LandingBinding extends Bindings{
   }
 }
 
-class LandingController extends CustomGetController with BlockLeftProvider, BlockRightProvider, GameMenuProvider, BannerMenuProvider {
+class LandingController extends CustomGetController with BlockLeftProvider, BlockRightProvider, GameMenuProvider, BannerMenuProvider, BlockBodyProvider {
 
   final Color bgColor = Colors.deepPurple[200]!;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

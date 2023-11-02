@@ -18,6 +18,9 @@ abstract class CustomGetView<T extends CustomGetController> extends GetResponsiv
   }
 
   Widget buildBody(BuildContext context){
+    if(context.isLargeTablet){
+      return buildBodyWeb(context);
+    }
     if(context.isTablet){
       return buildBodyTablet(context);
     }
