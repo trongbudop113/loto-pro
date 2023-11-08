@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_banner.dart';
 import 'package:loto/page/landing/blocks/block_body.dart';
+import 'package:loto/page/landing/blocks/block_footer.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
@@ -41,7 +42,9 @@ class MyTabletBody extends StatelessWidget {
               ),
 
               // comment section & recommended videos
-              BlockBody()
+              BlockBody(),
+              const SizedBox(height: 20),
+              BlockFooter()
             ],
           ),
         ),

@@ -25,10 +25,10 @@ class MoonCakeController extends GetxController {
   late Function(GlobalKey) runAddToCartAnimation;
   var cartQuantityItems = 0;
 
-  void listClick(GlobalKey widgetKey) async {
-    await runAddToCartAnimation(widgetKey);
-    await cartKey.currentState!
-        .runCartAnimation((++cartQuantityItems).toString());
+  void listClick() async {
+    // await runAddToCartAnimation(widgetKey);
+    // await cartKey.currentState!
+    //     .runCartAnimation((++cartQuantityItems).toString());
   }
 
   @override

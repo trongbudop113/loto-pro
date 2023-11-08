@@ -178,9 +178,8 @@ class MoonCakePage extends GetView<MoonCakeController>{
 }
 
 class AppListItem extends StatelessWidget {
-  final GlobalKey widgetKey = GlobalKey();
   final int index;
-  final void Function(GlobalKey) onClick;
+  final void Function() onClick;
   final MoonCakeController controller;
   final CakeProduct product;
 
@@ -191,7 +190,6 @@ class AppListItem extends StatelessWidget {
     ClipRRect mandatoryContainer = ClipRRect(
       borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
       child: Container(
-        key: widgetKey,
         alignment: Alignment.center,
         color: controller.getBackgroundColor(product.productColor, context),
         padding: const EdgeInsets.all(20),
@@ -250,7 +248,7 @@ class AppListItem extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => onClick(widgetKey),
+                        onTap: () => onClick,
                         child: Container(
                           width: 60,
                           decoration: const BoxDecoration(

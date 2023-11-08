@@ -37,7 +37,9 @@ abstract class BlockItemBase{
   Widget buildTitle(BuildContext context, {required String name}){
     return Text(
       name,
-      style: TextStyleResource.textStyleBlack(context),
+      style: TextStyleResource.textStyleBlack(context).copyWith(
+        height: 1.5
+      ),
     );
   }
 }

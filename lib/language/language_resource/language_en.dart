@@ -22,5 +22,9 @@ const Map<String, String> en = {
   'order_management' : 'Orders Management',
   'order_analytic' : 'Sales Statistics',
   'contact_manager' : 'Contact Manager',
+  'gen_barcode' : "Create Barcode/QR Code",
+  'scan_barcode' : "Scan QR Code",
+  'scan_doc' : "Scan Document",
+  'happy_birthday' : "Happy Birthday"
 };
 
