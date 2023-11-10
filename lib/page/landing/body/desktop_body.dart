@@ -5,7 +5,6 @@ import 'package:loto/page/landing/blocks/block_footer.dart';
 import 'package:loto/page/landing/blocks/block_game.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
-import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/responsive/dimensions.dart';
 
@@ -20,7 +19,9 @@ class MyDesktopBody extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         alignment: Alignment.center,
         child: Container(
-          width: MediaQuery.of(context).size.width > 1200 ? 1200 : MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width > 1200
+              ? 1200
+              : MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             child: Column(
               children: [
