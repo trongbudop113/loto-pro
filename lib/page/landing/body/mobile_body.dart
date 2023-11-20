@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:loto/page/landing/blocks/block_banner.dart';
 import 'package:loto/page/landing/blocks/block_body.dart';
@@ -37,7 +37,7 @@ class MyMobileBody extends StatelessWidget {
               const BlockGame(),
               const SizedBox(height: 10),
               // comment section & recommended videos
-              BlockBody(),
+              blockBody(),
               const SizedBox(height: 20),
               BlockFooter()
             ],
@@ -45,5 +45,13 @@ class MyMobileBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget blockBody(){
+    if(kIsWeb){
+      return SizedBox();
+    }
+
+    return BlockBody();
   }
 }

@@ -54,6 +54,8 @@ dependencies:
   fl_chart: ^0.60.0
   image_picker: ^1.0.2
   draggable_fab: ^0.1.4
+  document_scanner_flutter: ^0.2.7
+  advance_pdf_viewer: any
 
 dev_dependencies:
   flutter_test:

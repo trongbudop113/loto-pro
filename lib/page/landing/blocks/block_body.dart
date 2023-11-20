@@ -26,17 +26,22 @@ class BlockBody extends GetView<LandingController> with BlockItemBase {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     BlockMenu menu = BlockMenu.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        color: Colors.deepPurple[300],
-                        height: 120,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text((menu.blockName ?? '').tr)
-                          ],
+                    return GestureDetector(
+                      onTap: (){
+                        controller.onClickBlockBody();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          color: Colors.deepPurple[300],
+                          height: 120,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text((menu.blockName ?? '').tr)
+                            ],
+                          ),
                         ),
                       ),
                     );

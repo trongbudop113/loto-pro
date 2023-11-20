@@ -4,7 +4,7 @@ import 'package:loto/page/landing/blocks/block_body.dart';
 import 'package:loto/page/landing/blocks/block_footer.dart';
 import 'package:loto/page/landing/blocks/block_left.dart';
 import 'package:loto/page/landing/blocks/block_right.dart';
-import 'package:loto/page/landing/body/border_widget.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/responsive/dimensions.dart';
 
@@ -42,7 +42,7 @@ class MyTabletBody extends StatelessWidget {
               ),
 
               // comment section & recommended videos
-              BlockBody(),
+              blockBody(),
               const SizedBox(height: 20),
               BlockFooter()
             ],
@@ -50,5 +50,13 @@ class MyTabletBody extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget blockBody(){
+    if(kIsWeb){
+      return SizedBox();
+    }
+
+    return BlockBody();
   }
 }

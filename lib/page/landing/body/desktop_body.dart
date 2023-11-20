@@ -48,8 +48,6 @@ class MyDesktopBody extends StatelessWidget {
                             const BlockBanner(),
 
                             const BlockGame(),
-
-                            BlockBody()
                           ],
                         ),
                       ),

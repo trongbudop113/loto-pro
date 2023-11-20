@@ -1,63 +1,116 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/landing/landing_controller.dart';
+import 'package:loto/src/style_resource.dart';
 
-class BlockFooter extends GetResponsiveView<LandingController>{
+class BlockFooter extends GetResponsiveView<LandingController> {
   @override
   Widget build(BuildContext context) {
-    return buildBody(context);
+    return Column(
+      children: [buildBody(context), endPage(context)],
+    );
   }
 
-  Widget buildBody(BuildContext context){
-    if(context.isLargeTablet){
+  Widget endPage(BuildContext context) {
+    return Container(
+      color: Colors.lightBlueAccent,
+      alignment: Alignment.center,
+      padding: EdgeInsets.all(20),
+      child: Text(
+        "©Powered By Flutter Web",
+        style: TextStyleResource.textStyleWhite(context),
+      ),
+    );
+  }
+
+  Widget buildBody(BuildContext context) {
+    if (context.isLargeTablet) {
       return buildBodyWeb(context);
     }
-    if(context.isTablet){
+    if (context.isTablet) {
       return buildBodyTablet(context);
     }
-    if(context.isPhone){
+    if (context.isPhone) {
       return buildBodyMobile(context);
     }
 
     return buildBodyWeb(context);
   }
 
-  Widget buildBodyMobile(BuildContext context){
+  Widget buildBodyMobile(BuildContext context) {
     return Container(
       alignment: Alignment.center,
+      color: Colors.teal,
       child: Column(
         children: [
-          widget1(),
-          widget2(),
-          widget3(),
-          widget4(),
+          widget1(context),
+          Container(
+            height: 2,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.center,
+            color: Colors.white,
+          ),
+          widget2(context),
+          Container(
+            height: 2,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.center,
+            color: Colors.white,
+          ),
+          widget3(context),
+          Container(
+            height: 2,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.center,
+            color: Colors.white,
+          ),
+          widget4(context),
         ],
       ),
     );
   }
 
-  Widget buildBodyTablet(BuildContext context){
+  Widget buildBodyTablet(BuildContext context) {
     return Container(
+      color: Colors.teal,
       alignment: Alignment.center,
       child: Column(
         children: [
           Row(
             children: [
               Expanded(
-                child: widget1(),
+                child: widget1(context),
+              ),
+              Container(
+                width: 2,
+                height: 150,
+                alignment: Alignment.center,
+                color: Colors.white,
               ),
               Expanded(
-                child: widget2(),
+                child: widget2(context),
               )
             ],
+          ),
+          Container(
+            height: 2,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.center,
+            color: Colors.white,
           ),
           Row(
             children: [
               Expanded(
-                child: widget3(),
+                child: widget3(context),
+              ),
+              Container(
+                width: 2,
+                height: 150,
+                alignment: Alignment.center,
+                color: Colors.white,
               ),
               Expanded(
-                child: widget4(),
+                child: widget4(context),
               )
             ],
           )
@@ -66,57 +119,185 @@ class BlockFooter extends GetResponsiveView<LandingController>{
     );
   }
 
-  Widget buildBodyWeb(BuildContext context){
+  Widget buildBodyWeb(BuildContext context) {
     return Container(
       alignment: Alignment.center,
+      color: Colors.teal,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: widget1(),
+            child: widget1(context),
+          ),
+          Container(
+            width: 2,
+            height: 150,
+            alignment: Alignment.center,
+            color: Colors.white,
           ),
           Expanded(
-            child: widget2(),
+            child: widget2(context),
+          ),
+          Container(
+            width: 2,
+            height: 150,
+            alignment: Alignment.center,
+            color: Colors.white,
           ),
           Expanded(
-            child: widget3(),
+            child: widget3(context),
+          ),
+          Container(
+            width: 2,
+            height: 150,
+            alignment: Alignment.center,
+            color: Colors.white,
           ),
           Expanded(
-            child: widget4(),
+            child: widget4(context),
           )
         ],
       ),
     );
   }
 
-  Widget widget1(){
+  Widget widget1(BuildContext context) {
     return Container(
-      color: Colors.amber,
       alignment: Alignment.center,
-      height: 200,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: Column(
+        children: [
+          Text(
+            "Sản Phẩm",
+            style: TextStyleResource.textStyleWhite(context)
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15,),
+          Text(
+            "Create Website/App",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Secure Clould Hosting",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Website Support",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget widget2(){
+  Widget widget2(BuildContext context) {
     return Container(
-      color: Colors.pink,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
       alignment: Alignment.center,
-      height: 200,
+      child: Column(
+        children: [
+          Text(
+            "Company",
+            style: TextStyleResource.textStyleWhite(context)
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15,),
+          Text(
+            "About",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Careers",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Support",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Pricing",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "FAQ",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget widget3(){
+  Widget widget3(BuildContext context) {
     return Container(
-      color: Colors.blue,
       alignment: Alignment.center,
-      height: 200,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: Column(
+        children: [
+          Text(
+            "Resource",
+            style: TextStyleResource.textStyleWhite(context)
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15,),
+          Text(
+            "Blog",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "eBooks",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Website Grader",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget widget4(){
+  Widget widget4(BuildContext context) {
     return Container(
-      color: Colors.black,
       alignment: Alignment.center,
-      height: 200,
+      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      child: Column(
+        children: [
+          Text(
+            "Get Help",
+            style: TextStyleResource.textStyleWhite(context)
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15,),
+          Text(
+            "Help Center",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Contact Us",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Privacy Policy",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+          SizedBox(height: 10,),
+          Text(
+            "Terms",
+            style: TextStyleResource.textStyleWhite(context),
+          ),
+        ],
+      ),
     );
   }
 }
