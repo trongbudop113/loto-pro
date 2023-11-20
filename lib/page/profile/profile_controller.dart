@@ -68,6 +68,8 @@ class ProfileController extends GetxController {
       Get.toNamed(PageConfig.STATISTIC);
     }else if(block.type == ProfileType.Contacts){
       Get.toNamed(PageConfig.CONTACT_MANAGER);
+    }else if(block.type == ProfileType.Footer){
+      Get.toNamed(PageConfig.FOOTER_MANAGER);
     }
   }
 
@@ -131,6 +133,7 @@ class ProfileController extends GetxController {
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
           ProfileBlock(blockName: "contact_manager", page: "/contact_manager", icon: "", type: ProfileType.Contacts),
+          ProfileBlock(blockName: "footer_manager", page: "/footer_manager", icon: "", type: ProfileType.Footer),
         ]);
       }
     }catch(e){
