@@ -26,10 +26,8 @@ class FooterManagerController extends GetxController {
     ),
   ];
 
-  void goToPage(){
-
-    //Get.to(FooterEditorPage());
-    goToShowPage();
+  void goToEditPage(){
+    Get.to(FooterEditorPage());
   }
 
   void goToShowPage(){

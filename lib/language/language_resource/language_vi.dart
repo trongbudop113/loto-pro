@@ -26,5 +26,6 @@ const Map<String, String> vi = {
   'scan_barcode' : "Quét Barcode/QR code",
   'scan_doc' : "Quét Tài Liệu",
   'happy_birthday' : "Chúc Mừng\nSinh Nhật",
-  "footer_manager" : "Quản Lý\nFooter"
+  "footer_manager" : "Quản Lý\nFooter",
+  "page_manager" : "Quản Lý\nMàn Hình"
 };

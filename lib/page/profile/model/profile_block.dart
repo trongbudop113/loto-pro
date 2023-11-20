@@ -13,4 +13,5 @@ enum ProfileType{
   Products,
   Contacts,
   Footer,
+  Page,
 }
