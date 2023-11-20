@@ -10,7 +10,6 @@ import 'package:loto/page/landing/provider/block_body_provider.dart';
 import 'package:loto/page/landing/provider/block_left_provider.dart';
 import 'package:loto/page/landing/provider/block_right_provider.dart';
 import 'package:loto/page/landing/provider/game_provider.dart';
-import 'package:loto/page/menu/menu_page.dart';
 import 'package:loto/page/scan_document/scan_document_page.dart';
 import 'package:loto/page_config.dart';
 

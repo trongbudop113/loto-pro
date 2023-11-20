@@ -57,14 +57,16 @@ dependencies:
   document_scanner_flutter: ^0.2.7
   advance_pdf_viewer: any
 
+  document_scanner_flutter: ^0.2.7
+  advance_pdf_viewer2: ^2.0.2
+
+  quill_html_editor: ^2.1.8
+  flutter_widget_from_html_core: 0.14.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_name: "^0.0.1"
-
-flutter_launcher_name:
-  name: "SS App"
   # optionally, as transparency is not allowed on app store
   # remove_alpha_ios: true
   # The "flutter_lints" package below contains a set of recommended lints to

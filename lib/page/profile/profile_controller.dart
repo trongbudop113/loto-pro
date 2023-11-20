@@ -68,6 +68,10 @@ class ProfileController extends GetxController {
       Get.toNamed(PageConfig.STATISTIC);
     }else if(block.type == ProfileType.Contacts){
       Get.toNamed(PageConfig.CONTACT_MANAGER);
+    }else if(block.type == ProfileType.Footer){
+      Get.toNamed(PageConfig.FOOTER_MANAGER);
+    }else if(block.type == ProfileType.Page){
+      Get.toNamed(PageConfig.FOOTER_MANAGER);
     }
   }
 
@@ -123,16 +127,18 @@ class ProfileController extends GetxController {
 
   Future<void> getDataUser() async {
     try{
-      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
-      if(getUSer.data() == null) return;
-      userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
-      if(userLogin.value.isAdmin ?? false){
+      // CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      // final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
+      // if(getUSer.data() == null) return;
+      // userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      //if(userLogin.value.isAdmin ?? false){
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
           ProfileBlock(blockName: "contact_manager", page: "/contact_manager", icon: "", type: ProfileType.Contacts),
+          ProfileBlock(blockName: "footer_manager", page: "/footer_manager", icon: "", type: ProfileType.Footer),
+          ProfileBlock(blockName: "page_manager", page: "/page_manager", icon: "", type: ProfileType.Page),
         ]);
-      }
+      //}
     }catch(e){
 
     }

@@ -9,6 +9,7 @@ import 'package:loto/page/chat/chat_list_page.dart';
 import 'package:loto/page/contact/contact_controller.dart';
 import 'package:loto/page/contact/contact_page.dart';
 import 'package:loto/page/contact_manager/contact_manager_controller.dart';
+import 'package:loto/page/footer_manager/manager/footer_manager_controller.dart';
 import 'package:loto/page/home/home_controller.dart';
 import 'package:loto/page/home/home_page.dart';
 import 'package:loto/page/hpbd/hpbd_controller.dart';
@@ -17,8 +18,6 @@ import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/landing_page.dart';
 import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
-import 'package:loto/page/menu/menu_controller.dart';
-import 'package:loto/page/menu/menu_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
@@ -38,6 +37,7 @@ import 'package:loto/page/stories/stories_controller.dart';
 import 'page/chat/chat_detail_controller.dart';
 import 'page/chat/chat_detail_page.dart';
 import 'page/contact_manager/contact_manager_page.dart';
+import 'page/footer_manager/manager/footer_manager_page.dart';
 import 'page/portfolior/portfolior_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
@@ -45,7 +45,6 @@ import 'page/stories/stories_page.dart';
 
 class PageConfig {
   static String ROOM = '/room';
-  static String MENU = '/menu';
   static String HOME = '/home';
   static String LOGIN = '/login';
   static String SELECT = '/select';
@@ -66,6 +65,7 @@ class PageConfig {
   static String CONTACT_MANAGER = '/contact_manager';
   static String CART = '/cart_moon_cake';
   static String HPBD = '/hpbd';
+  static String FOOTER_MANAGER = '/footer_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -88,11 +88,6 @@ class PageConfig {
       name: ROOM,
         page: () => RoomPage(),
         binding: RoomBinding(),
-      ),
-      GetPage(
-        name: MENU,
-        page: () => MenuPage(),
-        binding: MenuBinding(),
       ),
       GetPage(
         name: MANAGER,
@@ -173,6 +168,11 @@ class PageConfig {
         name: HPBD,
         page: () => HPBDPage(),
         binding: HPBDBinding(),
+      ),
+      GetPage(
+        name: FOOTER_MANAGER,
+        page: () => FooterManagerPage(),
+        binding: FooterManagerBinding(),
       ),
     ];
   }

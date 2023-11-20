@@ -12,4 +12,6 @@ enum ProfileType{
   Language,
   Products,
   Contacts,
+  Footer,
+  Page,
 }

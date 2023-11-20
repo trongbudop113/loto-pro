@@ -1,17 +1,17 @@
 import 'dart:io';
 
+import 'package:advance_pdf_viewer2/advance_pdf_viewer.dart';
 import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:document_scanner_flutter/configs/configs.dart';
 import 'package:flutter/material.dart';
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 
 
-class MyApp extends StatefulWidget {
+class MyApp1 extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp1> {
   PDFDocument? _scannedDocument;
   File? _scannedDocumentFile;
   File? _scannedImage;
