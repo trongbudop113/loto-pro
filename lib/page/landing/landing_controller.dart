@@ -55,6 +55,6 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
   }
 
   void onClickBlockBody(){
-    Get.to(MyApp());
+    Get.to(MyApp1());
   }
 }
