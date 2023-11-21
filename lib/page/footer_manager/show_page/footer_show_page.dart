@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FooterShowPage extends StatefulWidget {
   const FooterShowPage({super.key});
@@ -66,7 +67,7 @@ class _FooterShowPageState extends State<FooterShowPage> {
 
                 // this callback will be triggered when user taps a link
                 onTapUrl: (url) {
-                  print(url.toString());
+                  launchUrl(Uri.parse(url));
                   return true;
                 },
 

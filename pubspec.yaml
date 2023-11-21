@@ -58,6 +58,8 @@ dependencies:
   quill_html_editor: ^2.1.8
   flutter_widget_from_html_core: 0.14.7
 
+  url_launcher: ^6.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
