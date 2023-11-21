@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loto/database/data_name.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 class FooterEditorPage extends StatefulWidget {
@@ -235,6 +237,11 @@ class _FooterEditorPageState extends State<FooterEditorPage> {
                     };
                     controller.setDelta(deltaMap);
                   }),
+              textButton(
+                  text: 'Save',
+                  onPressed: () {
+                    saveData();
+                  }),
             ],
           ),
         ),
@@ -294,5 +301,13 @@ class _FooterEditorPageState extends State<FooterEditorPage> {
   /// method to un focus editor
   void unFocusEditor() => controller.unFocus();
 
-  void saveData() => controller.getText();
+  Future<void> saveData() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference menuRef = firestore.collection(DataRowName.Menus.name);
+    String? htmlText = await controller.getText();
+    var getHelp = menuRef.doc("Footer").collection('GetHelp');
+    await getHelp.doc("MU0uYBaCGRC9YMfxXDYw").update({
+      "footer_content" : htmlText
+    });
+  }
 }

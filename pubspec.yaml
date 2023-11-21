@@ -55,9 +55,6 @@ dependencies:
   image_picker: ^1.0.2
   draggable_fab: ^0.1.4
 
-  document_scanner_flutter: ^0.2.7
-  advance_pdf_viewer2: ^2.0.2
-
   quill_html_editor: ^2.1.8
   flutter_widget_from_html_core: 0.14.7
 
