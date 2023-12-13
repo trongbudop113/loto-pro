@@ -59,6 +59,8 @@ dependencies:
   flutter_widget_from_html_core: 0.14.7
 
   url_launcher: ^6.2.1
+  fluent:
+    path: modules/fluent
 
 dev_dependencies:
   flutter_test:
