@@ -51,6 +51,7 @@ class CustomIcon {
   CustomIcon._();
 
   static const _kFontFam = 'CustomIcon';
+  static const _kFontFam1 = 'CustomIconData';
   static const String? _kFontPkg = null;
 
   static const IconData shopping_cart = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
@@ -69,4 +70,18 @@ class CustomIcon {
   static const IconData address_book = IconData(0xf2b9, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData sign_out = IconData(0xf339, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData phone_square_alt = IconData(0xf87b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bullhorn = IconData(0xe800, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData vcard = IconData(0xe802, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData left_open = IconData(0xe803, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData right_open = IconData(0xe804, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData right_big = IconData(0xe805, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData left_big = IconData(0xe806, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData logout = IconData(0xe807, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData search_plus = IconData(0xf00e, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData search_minus = IconData(0xf010, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData home = IconData(0xf015, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData desktop = IconData(0xf108, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData google = IconData(0xf1a0, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData shopping_bag = IconData(0xf290, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
+  static const IconData linkedin = IconData(0xf318, fontFamily: _kFontFam1, fontPackage: _kFontPkg);
 }
