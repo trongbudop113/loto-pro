@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loto/common/custom_icon_icons.dart';
+import 'package:loto/core/custom_get_controller.dart';
 import 'package:loto/page/portfolior/models/page_data.dart';
 import 'package:loto/page/portfolior/pages/page_five.dart';
 import 'package:loto/page/portfolior/pages/page_four.dart';
@@ -18,26 +19,34 @@ class PortFoliorBinding extends Bindings {
   }
 }
 
-class PortFoliorController extends GetxController {
+class PortFoliorController extends CustomGetController {
   TextStyle textStyleNewFont = GoogleFonts.oswald(height: 1);
+
+  Key key = GlobalKey();
 
   String linkin =
       "https://www.linkedin.com/in/l%C6%B0u-ho%C3%A0ng-tr%E1%BB%8Dng-b87970140?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app";
 
   PageController pageController = PageController();
-  List<PageData> listPage = [];
+  final RxList<PageData> listPage = <PageData>[].obs;
   final RxInt curr = 0.obs;
 
   void onTapForward() {
     if (curr.value == 0) return;
-    pageController.animateToPage(curr.value - 1,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    pageController.animateToPage(
+      curr.value - 1,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
   }
 
   void onTapNext() {
     if (curr.value == listPage.length - 1) return;
-    pageController.animateToPage(curr.value + 1,
-        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+    pageController.animateToPage(
+      curr.value + 1,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
   }
 
   @override
@@ -47,7 +56,7 @@ class PortFoliorController extends GetxController {
   }
 
   void initData() {
-    listPage = <PageData>[
+    listPage.value = <PageData>[
       PageData(
           page: Center(
               child: PageMain(
@@ -80,5 +89,14 @@ class PortFoliorController extends GetxController {
           pageIcon: CustomIcon.shopping_bag,
           pageName: "Contact"),
     ];
+  }
+
+  void onTapItemIndex(int key) {
+    curr.value = key;
+    pageController.animateToPage(
+      curr.value,
+      duration: Duration(milliseconds: 500),
+      curve: Curves.easeIn,
+    );
   }
 }

@@ -59,6 +59,9 @@ class ThemeResource{
         actionsIconTheme: const IconThemeData(
           color: ColorResource.color_white_light
         )
+      ),
+      navigationBarTheme: const NavigationBarThemeData(
+        backgroundColor: Colors.transparent
       )
     );
   }
