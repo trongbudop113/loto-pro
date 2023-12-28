@@ -41,10 +41,7 @@ class PortFoliorPage extends CustomGetView<PortFoliorController> {
   Widget buildBodyWeb(BuildContext context) {
     return Row(
       children: [
-        Expanded(
-          flex: 2,
-          child: _buildHeader(context),
-        ),
+        _buildHeader(context),
         Expanded(
           flex: 8,
           child: _buildContentWeb(),
@@ -57,10 +54,18 @@ class PortFoliorPage extends CustomGetView<PortFoliorController> {
     return Obx(
       () => Visibility(
         visible: controller.curr.value > 1,
-        child: AnimatedOpacity(
+        child: context.isLargeTablet ? Expanded(
+          flex: 2,
+          child: AnimatedOpacity(
             opacity: controller.curr.value > 1 ? 1 : 0,
-            duration: Duration(milliseconds: 2000),
-            child: _buildHeaderContent(context)),
+            duration: const Duration(milliseconds: 2000),
+            child: _buildHeaderContent(context),
+          ),
+        ) : AnimatedOpacity(
+          opacity: controller.curr.value > 1 ? 1 : 0,
+          duration: const Duration(milliseconds: 2000),
+          child: _buildHeaderContent(context),
+        )
       ),
     );
   }
