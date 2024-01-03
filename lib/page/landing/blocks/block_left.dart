@@ -60,6 +60,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                         color: Theme.of(context).cardColor,
                         child: Container(
                           alignment: Alignment.center,
+                          padding: EdgeInsets.all(10),
                           child: buildBlockItem(context, menu),
                         ),
                       ),
@@ -75,6 +76,7 @@ class BlockLeft extends GetView<LandingController> with BlockItemBase {
                         },
                         color: Theme.of(context).cardColor,
                         child: Container(
+                          padding: EdgeInsets.all(10),
                           alignment: Alignment.center,
                           child: buildBlockItem(context, menu),
                         ),

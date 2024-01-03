@@ -77,13 +77,15 @@ class BlockFooter extends GetResponsiveView<LandingController> {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: widget1(context),
               ),
               Container(
                 width: 2,
-                height: 150,
+                height: 130,
+                margin: EdgeInsets.only(top: 20),
                 alignment: Alignment.center,
                 color: Colors.white,
               ),
@@ -99,13 +101,15 @@ class BlockFooter extends GetResponsiveView<LandingController> {
             color: Colors.white,
           ),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: widget3(context),
               ),
               Container(
                 width: 2,
-                height: 150,
+                height: 130,
+                margin: EdgeInsets.only(top: 20),
                 alignment: Alignment.center,
                 color: Colors.white,
               ),
@@ -125,7 +129,7 @@ class BlockFooter extends GetResponsiveView<LandingController> {
       color: Colors.teal,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: widget1(context),
@@ -171,7 +175,7 @@ class BlockFooter extends GetResponsiveView<LandingController> {
           Text(
             "Sản Phẩm",
             style: TextStyleResource.textStyleWhite(context)
-                .copyWith(fontWeight: FontWeight.bold),
+                .copyWith(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 15,),
           Text(
@@ -202,7 +206,7 @@ class BlockFooter extends GetResponsiveView<LandingController> {
           Text(
             "Company",
             style: TextStyleResource.textStyleWhite(context)
-                .copyWith(fontWeight: FontWeight.bold),
+                .copyWith(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 15,),
           Text(
@@ -243,7 +247,7 @@ class BlockFooter extends GetResponsiveView<LandingController> {
           Text(
             "Resource",
             style: TextStyleResource.textStyleWhite(context)
-                .copyWith(fontWeight: FontWeight.bold),
+                .copyWith(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 15,),
           Text(
@@ -274,7 +278,7 @@ class BlockFooter extends GetResponsiveView<LandingController> {
           Text(
             "Get Help",
             style: TextStyleResource.textStyleWhite(context)
-                .copyWith(fontWeight: FontWeight.bold),
+                .copyWith(fontWeight: FontWeight.bold, fontSize: 25),
           ),
           SizedBox(height: 15,),
           Text(

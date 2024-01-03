@@ -184,9 +184,7 @@ class PortFoliorPage extends CustomGetView<PortFoliorController> {
                         controller.onTapForward();
                       },
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
+                    Spacer(flex: 1,),
                     Expanded(
                       flex: 10,
                       child: Row(
@@ -226,9 +224,7 @@ class PortFoliorPage extends CustomGetView<PortFoliorController> {
                         }).toList(),
                       ),
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
+                    Spacer(flex: 1,),
                     GestureDetector(
                       child: Container(
                         width: 50,

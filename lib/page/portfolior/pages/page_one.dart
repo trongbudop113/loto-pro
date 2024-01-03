@@ -8,21 +8,64 @@ class PageOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    TextStyle textStyle = GoogleFonts.oswald();
-
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
+      body: buildBody(context),
+    );
+  }
+
+  Widget buildBody(BuildContext context) {
+    if (context.isLargeTablet) {
+      return _buildWeb();
+    }
+    if (context.isTablet) {
+      return _buildMobile();
+    }
+    if (context.isPhone) {
+      return _buildMobile();
+    }
+
+    return _buildWeb();
+  }
+
+  Widget _buildMobile(){
+    return SingleChildScrollView(
+      child: Column(
         children: [
           AspectRatio(
             aspectRatio: 4 / 3,
             child: Container(
-              child: Image.network(
-                "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/portfolio%2F20231128_141339_451.jpg?alt=media&token=015d2ab5-7946-495f-bad5-675dee644839",
-                fit: BoxFit.cover,
-              ),
+              child: _loadImage(),
             ),
           ),
+          _loadContent()
+        ],
+      ),
+    );
+  }
+
+  Widget _buildWeb(){
+    return Row(
+      children: [
+        Expanded(
+          flex: 1,
+          child: _loadImage(),
+        ),
+        Expanded(
+          flex: 1,
+          child: _loadContent(),
+        )
+      ],
+    );
+  }
+
+  Widget _loadContent(){
+    TextStyle textStyle = GoogleFonts.oswald();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           SizedBox(height: 20,),
           Container(
             width: Get.width,
@@ -49,6 +92,13 @@ class PageOne extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _loadImage(){
+    return Image.network(
+      "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/portfolio%2F20231128_141339_451.jpg?alt=media&token=015d2ab5-7946-495f-bad5-675dee644839",
+      fit: BoxFit.cover,
     );
   }
 }

@@ -22,10 +22,13 @@ abstract class BlockItemBase{
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         buildImage(menu.blockIcon ?? ''),
         const SizedBox(width: 10),
-        buildTitle(context, name: (menu.blockName ?? '').tr)
+        Expanded(
+          child: buildTitle(context, name: (menu.blockName ?? '').tr),
+        )
       ],
     );
   }
@@ -37,6 +40,8 @@ abstract class BlockItemBase{
   Widget buildTitle(BuildContext context, {required String name}){
     return Text(
       name,
+      maxLines: 2,
+      softWrap: true,
       style: TextStyleResource.textStyleBlack(context).copyWith(
         height: 1.5
       ),
