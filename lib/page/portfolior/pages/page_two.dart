@@ -11,78 +11,76 @@ class PageTwo extends StatelessWidget {
     TextStyle textStyle = GoogleFonts.oswald();
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text(
-            "I'm Gào Mặt Quạo, Lập Trình Viên Flutter",
-            style: textStyle,
-          ),
-          Container(
-            width: Get.width,
-            height: Get.width,
-            color: Colors.black,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: _itemRowBlock(
-                          title: "4+",
-                          content: "Years Experience"
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.width / 2,
+              color: Colors.black,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: _itemRowBlock(
+                            title: "4+",
+                            content: "Years Experience"
+                          ),
                         ),
-                      ),
-                      Container(
-                        height: 1,
-                        width: (Get.width / 2) - 40,
-                        color: Colors.white,
-                      ),
-                      Expanded(
-                        child: _itemRowBlock(
-                            title: "200+",
-                            content: "Happy Client"
+                        Container(
+                          height: 1,
+                          width: (Get.width / 2) - 40,
+                          color: Colors.white,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: _itemRowBlock(
+                              title: "200+",
+                              content: "Happy Client"
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  color: Colors.white,
-                  width: 1,
-                  height: Get.width - 40,
-                  alignment: Alignment.center,
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: _itemRowBlock(
-                            title: "10+",
-                            content: "Project Done"
-                        ),
-                      ),
-                      Container(
-                        height: 1,
-                        width: (Get.width / 2) - 40,
-                        color: Colors.white,
-                      ),
-                      Expanded(
-                        child: _itemRowBlock(
-                            title: "10+",
-                            content: "Follower"
-                        ),
-                      ),
-                    ],
+                  Container(
+                    color: Colors.white,
+                    width: 1,
+                    height: Get.width - 40,
+                    alignment: Alignment.center,
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: _itemRowBlock(
+                              title: "10+",
+                              content: "Project Done"
+                          ),
+                        ),
+                        Container(
+                          height: 1,
+                          width: (Get.width / 2) - 40,
+                          color: Colors.white,
+                        ),
+                        Expanded(
+                          child: _itemRowBlock(
+                              title: "10+",
+                              content: "Follower"
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Text(
-            "What I Do?",
-            style: textStyle,
-          ),
-        ],
+            Text(
+              "What I Do?",
+              style: textStyle,
+            ),
+          ],
+        ),
       ),
     );
   }

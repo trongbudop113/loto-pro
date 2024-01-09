@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/home/models/item_model.dart';
 import 'package:loto/page/select/models/select_paper.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 
 class HomeBinding extends Bindings{
@@ -21,7 +26,49 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     getArgument();
+    onListenWinPlay();
     super.onInit();
+  }
+
+  void onListenWinPlay(){
+    CollectionReference roomRef = firestore.collection(DataRowName.Rooms.name);
+
+    final docRef = roomRef.doc(roomID).collection(roomID).doc(roomID);
+    docRef.snapshots().listen((event) {
+      if(event.data()!["isWin"] == true){
+        showDialogCong(Get.context!);
+      }
+    },
+      onError: (error) => print("Listen failed: $error"),
+    );
+
+  }
+
+  void showDialogCong(BuildContext context){
+    Dialogs.materialDialog(
+      color: Colors.white,
+      msg: 'Congratulations, you won 500 points',
+      title: 'Congratulations',
+      lottieBuilder: Lottie.asset(
+        'assets/cong_example.json',
+        fit: BoxFit.contain,
+      ),
+      barrierDismissible: false,
+      dialogWidth: kIsWeb ? 0.3 : null,
+      context: context,
+      actions: [
+        IconsButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          text: 'Claim',
+          iconData: Icons.done,
+          color: Colors.blue,
+          textStyle: TextStyle(color: Colors.white),
+          iconColor: Colors.white,
+        ),
+      ],
+    );
   }
 
   Stream<DocumentSnapshot<Object?>> streamGetDataRoom() {
@@ -37,10 +84,10 @@ class HomeController extends GetxController {
     roomID = arguments[1] as String ?? '';
   }
 
-  Future<void> setWinUser() async {
+  Future<void>  setWinUser() async {
     try{
       CollectionReference roomCollection = firestore.collection(DataRowName.Rooms.name);
-      await roomCollection.doc(roomID).collection(roomID).doc(roomID).set(
+      await roomCollection.doc(roomID).collection(roomID).doc(roomID).update(
           {"isWin" : true}
       );
     }catch(e){

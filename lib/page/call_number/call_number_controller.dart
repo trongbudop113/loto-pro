@@ -8,7 +8,6 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get/get.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:loto/database/data_name.dart';
-import 'package:loto/page/call_number/model/call_number_data.dart';
 
 class CallNumberBinding extends Bindings{
   @override
@@ -221,7 +220,7 @@ class CallNumberController extends GetxController {
 
   Future<void> saveCallNumber(String number) async {
     try{
-      await roomCollection.doc(roomID).collection(roomID).doc(roomID).set(
+      await roomCollection.doc(roomID).collection(roomID).doc(roomID).update(
         {"listNumber" : listTextNumber, "currentNumber" : number}
       );
     }catch(e){
@@ -250,6 +249,26 @@ class CallNumberController extends GetxController {
       print("Select another boundaries or number count");
     }
     return result;
+  }
+
+  @override
+  void onReady() {
+    onListenWinPlay();
+    super.onReady();
+  }
+
+  void onListenWinPlay(){
+    CollectionReference roomRef = firestore.collection(DataRowName.Rooms.name);
+
+    final docRef = roomRef.doc(roomID).collection(roomID).doc(roomID);
+    docRef.snapshots().listen((event) {
+      if(event.data()!["isWin"] == true){
+        isPlay = false;
+      }
+    },
+      onError: (error) => print("Listen failed: $error"),
+    );
+
   }
 
   @override

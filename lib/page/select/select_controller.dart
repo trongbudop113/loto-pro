@@ -22,8 +22,7 @@ class SelectController extends GetxController {
   CollectionReference userCollection = FirebaseFirestore.instance.collection(DataRowName.Users.name);
   CollectionReference paperCollection = FirebaseFirestore.instance.collection(DataRowName.Papers.name);
 
-  String userName = FirebaseAuth.instance.currentUser!.displayName ?? '';
-  String userID = FirebaseAuth.instance.currentUser!.uid;
+  //String userID = FirebaseAuth.instance.currentUser!.uid;
   String userEmail = FirebaseAuth.instance.currentUser!.email ?? '';
 
   List<SelectPaper> listSelected = [];
@@ -68,6 +67,8 @@ class SelectController extends GetxController {
   List<String> yourPicked = [];
 
   Future<void> onSelectPaper(SelectPaper selectPaper) async {
+    String userID = userLogin?.uuid ?? '';
+    String userName = userLogin?.name ?? '';
     if(yourPicked.length == 2 && !yourPicked.contains(selectPaper.paperID)){
       print("ko dc add thêm");
       return;
@@ -81,8 +82,10 @@ class SelectController extends GetxController {
     }
     if((selectPaper.selectedUserID ?? '').isNotEmpty){
       if(selectPaper.selectedUserID == userID){
-        userName = "";
-        userID = "";
+        await paperCollection.doc(selectPaper.paperID).update({
+          "selectedName" : "",
+          "selectedUserID" : ""
+        });
       }
 
       yourPicked.remove(selectPaper.paperID ?? '');
@@ -90,16 +93,21 @@ class SelectController extends GetxController {
       if(userLogin!.listPaper!.contains(selectPaper.paperID ?? '')){
         userLogin!.listPaper!.remove(selectPaper.paperID ?? '');
       }
+
+      print(userLogin!.toJson());
+      await userCollection.doc(userEmail).update(userLogin!.toJson());
     }else{
       yourPicked.add(selectPaper.paperID ?? '');
       listSelected.add(selectPaper);
       userLogin!.listPaper!.add(selectPaper.paperID ?? '');
+
+      await paperCollection.doc(selectPaper.paperID).update({
+        "selectedName" : userName,
+        "selectedUserID" : userID
+      });
+      print(userLogin!.toJson());
+      await userCollection.doc(userEmail).update(userLogin!.toJson());
     }
-    await paperCollection.doc(selectPaper.paperID).update({
-      "selectedName" : userName,
-      "selectedUserID" : userID
-    });
-    await userCollection.doc(userEmail).update(userLogin!.toJson());
   }
 
   void onEditPaper(SelectPaper data){

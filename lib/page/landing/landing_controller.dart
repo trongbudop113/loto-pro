@@ -34,7 +34,7 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
   @override
   void onInit() {
     loadMenuData();
-    onClickBlockBody();
+    //onClickBlockBody();
     super.onInit();
   }
 
