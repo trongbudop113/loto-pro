@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
 
-class  PageMain extends StatelessWidget {
+class PageMain extends StatelessWidget {
   final PortFoliorController portFoliorController;
-  const PageMain({Key? key, required this.portFoliorController}) : super(key: key);
+  const PageMain({Key? key, required this.portFoliorController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.black,
       body: buildBody(context),
@@ -30,20 +30,22 @@ class  PageMain extends StatelessWidget {
     return _buildWeb(context);
   }
 
-  Widget _buildMobile(BuildContext context){
+  Widget _buildMobile(BuildContext context) {
     return Column(
       children: [
         Container(
           margin: EdgeInsets.only(right: 50),
           child: _widget1(),
         ),
-        Spacer(flex: 1,),
+        Spacer(
+          flex: 1,
+        ),
         _widget2(context)
       ],
     );
   }
 
-  Widget _buildWeb(BuildContext context){
+  Widget _buildWeb(BuildContext context) {
     return Row(
       children: [
         Expanded(
@@ -61,7 +63,7 @@ class  PageMain extends StatelessWidget {
     );
   }
 
-  Widget _widget1(){
+  Widget _widget1() {
     TextStyle textStyle = GoogleFonts.oswald();
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -70,21 +72,27 @@ class  PageMain extends StatelessWidget {
           width: Get.width,
           child: FittedBox(
             fit: BoxFit.contain,
-            child: Text("PORT-", style: textStyle.copyWith(fontWeight: FontWeight.bold),),
+            child: Text(
+              "PORT-",
+              style: textStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
         ),
         Container(
           width: Get.width,
           child: FittedBox(
             fit: BoxFit.contain,
-            child: Text("FOLIO", style: textStyle.copyWith(fontWeight: FontWeight.bold),),
+            child: Text(
+              "FOLIO",
+              style: textStyle.copyWith(fontWeight: FontWeight.bold),
+            ),
           ),
         )
       ],
     );
   }
 
-  Widget _widget2(BuildContext context){
+  Widget _widget2(BuildContext context) {
     TextStyle textStyle = GoogleFonts.oswald();
     return Container(
       width: Get.width,
@@ -99,7 +107,6 @@ class  PageMain extends StatelessWidget {
               color: Colors.blueAccent,
             ),
           ),
-
           Positioned(
             top: 50,
             right: 0,
@@ -108,7 +115,7 @@ class  PageMain extends StatelessWidget {
               height: 55,
               color: Colors.yellow,
               child: GestureDetector(
-                onTap: (){
+                onTap: () {
                   portFoliorController.onTapNext();
                 },
                 child: Container(
@@ -120,12 +127,11 @@ class  PageMain extends StatelessWidget {
                       Text(
                         "Xem Ngay",
                         style: textStyle.copyWith(
-                            color: Colors.black,
-                            fontSize: 30,
-                            height: 1
-                        ),
+                            color: Colors.black, fontSize: 30, height: 1),
                       ),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Icon(Icons.keyboard_arrow_right)
                     ],
                   ),
@@ -133,7 +139,6 @@ class  PageMain extends StatelessWidget {
               ),
             ),
           ),
-
           Positioned(
               bottom: 0,
               right: 0,
@@ -141,13 +146,14 @@ class  PageMain extends StatelessWidget {
                 width: 120,
                 child: FittedBox(
                   fit: BoxFit.contain,
-                  child: Text("2023", style: textStyle.copyWith(fontWeight: FontWeight.bold),),
+                  child: Text(
+                    "2023",
+                    style: textStyle.copyWith(fontWeight: FontWeight.bold),
+                  ),
                 ),
-              )
-          )
+              ))
         ],
       ),
     );
   }
-
 }
