@@ -21,6 +21,17 @@ class HomePage extends GetView<HomeController>{
             child: Container(
               width: 55,
               color: Colors.transparent,
+              child: const Icon(Icons.info_outline, color: Colors.black),
+            ),
+            onTap: (){
+              controller.onCheckResult();
+            },
+          ),
+          SizedBox(width: 10,),
+          GestureDetector(
+            child: Container(
+              width: 55,
+              color: Colors.transparent,
               child: const Icon(Icons.refresh, color: Colors.black),
             ),
             onTap: (){

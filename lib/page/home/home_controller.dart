@@ -23,6 +23,10 @@ class HomeController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late String roomID;
 
+  int indexPaper = 0;
+  int indexRow = 0;
+  bool isWin = false;
+
   @override
   void onInit() {
     getArgument();
@@ -111,10 +115,14 @@ class HomeController extends GetxController {
 
     if(count == 4){
       print('wait wait wait wait');
+      isWin = false;
       return;
     }
 
     if(count == 5){
+      indexPaper = i;
+      indexRow = j;
+      isWin = true;
       await setWinUser();
       return;
     }
@@ -130,6 +138,9 @@ class HomeController extends GetxController {
         }
       }
     }
+    isWin = false;
+    indexRow = 0;
+    indexPaper = 0;
   }
 
   RxBool get isHasData {
@@ -144,6 +155,13 @@ class HomeController extends GetxController {
   void onClose() {
     onRefreshData();
     super.onClose();
+  }
+
+  void onCheckResult() {
+    if(!isWin){
+      return;
+    }
+    //listData[indexPaper].papers![indexRow].items
   }
 
 }

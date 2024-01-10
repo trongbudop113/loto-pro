@@ -28,7 +28,7 @@ class BlockBody extends GetView<LandingController> with BlockItemBase {
                     BlockMenu menu = BlockMenu.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
                     return GestureDetector(
                       onTap: (){
-                        controller.onClickBlockBody();
+                        //controller.onClickBlockBody();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

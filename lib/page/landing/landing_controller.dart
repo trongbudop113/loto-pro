@@ -10,11 +10,7 @@ import 'package:loto/page/landing/provider/block_body_provider.dart';
 import 'package:loto/page/landing/provider/block_left_provider.dart';
 import 'package:loto/page/landing/provider/block_right_provider.dart';
 import 'package:loto/page/landing/provider/game_provider.dart';
-import 'package:flutter/foundation.dart';
 import 'package:loto/page_config.dart';
-import 'package:lottie/lottie.dart';
-import 'package:material_dialogs/dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 class LandingBinding extends Bindings{
   @override
@@ -34,7 +30,6 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
   @override
   void onInit() {
     loadMenuData();
-    //onClickBlockBody();
     super.onInit();
   }
 
@@ -56,44 +51,5 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
       "documentID" : menu.documentID,
       "image" :  image
     });
-  }
-
-  void onClickBlockBody(){
-    final docRef = firestore.collection("Test").doc("hoJMIvPyCEbDP4jBiTbS");
-    docRef.snapshots().listen((event) {
-        if(event.data()!["isDone"] == true){
-          showDialogCong(Get.context!);
-        }
-      },
-      onError: (error) => print("Listen failed: $error"),
-    );
-
-  }
-
-  void showDialogCong(BuildContext context){
-    Dialogs.materialDialog(
-      color: Colors.white,
-      msg: 'Congratulations, you won 500 points',
-      title: 'Congratulations',
-      lottieBuilder: Lottie.asset(
-        'assets/cong_example.json',
-        fit: BoxFit.contain,
-      ),
-      barrierDismissible: false,
-      dialogWidth: kIsWeb ? 0.3 : null,
-      context: context,
-      actions: [
-        IconsButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          text: 'Claim',
-          iconData: Icons.done,
-          color: Colors.blue,
-          textStyle: TextStyle(color: Colors.white),
-          iconColor: Colors.white,
-        ),
-      ],
-    );
   }
 }
