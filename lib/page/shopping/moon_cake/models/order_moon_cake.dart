@@ -57,6 +57,8 @@ class ProductOrder{
   CakeProduct? boxCake;
   int quantity = 1;
 
+  int get productType => boxCake == null ? 1 : 2;
+
   ProductOrder(
       {this.productMoonCakeList,
         this.boxCake

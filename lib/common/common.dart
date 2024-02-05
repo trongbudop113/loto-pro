@@ -11,7 +11,7 @@ class AppCommon {
 
   AppCommon._internal();
 
-  final RxList<CakeProduct> currentProductInCart = <CakeProduct>[].obs;
+  final RxList<ProductOrder> currentProductInCart = <ProductOrder>[].obs;
 
   RxInt get countCart{
     if(currentProductInCart.isEmpty) return 0.obs;

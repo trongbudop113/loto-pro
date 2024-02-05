@@ -8,6 +8,7 @@ import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
+import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
 class MoonCakeDetailBinding extends Bindings{
   @override
@@ -20,16 +21,8 @@ class MoonCakeDetailController extends GetxController {
 
   CakeProduct? moonCakeProduct;
   final RxInt quantity = 1.obs;
-  GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
-  late Function(GlobalKey) runAddToCartAnimation;
 
   List<EggData> listEgg = [];
-
-  void itemClick(GlobalKey widgetKey) async {
-    await runAddToCartAnimation(widgetKey);
-    await cartKey.currentState!
-        .runCartAnimation((++quantity.value).toString());
-  }
 
   Color getBackgroundColor(String? color, BuildContext context){
     if(color == null) return Theme.of(context).backgroundColor;
@@ -54,20 +47,21 @@ class MoonCakeDetailController extends GetxController {
     }
   }
 
-  void onClickAddToCart(GlobalKey widgetKey){
+  void onClickAddToCart(){
     moonCakeProduct!.quantity = quantity.value;
     if(currentProductInCart(moonCakeProduct!) != null){
       currentProductInCart(moonCakeProduct!)!.quantity = moonCakeProduct!.quantity;
       quantity.value = 1;
-      itemClick(widgetKey);
       return;
     }
-    AppCommon.singleton.currentProductInCart.add(moonCakeProduct!);
+    ProductOrder productOrder = ProductOrder();
+    productOrder.productMoonCakeList.add(moonCakeProduct!);
+    AppCommon.singleton.currentProductInCart.add(productOrder);
     quantity.value = 1;
-    itemClick(widgetKey);
+    print("Thêm thành công");
   }
 
-  CakeProduct? currentProductInCart(CakeProduct product){
+  ProductOrder? currentProductInCart(CakeProduct product){
     var data = AppCommon.singleton.currentProductInCart.firstWhereOrNull((e) => e.productID == product.productID);
     if(data != null){
       return data;
