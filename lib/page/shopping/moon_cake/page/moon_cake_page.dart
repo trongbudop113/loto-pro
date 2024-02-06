@@ -10,7 +10,7 @@ import 'package:loto/page_config.dart';
 import 'package:loto/shapes/quater_circle.dart';
 import 'package:loto/src/style_resource.dart';
 
-class MoonCakePage extends GetView<MoonCakeController>{
+class MoonCakePage extends GetView<MoonCakeController> {
   const MoonCakePage({super.key});
 
   @override
@@ -23,7 +23,7 @@ class MoonCakePage extends GetView<MoonCakeController>{
       opacity: 0.85,
       dragAnimation: const DragToCartAnimationOptions(
         rotation: false,
-        duration: Duration(milliseconds: 500)
+        duration: Duration(milliseconds: 500),
       ),
       jumpAnimation: const JumpAnimationOptions(),
       createAddToCartAnimation: (runAddToCartAnimation) {
@@ -36,7 +36,7 @@ class MoonCakePage extends GetView<MoonCakeController>{
           centerTitle: false,
           actions: [
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Get.toNamed(PageConfig.CART);
               },
               child: AddToCartIcon(
@@ -57,7 +57,7 @@ class MoonCakePage extends GetView<MoonCakeController>{
           children: [
             Column(
               children: [
-                Container(
+                SizedBox(
                   height: 50,
                   child: Row(
                     children: [
@@ -73,13 +73,10 @@ class MoonCakePage extends GetView<MoonCakeController>{
                       Container(height: 50, width: 1, color: Colors.grey),
                       Expanded(
                         child: GestureDetector(
-                          onTap: (){
-
-                          },
+                          onTap: () {},
                           child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1.5)
-                            ),
+                            decoration:
+                                BoxDecoration(border: Border.all(width: 1.5)),
                             alignment: Alignment.center,
                             child: Text(
                               "Loại",
@@ -95,68 +92,124 @@ class MoonCakePage extends GetView<MoonCakeController>{
                   child: StreamBuilder<QuerySnapshot>(
                       stream: controller.streamGetListProduct(),
                       builder: (context, snapshot) {
-                        if(snapshot.hasData){
-                          return GridView.builder(
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisSpacing: 10,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: 0.9
+                        if (snapshot.hasData) {
+                          return Obx(() => GridView.builder(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                                childAspectRatio: 0.9,
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10).copyWith(
-                                bottom: MediaQuery.of(context).padding.bottom + 80
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ).copyWith(
+                                bottom: MediaQuery.of(context).padding.bottom +
+                                    80 +
+                                    (controller.isStatusBuyBox.value ? 110 : 0),
                               ),
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (BuildContext ctx, index) {
-                                CakeProduct product = CakeProduct.fromJson(snapshot.data!.docs[index].data() as Map<String, dynamic>);
+                                CakeProduct product = CakeProduct.fromJson(
+                                    snapshot.data!.docs[index].data()
+                                        as Map<String, dynamic>);
                                 return AppListItem(
                                     onClick: controller.listClick,
                                     index: index,
                                     controller: controller,
-                                    product: product
-                                );
-                              }
-                          );
-                        }else{
+                                    product: product);
+                              }));
+                        } else {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
                         }
-                      }
-                  ),
-                )
+                      }),
+                ),
               ],
+            ),
+            Positioned(
+              bottom: MediaQuery.of(context).padding.bottom + 10 + 55 + 10,
+              left: 10,
+              right: 90,
+              child: Obx(() => Visibility(
+                    visible: controller.isStatusBuyBox.value,
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.showBoxCakeDialog(context);
+                      },
+                      child: Container(
+                        height: 100,
+                        color: Colors.black12,
+                        child: ListView.separated(
+                          itemBuilder: (c, i) {
+                            return Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.white60,
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.black,
+                              ),
+                            );
+                          },
+                          separatorBuilder: (c, i) {
+                            return const SizedBox(
+                              width: 10,
+                            );
+                          },
+                          itemCount:
+                              controller.productOrder?.boxCake!.productType ??
+                                  0,
+                          scrollDirection: Axis.horizontal,
+                        ),
+                      ),
+                    ),
+                  )),
             ),
             Positioned(
               bottom: MediaQuery.of(context).padding.bottom + 10,
               left: 10,
               right: 10,
               child: GestureDetector(
-                onTap: (){
-
+                onTap: () {
+                  controller.showBoxCakeDialog(context);
                 },
                 child: Container(
                   height: 55,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(60),
-                    color: Colors.amber
+                    color: Colors.amber,
                   ),
                   alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(CustomIcon.gift, color: Colors.white, size: 18),
-                      SizedBox(width: 10),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: Text(
-                          "Mua Theo Hộp",
-                          style: TextStyleResource.textStyleWhite(context),
+                  child: Obx(() => Visibility(
+                        visible: controller.isStatusBuyBox.value,
+                        replacement: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(CustomIcon.gift,
+                                color: Colors.white, size: 18),
+                            SizedBox(width: 10),
+                            Container(
+                              margin: EdgeInsets.only(top: 5),
+                              child: Text(
+                                "Mua Theo Hộp",
+                                style:
+                                    TextStyleResource.textStyleWhite(context),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            "Thêm vào giỏ hàng",
+                            style: TextStyleResource.textStyleWhite(context),
+                          ),
+                        ),
+                      )),
                 ),
               ),
             )
@@ -166,7 +219,7 @@ class MoonCakePage extends GetView<MoonCakeController>{
           initPosition: Offset(Get.width - 10, Get.height - 70),
           securityBottom: 80,
           child: FloatingActionButton(
-            onPressed: (){
+            onPressed: () {
               controller.goToCart();
             },
             child: Icon(CustomIcon.shopping_cart),
@@ -183,24 +236,29 @@ class AppListItem extends StatelessWidget {
   final MoonCakeController controller;
   final CakeProduct product;
 
-  AppListItem({super.key, required this.onClick, required this.index, required this.controller, required this.product});
+  AppListItem(
+      {super.key,
+      required this.onClick,
+      required this.index,
+      required this.controller,
+      required this.product});
   @override
   Widget build(BuildContext context) {
     //  Container is mandatory. It can hold images or whatever you want
     ClipRRect mandatoryContainer = ClipRRect(
-      borderRadius: const BorderRadius.only(topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+      borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(8), topRight: Radius.circular(8)),
       child: Container(
         alignment: Alignment.center,
         color: controller.getBackgroundColor(product.productColor, context),
         padding: const EdgeInsets.all(20),
         child: Image.network(
-            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"
-        ),
+            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
       ),
     );
 
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.onClickDetail(product);
       },
       child: Container(
@@ -237,12 +295,17 @@ class AppListItem extends StatelessWidget {
                             const SizedBox(height: 5),
                             Text(
                               product.productName.toString(),
-                              style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 15),
+                              style: TextStyleResource.textStyleWhite(context)
+                                  .copyWith(fontSize: 15),
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              controller.formatCurrency(product.productPrice ?? 0),
-                              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                              controller
+                                  .formatCurrency(product.productPrice ?? 0),
+                              style: TextStyleResource.textStyleBlack(context)
+                                  .copyWith(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                             )
                           ],
                         ),
@@ -253,18 +316,18 @@ class AppListItem extends StatelessWidget {
                           width: 60,
                           decoration: const BoxDecoration(
                               color: Colors.transparent,
-                              borderRadius: BorderRadius.only(bottomRight: Radius.circular(8))
-                          ),
+                              borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(8))),
                           alignment: Alignment.center,
                           child: Container(
                             width: 35,
                             height: 35,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(360),
-                                color: Theme.of(context).backgroundColor
-                            ),
+                                color: Theme.of(context).backgroundColor),
                             alignment: Alignment.center,
-                            child: const Icon(Icons.add_shopping_cart_outlined, color: Colors.white, size: 18),
+                            child: const Icon(Icons.add_shopping_cart_outlined,
+                                color: Colors.white, size: 18),
                           ),
                         ),
                       ),
@@ -293,10 +356,10 @@ class AppListItem extends StatelessWidget {
                     right: 0,
                     child: Center(
                         child: Text(
-                          "${product.productType}g",
-                          style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 20, fontWeight: FontWeight.bold),
-                        )
-                    ),
+                      "${product.productType}g",
+                      style: TextStyleResource.textStyleWhite(context)
+                          .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                    )),
                   )
                 ],
               ),

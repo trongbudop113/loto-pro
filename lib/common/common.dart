@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
 class AppCommon {
   static final AppCommon singleton = AppCommon._internal();
@@ -13,8 +13,8 @@ class AppCommon {
 
   final RxList<ProductOrder> currentProductInCart = <ProductOrder>[].obs;
 
-  RxInt get countCart{
-    if(currentProductInCart.isEmpty) return 0.obs;
+  RxInt get countCart {
+    if (currentProductInCart.isEmpty) return 0.obs;
     int i = 0;
     for (var w in currentProductInCart) {
       i = i + w.quantity;
@@ -25,5 +25,6 @@ class AppCommon {
 
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
-  bool get isLogin => currentUser != null && (currentUser?.email ?? '').isNotEmpty;
+  bool get isLogin =>
+      currentUser != null && (currentUser?.email ?? '').isNotEmpty;
 }
