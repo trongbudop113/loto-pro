@@ -21,6 +21,16 @@ class HomePage extends GetView<HomeController>{
             child: Container(
               width: 55,
               color: Colors.transparent,
+            ),
+            onLongPress: (){
+              controller.onHotReset();
+            },
+          ),
+          SizedBox(width: 10,),
+          GestureDetector(
+            child: Container(
+              width: 55,
+              color: Colors.transparent,
               child: const Icon(Icons.info_outline, color: Colors.black),
             ),
             onTap: (){
@@ -37,7 +47,7 @@ class HomePage extends GetView<HomeController>{
             onTap: (){
               controller.onRefreshData();
             },
-          )
+          ),
         ],
       ),
       body: Column(

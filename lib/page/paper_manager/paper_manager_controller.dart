@@ -33,11 +33,11 @@ class PaperManagerController extends GetxController {
   }
 
   void onTapItem(int index, int indexChild, BuildContext context){
-    if(isModeEdit){
-      if((listRow[index].items![indexChild].number?.value ?? 0) == 0){
-        return;
-      }
-    }
+    // if(isModeEdit){
+    //   if((listRow[index].items![indexChild].number?.value ?? 0) == 0){
+    //     return;
+    //   }
+    // }
     showDialogSelectNumber(context, index, indexChild);
   }
 

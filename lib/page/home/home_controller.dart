@@ -88,11 +88,11 @@ class HomeController extends GetxController {
     roomID = arguments[1] as String ?? '';
   }
 
-  Future<void>  setWinUser() async {
+  Future<void>  setWinUser(bool isWin) async {
     try{
       CollectionReference roomCollection = firestore.collection(DataRowName.Rooms.name);
       await roomCollection.doc(roomID).collection(roomID).doc(roomID).update(
-          {"isWin" : true}
+          {"isWin" : isWin}
       );
     }catch(e){
       e.printInfo(info: "setDefaultData");
@@ -123,9 +123,14 @@ class HomeController extends GetxController {
       indexPaper = i;
       indexRow = j;
       isWin = true;
-      await setWinUser();
+      await setWinUser(isWin);
       return;
     }
+  }
+
+  Future<void> onHotReset() async {
+    isWin = false;
+    await setWinUser(isWin);
   }
 
   void onRefreshData(){
