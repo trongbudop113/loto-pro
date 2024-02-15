@@ -18,7 +18,6 @@ class HomeBinding extends Bindings{
 }
 
 class HomeController extends GetxController {
-
   final RxList<SelectPaper> listData = <SelectPaper>[].obs;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   late String roomID;
@@ -34,21 +33,21 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
-  void onListenWinPlay(){
+  void onListenWinPlay() {
     CollectionReference roomRef = firestore.collection(DataRowName.Rooms.name);
 
     final docRef = roomRef.doc(roomID).collection(roomID).doc(roomID);
-    docRef.snapshots().listen((event) {
-      if(event.data()!["isWin"] == true){
-        showDialogCong(Get.context!);
-      }
-    },
+    docRef.snapshots().listen(
+      (event) {
+        if (event.data()!["isWin"] == true) {
+          showDialogCong(Get.context!);
+        }
+      },
       onError: (error) => print("Listen failed: $error"),
     );
-
   }
 
-  void showDialogCong(BuildContext context){
+  void showDialogCong(BuildContext context) {
     Dialogs.materialDialog(
       color: Colors.white,
       msg: 'Congratulations, you won 500 points',
@@ -81,7 +80,7 @@ class HomeController extends GetxController {
     return roomRef.doc(roomID).collection(roomID).doc(roomID).snapshots();
   }
 
-  void getArgument(){
+  void getArgument() {
     var arguments = Get.arguments;
 
     listData.addAll(arguments[0] as List<SelectPaper>);
@@ -101,25 +100,26 @@ class HomeController extends GetxController {
 
   Future<void> onTapNumber(int i, int j, int k) async {
     int number = listData[i].papers![j].items![k].number ?? 0;
-    if(number == 0){
+    if (number == 0) {
       return;
     }
-    listData[i].papers![j].items![k].isCheck.value = !listData[i].papers![j].items![k].isCheck.value;
+    listData[i].papers![j].items![k].isCheck.value =
+        !listData[i].papers![j].items![k].isCheck.value;
 
     int count = 0;
-    for(ItemModel data in listData[i].papers![j].items ?? []){
-      if((data.number ?? 0) > 0 && data.isCheck.value){
+    for (ItemModel data in listData[i].papers![j].items ?? []) {
+      if ((data.number ?? 0) > 0 && data.isCheck.value) {
         count++;
       }
     }
 
-    if(count == 4){
+    if (count == 4) {
       print('wait wait wait wait');
       isWin = false;
       return;
     }
 
-    if(count == 5){
+    if (count == 5) {
       indexPaper = i;
       indexRow = j;
       isWin = true;
@@ -133,11 +133,11 @@ class HomeController extends GetxController {
     await setWinUser(isWin);
   }
 
-  void onRefreshData(){
-    for(var parent in listData){
-      for(ItemRowModel element in parent.papers ?? []){
-        if(!(element.typeFull ?? false)){
-          for(ItemModel child in element.items ?? []){
+  void onRefreshData() {
+    for (var parent in listData) {
+      for (ItemRowModel element in parent.papers ?? []) {
+        if (!(element.typeFull ?? false)) {
+          for (ItemModel child in element.items ?? []) {
             child.isCheck.value = false;
           }
         }
@@ -152,7 +152,7 @@ class HomeController extends GetxController {
     return (listData.isNotEmpty).obs;
   }
 
-  int convertColor(String color){
+  int convertColor(String color) {
     return int.parse(color);
   }
 
@@ -163,10 +163,9 @@ class HomeController extends GetxController {
   }
 
   void onCheckResult() {
-    if(!isWin){
+    if (!isWin) {
       return;
     }
     //listData[indexPaper].papers![indexRow].items
   }
-
 }

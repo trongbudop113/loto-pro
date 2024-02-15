@@ -59,13 +59,12 @@ class ProductOrder {
   List<CakeProduct>? productMoonCakeList;
   CakeProduct? boxCake;
   int quantity = 1;
+  int productType = 2;
 
   int get limitQuantityCanBuy {
     if (boxCake == null) return 0;
     return boxCake!.productType ?? 0;
   }
-
-  int get productType => boxCake == null ? 1 : 2;
 
   ProductOrder({this.productOrderID, this.productMoonCakeList, this.boxCake});
 
@@ -73,6 +72,7 @@ class ProductOrder {
     productOrderID = json['product_order_id'];
     productMoonCakeList = json['products'];
     boxCake = json['box_cake'];
+    productType = json['product_type'];
   }
 
   Map<String, dynamic> toJson() {
@@ -81,6 +81,7 @@ class ProductOrder {
     data['products'] = productMoonCakeList;
     data['box_cake'] = boxCake;
     data['quantity'] = quantity;
+    data['product_type'] = productType;
     return data;
   }
 }

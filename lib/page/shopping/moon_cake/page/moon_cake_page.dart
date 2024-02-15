@@ -94,32 +94,39 @@ class MoonCakePage extends GetView<MoonCakeController> {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           return Obx(() => GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                                childAspectRatio: 0.9,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 10,
-                              ).copyWith(
-                                bottom: MediaQuery.of(context).padding.bottom +
-                                    80 +
-                                    (controller.isStatusBuyBox.value ? 110 : 0),
-                              ),
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (BuildContext ctx, index) {
-                                CakeProduct product = CakeProduct.fromJson(
-                                    snapshot.data!.docs[index].data()
-                                        as Map<String, dynamic>);
-                                return AppListItem(
-                                    onClick: controller.listClick,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 0.9,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ).copyWith(
+                                  bottom:
+                                      MediaQuery.of(context).padding.bottom +
+                                          80 +
+                                          (controller.isStatusBuyBox.value
+                                              ? 110
+                                              : 0),
+                                ),
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (BuildContext ctx, index) {
+                                  CakeProduct product = CakeProduct.fromJson(
+                                      snapshot.data!.docs[index].data()
+                                          as Map<String, dynamic>);
+                                  return AppListItem(
+                                    onClick: () {
+                                      controller.listClick(product);
+                                    },
                                     index: index,
                                     controller: controller,
-                                    product: product);
-                              }));
+                                    product: product,
+                                  );
+                                },
+                              ));
                         } else {
                           return const Center(
                             child: CircularProgressIndicator(),
@@ -133,40 +140,45 @@ class MoonCakePage extends GetView<MoonCakeController> {
               bottom: MediaQuery.of(context).padding.bottom + 10 + 55 + 10,
               left: 10,
               right: 90,
-              child: Obx(() => Visibility(
-                    visible: controller.isStatusBuyBox.value,
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.showBoxCakeDialog(context);
+              child: Obx(
+                () => Visibility(
+                  visible: controller.isStatusBuyBox.value,
+                  child: Container(
+                    height: 100,
+                    color: Colors.black12,
+                    child: ListView.separated(
+                      itemBuilder: (c, i) {
+                        if (i > controller.listCakeBoxTemp.length - 1) {
+                          return Container(
+                            width: 100,
+                            height: 100,
+                            child: Icon(Icons.add),
+                            color: Colors.white54,
+                          );
+                        }
+                        return Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.white54,
+                          child: Image.network(
+                            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+                          ),
+                        );
                       },
-                      child: Container(
-                        height: 100,
-                        color: Colors.black12,
-                        child: ListView.separated(
-                          itemBuilder: (c, i) {
-                            return Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.white60,
-                              child: Icon(
-                                Icons.add,
-                                color: Colors.black,
-                              ),
-                            );
-                          },
-                          separatorBuilder: (c, i) {
-                            return const SizedBox(
-                              width: 10,
-                            );
-                          },
-                          itemCount:
-                              controller.productOrder?.boxCake!.productType ??
-                                  0,
-                          scrollDirection: Axis.horizontal,
-                        ),
-                      ),
+                      separatorBuilder: (c, i) {
+                        return const SizedBox(
+                          width: 10,
+                        );
+                      },
+                      itemCount: controller.listCakeBoxTemp.length +
+                          ((controller.productOrder?.boxCake!.productType ??
+                                  0) -
+                              controller.listCakeBoxTemp.length),
+                      scrollDirection: Axis.horizontal,
                     ),
-                  )),
+                  ),
+                ),
+              ),
             ),
             Positioned(
               bottom: MediaQuery.of(context).padding.bottom + 10,
@@ -174,7 +186,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
               right: 10,
               child: GestureDetector(
                 onTap: () {
-                  controller.showBoxCakeDialog(context);
+                  controller.onShowOrCompleteBuyBox(context);
                 },
                 child: Container(
                   height: 55,
@@ -189,8 +201,11 @@ class MoonCakePage extends GetView<MoonCakeController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(CustomIcon.gift,
-                                color: Colors.white, size: 18),
+                            Icon(
+                              CustomIcon.gift,
+                              color: Colors.white,
+                              size: 18,
+                            ),
                             SizedBox(width: 10),
                             Container(
                               margin: EdgeInsets.only(top: 5),
@@ -232,28 +247,32 @@ class MoonCakePage extends GetView<MoonCakeController> {
 
 class AppListItem extends StatelessWidget {
   final int index;
-  final void Function() onClick;
+  final void Function()? onClick;
   final MoonCakeController controller;
   final CakeProduct product;
 
-  AppListItem(
-      {super.key,
-      required this.onClick,
-      required this.index,
-      required this.controller,
-      required this.product});
+  const AppListItem({
+    super.key,
+    this.onClick,
+    required this.index,
+    required this.controller,
+    required this.product,
+  });
   @override
   Widget build(BuildContext context) {
     //  Container is mandatory. It can hold images or whatever you want
     ClipRRect mandatoryContainer = ClipRRect(
       borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8), topRight: Radius.circular(8)),
+        topLeft: Radius.circular(8),
+        topRight: Radius.circular(8),
+      ),
       child: Container(
         alignment: Alignment.center,
         color: controller.getBackgroundColor(product.productColor, context),
         padding: const EdgeInsets.all(20),
         child: Image.network(
-            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
+          "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+        ),
       ),
     );
 
@@ -311,7 +330,7 @@ class AppListItem extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => onClick,
+                        onTap: onClick,
                         child: Container(
                           width: 60,
                           decoration: const BoxDecoration(

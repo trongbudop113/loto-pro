@@ -21,27 +21,30 @@ class CartPage extends GetView<CartController> {
         title: Text("Giỏ hàng"),
       ),
       body: ListView.separated(
-          padding: EdgeInsets.all(15),
-          itemBuilder: (c, i) {
-            return Container(
-              decoration:
-                  const BoxDecoration(color: ColorResource.color_main_light),
-              padding: EdgeInsets.all(10),
-              child: Visibility(
-                visible: currentProductInCart[i].productType == 2,
-                replacement: ItemProductNoBox(
-                  productItem: currentProductInCart[i],
-                ),
-                child: ItemProductWithBox(
-                  productItem: currentProductInCart[i],
-                ),
+        padding: EdgeInsets.all(15),
+        itemBuilder: (c, i) {
+          return Container(
+            decoration: BoxDecoration(
+              color: ColorResource.color_main_light,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            padding: EdgeInsets.all(10),
+            child: Visibility(
+              visible: currentProductInCart[i].productType == 1,
+              replacement: ItemProductNoBox(
+                productItem: currentProductInCart[i],
               ),
-            );
-          },
-          separatorBuilder: (c, i) {
-            return Container(height: 15);
-          },
-          itemCount: currentProductInCart.length),
+              child: ItemProductWithBox(
+                productItem: currentProductInCart[i],
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (c, i) {
+          return Container(height: 15);
+        },
+        itemCount: currentProductInCart.length,
+      ),
     );
   }
 }

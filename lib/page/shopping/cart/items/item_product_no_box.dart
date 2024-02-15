@@ -11,12 +11,17 @@ class ItemProductNoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 15,
+        ),
         Container(
-          child: Text(
-            productItem.productMoonCakeList![0].productName ?? '',
-            style: TextStyleResource.textStyleBlack(context),
-          ),
           alignment: Alignment.centerLeft,
+          child: Text(
+            productItem.boxCake!.productName ?? '',
+            style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontSize: 20,
+            ),
+          ),
         ),
         SizedBox(height: 10),
         Row(
@@ -24,18 +29,38 @@ class ItemProductNoBox extends StatelessWidget {
             Container(
               width: 120,
               height: 120,
-              color: ColorResource.color_main_dark,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: ColorResource.color_main_dark,
+              ),
+              padding: EdgeInsets.all(5),
               child: Image.network(
-                  "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
+                "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+              ),
             ),
             SizedBox(width: 10),
             Expanded(
-              child: Text(
-                "Bánh Thập Cẩm",
-                style: TextStyleResource.textStyleBlack(context),
-              ),
-            )
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Loại",
+                  style: TextStyleResource.textStyleBlack(context),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  "${productItem.boxCake!.numberEggs} Trứng",
+                  style: TextStyleResource.textStyleBlack(context),
+                ),
+              ],
+            ))
           ],
+        ),
+        SizedBox(
+          height: 10,
         ),
       ],
     );

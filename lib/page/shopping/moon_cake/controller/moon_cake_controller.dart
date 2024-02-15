@@ -30,10 +30,38 @@ class MoonCakeController extends GetxController {
   final RxList<CakeProduct> listCakeBoxTemp = <CakeProduct>[].obs;
   final RxBool isStatusBuyBox = false.obs;
 
-  void listClick() async {
+  void listClick(CakeProduct product) async {
     // await runAddToCartAnimation(widgetKey);
     // await cartKey.currentState!
     //     .runCartAnimation((++cartQuantityItems).toString());
+    if (!isStatusBuyBox.value) {
+      productOrder = ProductOrder();
+      productOrder?.productMoonCakeList = [];
+      productOrder?.boxCake = product;
+      productOrder?.quantity = 1;
+      productOrder?.productType = 2;
+
+      AppCommon.singleton.currentProductInCart.add(productOrder!);
+      return;
+    }
+    if (listCakeBoxTemp.length == productOrder?.boxCake!.productType) {
+      return;
+    }
+    if (checkExistedInBox(product)) {
+      listCakeBoxTemp
+          .removeWhere((element) => element.productID == product.productID);
+      return;
+    }
+    listCakeBoxTemp.add(product);
+  }
+
+  bool checkExistedInBox(CakeProduct product) {
+    var data = listCakeBoxTemp
+        .firstWhereOrNull((element) => element.productID == product.productID);
+    if (data != null) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -86,8 +114,20 @@ class MoonCakeController extends GetxController {
     return null;
   }
 
-  Future<void> showBoxCakeDialog(BuildContext context) async {
-    await showGeneralDialog(
+  void onShowOrCompleteBuyBox(BuildContext context) {
+    if (isStatusBuyBox.value) {
+      productOrder?.productMoonCakeList!.addAll(listCakeBoxTemp);
+      AppCommon.singleton.currentProductInCart.add(productOrder!);
+
+      listCakeBoxTemp.clear();
+      isStatusBuyBox.value = false;
+      return;
+    }
+    showBoxCakeDialog(context);
+  }
+
+  void showBoxCakeDialog(BuildContext context) {
+    showGeneralDialog(
       context: context,
       barrierLabel: "Select Box",
       barrierDismissible: true,
@@ -128,10 +168,10 @@ class MoonCakeController extends GetxController {
     productOrder?.productMoonCakeList = [];
     productOrder?.boxCake = product;
     productOrder?.quantity = 1;
+    productOrder?.productType = 1;
 
     isStatusBuyBox.value = true;
 
     Get.back();
-    //AppCommon.singleton.currentProductInCart.add(productOrder);
   }
 }
