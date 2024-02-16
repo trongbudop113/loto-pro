@@ -31,7 +31,7 @@ class PaperManagerController extends GetxController {
     return int.parse(color);
   }
 
-  void onTapItem(int index, int indexChild, BuildContext context) {
+  void onTapItem(int index, int indexChild, BuildContext context){
     // if(isModeEdit){
     //   if((listRow[index].items![indexChild].number?.value ?? 0) == 0){
     //     return;
