@@ -8,6 +8,7 @@ class UserLogin {
   String? uuid;
   int? updateTime;
   bool? isAdmin;
+  String? phoneNumber;
 
   List<String>? listPaper;
 
@@ -24,7 +25,8 @@ class UserLogin {
         this.updateTime,
         this.joinRoomID,
         this.listPaper,
-        this.isAdmin
+        this.isAdmin,
+        this.phoneNumber
       });
 
   UserLogin.fromJson(Map<String, dynamic> json) {
@@ -56,6 +58,14 @@ class UserLogin {
     data['joinRoomID'] = this.joinRoomID;
     data['listPaper'] = this.listPaper;
     data['isAdmin'] = this.isAdmin;
+    return data;
+  }
+
+  Map<String, dynamic> toOrderJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['phone'] = this.phoneNumber;
+    data['uuid'] = this.uuid ?? '';
     return data;
   }
 }

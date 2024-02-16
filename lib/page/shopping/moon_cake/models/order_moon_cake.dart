@@ -56,7 +56,6 @@ class OrderMoonCake {
 }
 
 class ProductOrder {
-  String? productOrderID;
   List<CakeProduct>? productMoonCakeList;
   CakeProduct? boxCake;
   RxInt quantity = 1.obs;
@@ -80,10 +79,9 @@ class ProductOrder {
     return price;
   }
 
-  ProductOrder({this.productOrderID, this.productMoonCakeList, this.boxCake});
+  ProductOrder({this.productMoonCakeList, this.boxCake});
 
   ProductOrder.fromJson(Map<String, dynamic> json) {
-    productOrderID = json['product_order_id'];
     productMoonCakeList = json['products'];
     boxCake = json['box_cake'];
     productType = json['product_type'];
@@ -91,9 +89,12 @@ class ProductOrder {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_order_id'] = productOrderID;
-    data['products'] = productMoonCakeList;
-    data['box_cake'] = boxCake;
+    if (this.productMoonCakeList != null) {
+      data['products'] = this.productMoonCakeList!.map((v) => v.toJson()).toList();
+    }
+    if(this.boxCake != null){
+      data['box_cake'] = this.boxCake!.toJson();
+    }
     data['quantity'] = quantity.value;
     data['product_type'] = productType;
     return data;

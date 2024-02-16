@@ -104,6 +104,22 @@ class CartPage extends GetView<CartController> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: GestureDetector(
+          onTap: (){
+            controller.onTapOrder();
+          },
+          child: Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadius.circular(60),
+            ),
+            alignment: Alignment.center,
+            child: Text("Đặt hàng"),
+          ),
+        ),
+      ),
     );
   }
 

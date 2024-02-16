@@ -107,7 +107,7 @@ class MoonCakeController extends GetxController {
 
   ProductOrder? currentProductInCart(ProductOrder product) {
     var data = AppCommon.singleton.currentProductInCart
-        .firstWhereOrNull((e) => e.productOrderID == product.productOrderID);
+        .firstWhereOrNull((e) => e.boxCake?.productID == product.boxCake?.productID);
     if (data != null) {
       return data;
     }
