@@ -17,7 +17,7 @@ class AppCommon {
     if (currentProductInCart.isEmpty) return 0.obs;
     int i = 0;
     for (var w in currentProductInCart) {
-      i = i + w.quantity;
+      i = i + w.quantity.value;
     }
 
     return i.obs;

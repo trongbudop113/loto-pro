@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/items/item_product_no_box.dart';
 import 'package:loto/page/shopping/cart/items/item_product_with_box.dart';
-import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 import 'package:lottie/lottie.dart';
 
@@ -55,21 +54,16 @@ class CartPage extends GetView<CartController> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (c, i) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: ColorResource.color_main_light,
-                      borderRadius: BorderRadius.circular(5),
+                  return Visibility(
+                    visible:
+                        controller.currentProductInCart[i].productType == 1,
+                    replacement: ItemProductNoBox(
+                      productItem: controller.currentProductInCart[i],
+                      controller: controller,
                     ),
-                    padding: EdgeInsets.all(10),
-                    child: Visibility(
-                      visible:
-                          controller.currentProductInCart[i].productType == 1,
-                      replacement: ItemProductNoBox(
-                        productItem: controller.currentProductInCart[i],
-                      ),
-                      child: ItemProductWithBox(
-                        productItem: controller.currentProductInCart[i],
-                      ),
+                    child: ItemProductWithBox(
+                      productItem: controller.currentProductInCart[i],
+                      controller: controller,
                     ),
                   );
                 },

@@ -38,7 +38,7 @@ class MoonCakeController extends GetxController {
       productOrder = ProductOrder();
       productOrder?.productMoonCakeList = [];
       productOrder?.boxCake = product;
-      productOrder?.quantity = 1;
+      productOrder?.quantity.value = 1;
       productOrder?.productType = 2;
 
       AppCommon.singleton.currentProductInCart.add(productOrder!);
@@ -167,7 +167,7 @@ class MoonCakeController extends GetxController {
     productOrder = ProductOrder();
     productOrder?.productMoonCakeList = [];
     productOrder?.boxCake = product;
-    productOrder?.quantity = 1;
+    productOrder?.quantity.value = 1;
     productOrder?.productType = 1;
 
     isStatusBuyBox.value = true;

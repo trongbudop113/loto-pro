@@ -22,7 +22,7 @@ class CartController extends GetxController {
   double countTotalPrice() {
     double price = 0.0;
     for (ProductOrder element in currentProductInCart) {
-      price = price + element.productPrice;
+      price = price + (element.productPrice * element.quantity.value);
     }
     finalPrice.value = price;
     return price;
@@ -34,4 +34,15 @@ class CartController extends GetxController {
 
   List<ProductOrder> get currentProductInCart =>
       AppCommon.singleton.currentProductInCart;
+
+  void onTapSubtract(ProductOrder productItem) {
+    if (productItem.quantity.value == 1) return;
+    productItem.quantity.value--;
+    countTotalPrice();
+  }
+
+  void onTapPlus(ProductOrder productItem) {
+    productItem.quantity.value++;
+    countTotalPrice();
+  }
 }

@@ -53,7 +53,7 @@ class MoonCakeDetailController extends GetxController {
     ProductOrder productOrder = ProductOrder();
     productOrder.productMoonCakeList = [];
     productOrder.productMoonCakeList!.add(moonCakeProduct!);
-    productOrder.quantity = 1;
+    productOrder.quantity.value = 1;
     AppCommon.singleton.currentProductInCart.add(productOrder);
     quantity.value = 1;
     print("Thêm thành công");

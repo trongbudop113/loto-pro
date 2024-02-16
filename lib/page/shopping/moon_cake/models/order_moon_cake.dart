@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 
 class OrderMoonCake {
@@ -58,7 +59,7 @@ class ProductOrder {
   String? productOrderID;
   List<CakeProduct>? productMoonCakeList;
   CakeProduct? boxCake;
-  int quantity = 1;
+  RxInt quantity = 1.obs;
   int productType = 2;
 
   int get limitQuantityCanBuy {
@@ -93,7 +94,7 @@ class ProductOrder {
     data['product_order_id'] = productOrderID;
     data['products'] = productMoonCakeList;
     data['box_cake'] = boxCake;
-    data['quantity'] = quantity;
+    data['quantity'] = quantity.value;
     data['product_type'] = productType;
     return data;
   }
