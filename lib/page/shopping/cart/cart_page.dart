@@ -1,50 +1,139 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/common/common.dart';
 import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/items/item_product_no_box.dart';
 import 'package:loto/page/shopping/cart/items/item_product_with_box.dart';
 import 'package:loto/src/color_resource.dart';
-
-import '../moon_cake/models/order_moon_cake.dart';
+import 'package:loto/src/style_resource.dart';
+import 'package:lottie/lottie.dart';
 
 class CartPage extends GetView<CartController> {
   const CartPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    List<ProductOrder> currentProductInCart =
-        AppCommon.singleton.currentProductInCart;
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Giỏ hàng"),
       ),
-      body: ListView.separated(
-        padding: EdgeInsets.all(15),
-        itemBuilder: (c, i) {
-          return Container(
-            decoration: BoxDecoration(
-              color: ColorResource.color_main_light,
-              borderRadius: BorderRadius.circular(5),
-            ),
-            padding: EdgeInsets.all(10),
-            child: Visibility(
-              visible: currentProductInCart[i].productType == 1,
-              replacement: ItemProductNoBox(
-                productItem: currentProductInCart[i],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Visibility(
+              visible: controller.currentProductInCart.isNotEmpty,
+              replacement: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 250,
+                    child: Lottie.asset(
+                      'assets/cart_empty.json',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Chưa có sản phẩm trong giỏ hàng",
+                    style: TextStyleResource.textStyleBlack(context).copyWith(
+                      fontSize: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                ],
               ),
-              child: ItemProductWithBox(
-                productItem: currentProductInCart[i],
+              child: ListView.separated(
+                padding: EdgeInsets.all(15),
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (c, i) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: ColorResource.color_main_light,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    padding: EdgeInsets.all(10),
+                    child: Visibility(
+                      visible:
+                          controller.currentProductInCart[i].productType == 1,
+                      replacement: ItemProductNoBox(
+                        productItem: controller.currentProductInCart[i],
+                      ),
+                      child: ItemProductWithBox(
+                        productItem: controller.currentProductInCart[i],
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (c, i) {
+                  return Container(height: 15);
+                },
+                itemCount: controller.currentProductInCart.length,
               ),
             ),
-          );
-        },
-        separatorBuilder: (c, i) {
-          return Container(height: 15);
-        },
-        itemCount: currentProductInCart.length,
+            Container(
+              height: 2,
+              color: Colors.black,
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                right: 15,
+                top: 20,
+                bottom: 20,
+              ),
+              child: Column(
+                children: [
+                  _buildRowPrice(context, title: "Tạm tính", price: 0),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  _buildRowPrice(context, title: "Giảm giá", price: 0),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Obx(() => _buildRowPrice(
+                        context,
+                        title: "Tổng tiền",
+                        price: controller.finalPrice.value,
+                      )),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildRowPrice(BuildContext context,
+      {required String title, required double price}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          '$title:',
+          style: TextStyleResource.textStyleBlack(context),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        SizedBox(
+          width: Get.width * 0.3,
+          child: Text(
+            controller.formatCurrency(price),
+            textAlign: TextAlign.end,
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        ),
+      ],
     );
   }
 }

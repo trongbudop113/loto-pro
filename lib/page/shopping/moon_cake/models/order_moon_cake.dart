@@ -66,6 +66,19 @@ class ProductOrder {
     return boxCake!.productType ?? 0;
   }
 
+  double get productPrice {
+    if (productType == 2) return (boxCake!.productPrice ?? 0).toDouble();
+
+    double price = 0.0;
+    price = price + (boxCake!.productPrice ?? 0).toDouble();
+
+    for (CakeProduct element in (productMoonCakeList ?? [])) {
+      price = price + (element.productPrice ?? 0).toDouble();
+    }
+
+    return price;
+  }
+
   ProductOrder({this.productOrderID, this.productMoonCakeList, this.boxCake});
 
   ProductOrder.fromJson(Map<String, dynamic> json) {
