@@ -111,7 +111,10 @@ class ItemProductWithBox extends StatelessWidget {
                           height: 70,
                           padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Colors.white60,
+                            color: controller.getBackgroundColor(
+                                productItem
+                                    .productMoonCakeList![index].productColor,
+                                context),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           margin: EdgeInsets.only(right: 10),

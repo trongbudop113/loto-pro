@@ -9,8 +9,11 @@ import 'package:loto/src/style_resource.dart';
 class ItemProductNoBox extends StatelessWidget {
   final ProductOrder productItem;
   final CartController controller;
-  const ItemProductNoBox(
-      {super.key, required this.productItem, required this.controller});
+  const ItemProductNoBox({
+    super.key,
+    required this.productItem,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,8 @@ class ItemProductNoBox extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: ColorResource.color_main_dark,
+                      color: controller.getBackgroundColor(
+                          productItem.boxCake!.productColor, context),
                     ),
                     padding: EdgeInsets.all(5),
                     child: Image.network(
@@ -127,7 +131,7 @@ class ItemProductNoBox extends StatelessWidget {
                   child: Container(
                     height: 35,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: ColorResource.color_main_light,
                     ),
                     child: Icon(Icons.remove),

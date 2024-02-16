@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
@@ -44,5 +45,10 @@ class CartController extends GetxController {
   void onTapPlus(ProductOrder productItem) {
     productItem.quantity.value++;
     countTotalPrice();
+  }
+
+  Color getBackgroundColor(String? color, BuildContext context) {
+    if (color == null) return Theme.of(context).backgroundColor;
+    return Color(int.parse("0xFF$color"));
   }
 }
