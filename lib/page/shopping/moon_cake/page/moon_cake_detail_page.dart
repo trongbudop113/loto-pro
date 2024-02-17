@@ -1,10 +1,8 @@
-import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/common/common.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
 import 'package:loto/src/style_resource.dart';
-import 'package:loto/common/common.dart';
 
 class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
 
@@ -78,14 +76,14 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
                 style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 28),
               ),
             ),
-            Container(
+            Obx(() => Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.centerLeft,
               child: Text(
-                "Giá: ${controller.formatCurrency(controller.moonCakeProduct?.productPrice ?? 0)}",
+                "Giá: ${controller.formatCurrency(controller.productPrice.value)}",
                 style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
               ),
-            ),
+            )),
             Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.centerLeft,
@@ -249,7 +247,7 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
             borderRadius: BorderRadius.circular(5),
             color: Colors.pink
         ),
-        child: const Icon(Icons.add, size: 15,),
+        child: const Icon(Icons.remove, size: 15,),
       ),
     );
   }

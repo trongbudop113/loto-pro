@@ -7,6 +7,7 @@ import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_box_layout.dart';
 import 'package:loto/page_config.dart';
@@ -31,9 +32,7 @@ class MoonCakeController extends GetxController {
   final RxBool isStatusBuyBox = false.obs;
 
   void listClick(CakeProduct product) async {
-    // await runAddToCartAnimation(widgetKey);
-    // await cartKey.currentState!
-    //     .runCartAnimation((++cartQuantityItems).toString());
+    print(product.toJson());
     if (!isStatusBuyBox.value) {
       productOrder = ProductOrder();
       productOrder?.productMoonCakeList = [];
@@ -47,12 +46,14 @@ class MoonCakeController extends GetxController {
     if (listCakeBoxTemp.length == productOrder?.boxCake!.productType) {
       return;
     }
-    if (checkExistedInBox(product)) {
-      listCakeBoxTemp
-          .removeWhere((element) => element.productID == product.productID);
-      return;
-    }
+    // if (checkExistedInBox(product)) {
+    //   listCakeBoxTemp
+    //       .removeWhere((element) => element.productID == product.productID);
+    //   return;
+    // }
     listCakeBoxTemp.add(product);
+
+
   }
 
   bool checkExistedInBox(CakeProduct product) {
@@ -88,7 +89,7 @@ class MoonCakeController extends GetxController {
     return products.snapshots();
   }
 
-  String formatCurrency(int d) {
+  String formatCurrency(double d) {
     return "${FormatUtils.oCcy.format(d)}đ";
   }
 

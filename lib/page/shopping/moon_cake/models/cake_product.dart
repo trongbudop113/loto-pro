@@ -1,10 +1,12 @@
+import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
+
 class CakeProduct {
   String? productID;
   String? productName;
   int? productType;
   String? productImage;
   String? productColor;
-  int? productPrice;
+  double? productPrice;
   bool? isShow;
 
   int numberEggs = 1;
@@ -21,7 +23,7 @@ class CakeProduct {
       });
 
   CakeProduct.fromJson(Map<String, dynamic> json) {
-    productPrice = json['product_price'];
+    productPrice = double.parse(json['product_price'].toString());
     productType = json['product_type'];
     productName = json['product_name'];
     productColor = json['product_color'];
@@ -32,7 +34,7 @@ class CakeProduct {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['product_id'] = productPrice;
+    data['product_price'] = productPrice;
     data['product_type'] = productType;
     data['product_name'] = productName;
     data['product_image'] = productImage;

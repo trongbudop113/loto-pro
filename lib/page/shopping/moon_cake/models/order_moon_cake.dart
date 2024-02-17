@@ -59,6 +59,7 @@ class ProductOrder {
   List<CakeProduct>? productMoonCakeList;
   CakeProduct? boxCake;
   RxInt quantity = 1.obs;
+  ///1: With Box, 2: No Box
   int productType = 2;
 
   int get limitQuantityCanBuy {
