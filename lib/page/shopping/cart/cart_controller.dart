@@ -87,4 +87,9 @@ class CartController extends GetxController {
     AppCommon.singleton.currentProductInCart.clear();
     Get.back();
   }
+
+  void onRemoveAllCart() {
+    AppCommon.singleton.currentProductInCart.clear();
+    countTotalPrice();
+  }
 }

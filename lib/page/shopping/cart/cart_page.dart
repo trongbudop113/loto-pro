@@ -12,13 +12,38 @@ class CartPage extends GetView<CartController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Giỏ hàng"),
+        leading: GestureDetector(
+          onTap: () => Get.back(),
+          child: Container(
+            width: 55,
+            child: Icon(Icons.arrow_back),
+            color: Colors.transparent,
+          ),
+        ),
+        actions: [
+          Obx(() => Visibility(
+            visible: controller.currentProductInCart.isNotEmpty,
+            child: GestureDetector(
+              onTap: (){
+                controller.onRemoveAllCart();
+              },
+              child: Container(
+                width: 55,
+                alignment: Alignment.center,
+                child: Icon(Icons.delete),
+                color: Colors.transparent,
+              ),
+            ),
+          )),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Visibility(
+            Obx(() => Visibility(
               visible: controller.currentProductInCart.isNotEmpty,
               replacement: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -56,7 +81,7 @@ class CartPage extends GetView<CartController> {
                 itemBuilder: (c, i) {
                   return Visibility(
                     visible:
-                        controller.currentProductInCart[i].productType == 1,
+                    controller.currentProductInCart[i].productType == 1,
                     replacement: ItemProductNoBox(
                       productItem: controller.currentProductInCart[i],
                       controller: controller,
@@ -72,39 +97,44 @@ class CartPage extends GetView<CartController> {
                 },
                 itemCount: controller.currentProductInCart.length,
               ),
-            ),
+            )),
             Container(
               height: 2,
               color: Colors.black,
             ),
-            Container(
-              margin: EdgeInsets.only(
-                right: 15,
-                top: 20,
-                bottom: 20,
+            Obx(() => Visibility(
+              visible: controller.currentProductInCart.isNotEmpty,
+              child: Container(
+                margin: EdgeInsets.only(
+                  right: 15,
+                  top: 20,
+                  bottom: 20,
+                ),
+                child: Column(
+                  children: [
+                    _buildRowPrice(context, title: "Tạm tính", price: 0),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    _buildRowPrice(context, title: "Giảm giá", price: 0),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Obx(() => _buildRowPrice(
+                      context,
+                      title: "Tổng tiền",
+                      price: controller.finalPrice.value,
+                    )),
+                  ],
+                ),
               ),
-              child: Column(
-                children: [
-                  _buildRowPrice(context, title: "Tạm tính", price: 0),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  _buildRowPrice(context, title: "Giảm giá", price: 0),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  Obx(() => _buildRowPrice(
-                        context,
-                        title: "Tổng tiền",
-                        price: controller.finalPrice.value,
-                      )),
-                ],
-              ),
-            )
+            )),
           ],
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
+        color: Colors.transparent,
         child: GestureDetector(
           onTap: (){
             controller.onTapOrder();

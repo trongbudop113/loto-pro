@@ -23,8 +23,6 @@ class MoonCakeController extends GetxController {
   ContainerTransitionType transitionType = ContainerTransitionType.fade;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  GlobalKey<CartIconKey> cartKey = GlobalKey<CartIconKey>();
-  late Function(GlobalKey) runAddToCartAnimation;
   var cartQuantityItems = 0;
 
   ProductOrder? productOrder;
