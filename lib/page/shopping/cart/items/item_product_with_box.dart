@@ -144,6 +144,24 @@ class ItemProductWithBox extends StatelessWidget {
           ),
           child: Row(
             children: [
+              GestureDetector(
+                onTap: () {
+                  controller.onTapRemoveProductItem(productItem);
+                },
+                child: Container(
+                  height: 35,
+                  width: 80,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: ColorResource.color_main_light,
+                  ),
+                  child: Icon(Icons.delete),
+                ),
+              ),
+              Container(
+                height: 35,
+                width: 2,
+              ),
               Expanded(
                 child: GestureDetector(
                   onTap: () {

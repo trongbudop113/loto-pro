@@ -1,4 +1,3 @@
-import 'package:add_to_cart_animation/add_to_cart_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
@@ -66,52 +65,86 @@ class MoonCakePage extends GetView<MoonCakeController> {
 
   Positioned _buildBottomWidget(BuildContext context) {
     return Positioned(
-      bottom: MediaQuery.of(context).padding.bottom + 10,
-      left: 10,
-      right: 10,
-      child: GestureDetector(
-        onTap: () {
-          controller.onShowOrCompleteBuyBox(context);
-        },
-        child: Container(
-          height: 55,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(60),
-            color: Colors.amber,
-          ),
-          alignment: Alignment.center,
-          child: Obx(() => Visibility(
-                visible: controller.isStatusBuyBox.value,
-                replacement: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      CustomIcon.gift,
-                      color: Colors.white,
-                      size: 18,
-                    ),
-                    SizedBox(width: 10),
-                    Container(
-                      margin: EdgeInsets.only(top: 5),
-                      child: Text(
-                        "Mua Theo Hộp",
-                        style: TextStyleResource.textStyleWhite(context),
+        bottom: MediaQuery.of(context).padding.bottom + 10,
+        left: 10,
+        right: 10,
+        child: Obx(() => Visibility(
+              visible: !controller.isStatusBuyBox.value,
+              replacement: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.onTapDeleteBuyBox();
+                      },
+                      child: Container(
+                        height: 55,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(60),
+                            bottomLeft: Radius.circular(60),
+                          ),
+                          color: Colors.redAccent,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text("Xóa"),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        controller.onShowOrCompleteBuyBox(context);
+                      },
+                      child: Container(
+                        height: 55,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(60),
+                            bottomRight: Radius.circular(60),
+                          ),
+                          color: Colors.amber,
+                        ),
+                        alignment: Alignment.center,
+                        child: Text("Thêm vào giỏ"),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  controller.onShowOrCompleteBuyBox(context);
+                },
                 child: Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Text(
-                    "Thêm vào giỏ hàng",
-                    style: TextStyleResource.textStyleWhite(context),
+                  height: 55,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(60),
+                    color: Colors.amber,
+                  ),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        CustomIcon.gift,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                      SizedBox(width: 10),
+                      Container(
+                        margin: EdgeInsets.only(top: 5),
+                        child: Text(
+                          "Mua Theo Hộp",
+                          style: TextStyleResource.textStyleWhite(context),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              )),
-        ),
-      ),
-    );
+              ),
+            )));
   }
 
   Positioned _buildProductSelectBox(BuildContext context) {
@@ -176,6 +209,26 @@ class MoonCakePage extends GetView<MoonCakeController> {
                           ],
                         ),
                       ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.onRemoveItemInBox(i);
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          padding: EdgeInsets.all(5),
+                          alignment: Alignment.center,
+                          color: Colors.transparent,
+                          child: const Icon(
+                            Icons.highlight_remove_outlined,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 );
@@ -186,7 +239,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
                 );
               },
               itemCount: controller.listCakeBoxTemp.length +
-                  ((controller.productOrder?.boxCake!.productType ?? 0) -
+                  ((controller.productOrder?.boxCake?.productType ?? 0) -
                       controller.listCakeBoxTemp.length),
               scrollDirection: Axis.horizontal,
             ),

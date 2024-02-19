@@ -18,7 +18,7 @@ class SelectBoxLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 50),
+            margin: const EdgeInsets.symmetric(horizontal: 40),
             height: MediaQuery.of(context).size.height * 0.75,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -27,7 +27,7 @@ class SelectBoxLayout extends StatelessWidget {
             alignment: Alignment.center,
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -57,10 +57,11 @@ class SelectBoxLayout extends StatelessWidget {
                   },
                   child: Container(
                     decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.vertical(
-                          bottom: Radius.circular(12),
-                        )),
+                      color: Colors.amber,
+                      borderRadius: BorderRadius.vertical(
+                        bottom: Radius.circular(12),
+                      ),
+                    ),
                     height: 48,
                     alignment: Alignment.center,
                     child: Text("Đóng"),
@@ -76,45 +77,47 @@ class SelectBoxLayout extends StatelessWidget {
 
   Widget _loadingBoxWidget() {
     return Expanded(
-      child: Column(
-        children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                color: Colors.grey,
-                margin: EdgeInsets.symmetric(
-                  horizontal: 10,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.grey,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                color: Colors.grey,
+            SizedBox(
+              height: 15,
+            ),
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.grey,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                color: Colors.grey,
+            SizedBox(
+              height: 15,
+            ),
+            AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  color: Colors.grey,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -122,7 +125,7 @@ class SelectBoxLayout extends StatelessWidget {
   Widget _loadingMainWidget(BuildContext context, snapshot) {
     return Expanded(
       child: ListView.separated(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         itemBuilder: (c, index) {
           CakeProduct product = CakeProduct.fromJson(
               snapshot.data!.docs[index].data() as Map<String, dynamic>);
@@ -208,6 +211,8 @@ class SelectBoxLayout extends StatelessWidget {
           crossAxisCount: 2,
           mainAxisSpacing: 2,
           crossAxisSpacing: 2,
+          padding: EdgeInsets.zero,
+          physics: const NeverScrollableScrollPhysics(),
           children: List.generate(product.productType ?? 2, (e) {
             return Container(
               decoration: BoxDecoration(

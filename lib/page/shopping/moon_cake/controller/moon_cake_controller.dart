@@ -1,4 +1,3 @@
-import 'package:add_to_cart_animation/add_to_cart_icon.dart';
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:loto/common/common.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
-import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_box_layout.dart';
 import 'package:loto/page_config.dart';
@@ -32,6 +30,11 @@ class MoonCakeController extends GetxController {
   void listClick(CakeProduct product) async {
     print(product.toJson());
     if (!isStatusBuyBox.value) {
+      if (checkExistedInBox(product) != null) {
+        checkExistedInBox(product)!.quantity += product.quantity;
+        AppCommon.singleton.currentProductInCart.refresh();
+        return;
+      }
       productOrder = ProductOrder();
       productOrder?.productMoonCakeList = [];
       productOrder?.boxCake = product;
@@ -44,23 +47,20 @@ class MoonCakeController extends GetxController {
     if (listCakeBoxTemp.length == productOrder?.boxCake!.productType) {
       return;
     }
-    // if (checkExistedInBox(product)) {
-    //   listCakeBoxTemp
-    //       .removeWhere((element) => element.productID == product.productID);
-    //   return;
-    // }
     listCakeBoxTemp.add(product);
-
-
   }
 
-  bool checkExistedInBox(CakeProduct product) {
-    var data = listCakeBoxTemp
-        .firstWhereOrNull((element) => element.productID == product.productID);
+  ProductOrder? checkExistedInBox(CakeProduct product) {
+    var data =
+        AppCommon.singleton.currentProductInCart.firstWhereOrNull((element) {
+      return product.productID == element.boxCake!.productID &&
+          product.numberEggs == element.boxCake!.numberEggs &&
+          product.productType == element.boxCake!.productType;
+    });
     if (data != null) {
-      return true;
+      return data!;
     }
-    return false;
+    return null;
   }
 
   @override
@@ -105,8 +105,8 @@ class MoonCakeController extends GetxController {
   }
 
   ProductOrder? currentProductInCart(ProductOrder product) {
-    var data = AppCommon.singleton.currentProductInCart
-        .firstWhereOrNull((e) => e.boxCake?.productID == product.boxCake?.productID);
+    var data = AppCommon.singleton.currentProductInCart.firstWhereOrNull(
+        (e) => e.boxCake?.productID == product.boxCake?.productID);
     if (data != null) {
       return data;
     }
@@ -172,5 +172,16 @@ class MoonCakeController extends GetxController {
     isStatusBuyBox.value = true;
 
     Get.back();
+  }
+
+  void onTapDeleteBuyBox() {
+    productOrder = ProductOrder();
+
+    isStatusBuyBox.value = false;
+    listCakeBoxTemp.clear();
+  }
+
+  void onRemoveItemInBox(int index) {
+    listCakeBoxTemp.removeAt(index);
   }
 }

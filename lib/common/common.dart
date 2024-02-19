@@ -15,6 +15,11 @@ class AppCommon {
 
   RxInt get countCart {
     if (currentProductInCart.isEmpty) return 0.obs;
+    return currentProductInCart.length.obs;
+  }
+
+  RxInt get countTotalCart {
+    if (currentProductInCart.isEmpty) return 0.obs;
     int i = 0;
     for (var w in currentProductInCart) {
       i = i + w.quantity.value;

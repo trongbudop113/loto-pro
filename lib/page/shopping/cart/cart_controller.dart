@@ -16,7 +16,6 @@ class CartBinding extends Bindings {
 }
 
 class CartController extends GetxController {
-
   final RxDouble finalPrice = 0.0.obs;
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -43,6 +42,11 @@ class CartController extends GetxController {
   List<ProductOrder> get currentProductInCart =>
       AppCommon.singleton.currentProductInCart;
 
+  void onTapRemoveProductItem(ProductOrder productItem) {
+    AppCommon.singleton.currentProductInCart.remove(productItem);
+    countTotalPrice();
+  }
+
   void onTapSubtract(ProductOrder productItem) {
     if (productItem.quantity.value == 1) return;
     productItem.quantity.value--;
@@ -60,7 +64,7 @@ class CartController extends GetxController {
   }
 
   Future<void> onTapOrder() async {
-    if(currentProductInCart.isEmpty) return;
+    if (currentProductInCart.isEmpty) return;
     CollectionReference cakeRef = firestore.collection(DataRowName.Cakes.name);
     DateTime current = DateTime.now();
 
@@ -72,17 +76,14 @@ class CartController extends GetxController {
     orderCart.discountCart = 0.0;
     orderCart.statusOrder = 1;
     orderCart.cartPrice = finalPrice.value;
-    orderCart.userOrder = UserLogin(
-      name: "Trong",
-      phoneNumber: "0356882046",
-      uuid: "01"
-    );
+    orderCart.userOrder =
+        UserLogin(name: "Trong", phoneNumber: "0356882046", uuid: "01");
 
-
-    await cakeRef.doc(DataCollection.Orders.name).collection(current.millisecondsSinceEpoch.toString()).doc(current.millisecondsSinceEpoch.toString()).set(
-      orderCart.toJson()
-    );
-
+    await cakeRef
+        .doc(DataCollection.Orders.name)
+        .collection(current.millisecondsSinceEpoch.toString())
+        .doc(current.millisecondsSinceEpoch.toString())
+        .set(orderCart.toJson());
 
     AppCommon.singleton.currentProductInCart.clear();
     Get.back();
