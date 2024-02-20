@@ -250,6 +250,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
   }
 
   Widget _buildListProduct(BuildContext context) {
+    int countColumn = context.isLargeTablet ? 5 : (context.isTablet ? 3 : 2);
     return Column(
       children: [
         SizedBox(
@@ -290,9 +291,8 @@ class MoonCakePage extends GetView<MoonCakeController> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Obx(() => GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: countColumn,
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10,
                           childAspectRatio: 0.9,
