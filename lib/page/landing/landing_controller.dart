@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/common.dart';
 import 'package:loto/core/custom_get_controller.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:loto/models/user_login.dart';
+import 'package:loto/page/admin/dashboard/dashboard_page.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/page/landing/provider/banner_provider.dart';
 import 'package:loto/page/landing/provider/block_body_provider.dart';
@@ -39,12 +42,22 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
     print(blockLeft);
   }
 
-  void onClickItemBlock(BlockMenu menu, {required String argument, String? image}){
+  Future<void> onClickItemBlock(BlockMenu menu, {required String argument, String? image}) async {
     var isLogin = FirebaseAuth.instance.currentUser == null;
     print(isLogin);
     if((menu.isRequireLogin ?? false) && isLogin){
       Get.toNamed(PageConfig.LOGIN);
       return;
+    }
+    User? user = AppCommon.singleton.currentUser;
+    if(user != null){
+      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      final getUSer = await usersReference.doc(user.uid ?? '').get();
+      UserLogin userLogin = AppCommon.singleton.userLogin(getUSer.data());
+      if((userLogin.isAdmin ?? false) && (menu.page ?? '') == PageConfig.PROFILE){
+        Get.to(() => DashBoard());
+        return;
+      }
     }
     Get.toNamed(menu.page ?? '', arguments: {
       "blockID" : argument,

@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
 class AppCommon {
@@ -30,6 +32,10 @@ class AppCommon {
 
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
+  UserLogin userLogin(Object? data){
+    return UserLogin.fromJson(data as Map<String, dynamic>);
+  }
+
   bool get isLogin =>
-      currentUser != null && (currentUser?.email ?? '').isNotEmpty;
+      currentUser != null && (currentUser?.uid ?? '').isNotEmpty;
 }

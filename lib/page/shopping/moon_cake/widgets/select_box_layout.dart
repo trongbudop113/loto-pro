@@ -11,6 +11,9 @@ class SelectBoxLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -43,12 +46,12 @@ class SelectBoxLayout extends StatelessWidget {
                     stream: controller.streamGetListBox(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return _loadingBoxWidget();
+                        return _loadingBoxWidget(width: width);
                       }
                       if (snapshot.hasData) {
-                        return _loadingMainWidget(context, snapshot);
+                        return _loadingMainWidget(context, snapshot, width : width);
                       } else {
-                        return _loadingBoxWidget();
+                        return _loadingBoxWidget(width: width);
                       }
                     }),
                 GestureDetector(
@@ -75,56 +78,37 @@ class SelectBoxLayout extends StatelessWidget {
     );
   }
 
-  Widget _loadingBoxWidget() {
+  Widget _loadingBoxWidget({required double width}) {
+    final int crossAxisCount = width > 1000 ? 3 : (width > 600 ? 2 : 1);
     return Expanded(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  color: Colors.grey,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                ),
+      child: GridView.builder(
+        padding: const EdgeInsets.all(10),
+        itemBuilder: (c, index) {
+          return AspectRatio(
+            aspectRatio: 16/ 9,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                color: Colors.grey,
+                alignment: Alignment.center,
               ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            AspectRatio(
-              aspectRatio: 16 / 9,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: Container(
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-          ],
+          );
+        },
+        itemCount: 12,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: 16 / 9,
+          mainAxisSpacing: 10, crossAxisSpacing: 10,
         ),
       ),
     );
   }
 
-  Widget _loadingMainWidget(BuildContext context, snapshot) {
+  Widget _loadingMainWidget(BuildContext context, snapshot, {required double width}) {
+    final int crossAxisCount = width > 1000 ? 3 : (width > 600 ? 2 : 1);
     return Expanded(
-      child: ListView.separated(
+      child: GridView.builder(
         padding: const EdgeInsets.all(10),
         itemBuilder: (c, index) {
           CakeProduct product = CakeProduct.fromJson(
@@ -157,10 +141,12 @@ class SelectBoxLayout extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (c, index) => Container(
-          height: 15,
-        ),
         itemCount: snapshot.data!.docs.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: 16 / 9,
+          mainAxisSpacing: 10, crossAxisSpacing: 10,
+        ),
       ),
     );
   }

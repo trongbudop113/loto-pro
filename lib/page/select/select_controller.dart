@@ -24,7 +24,7 @@ class SelectController extends GetxController {
       FirebaseFirestore.instance.collection(DataRowName.Papers.name);
 
   //String userID = FirebaseAuth.instance.currentUser!.uid;
-  String userEmail = FirebaseAuth.instance.currentUser!.email ?? '';
+  String userEmail = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   List<SelectPaper> listSelected = [];
 
@@ -163,7 +163,7 @@ class SelectController extends GetxController {
         firestore.collection(DataRowName.Users.name);
     CollectionReference roomCollection =
         firestore.collection(DataRowName.Rooms.name);
-    String userEmail = FirebaseAuth.instance.currentUser?.email ?? '';
+    String userEmail = FirebaseAuth.instance.currentUser?.uid ?? '';
     String userID = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     var room = roomCollection.doc(roomID);

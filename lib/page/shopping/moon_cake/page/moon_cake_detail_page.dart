@@ -8,6 +8,10 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
 
   @override
   Widget build(BuildContext context) {
+
+    final width = MediaQuery.of(context).size.width;
+    final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(controller.moonCakeProduct?.productName ?? ''),
@@ -44,70 +48,24 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            AspectRatio(
-              aspectRatio: 1,
-              child: Container(
-                color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(50),
-                child: Image.network("https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
-              ),
+            context.isLargeTablet ?
+            Row(children: [
+              _buildImage("", context, width: maxWidthImage, height: maxWidthImage),
+              SizedBox(width: 5,),
+              _buildListImage(context, width: width),
+              SizedBox(width: 10,),
+              Expanded(
+                child: _buildDescription(context, width: width),
+              )
+            ],) :
+            Column(
+              children: [
+                _buildImage("", context, width: width, height: width),
+                _buildListImage(context, width: width),
+                _buildDescription(context, width: width)
+              ],
             ),
-            Container(
-              height: 5,
-              child: Row(
-                children: List.generate(5, (e){
-                  return Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(right: e == 4 ? 0 : 5),
-                      alignment: Alignment.center,
-                      color: Colors.black,
-                    ),
-                  );
-                }),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              child: Text(
-                controller.moonCakeProduct?.productName ?? '',
-                style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 28),
-              ),
-            ),
-            Obx(() => Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Giá: ${controller.formatCurrency(controller.productPrice.value)}",
-                style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            )),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Loại bánh: ${controller.moonCakeProduct?.productType}g",
-                style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Thành phần:",
-                style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20),
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10).copyWith(left: 25, right: 15),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Bột mì, đường, bơ đậu phộng, dầu ăn, bí xanh, hạt dưa, mứt sen, lạp xưởng",
-                style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20, height: 1.3),
-              ),
-            ),
+
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.centerLeft,
@@ -126,7 +84,7 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
                         controller.selectEgg(e);
                       },
                       child: Container(
-                        width: (Get.width - 40)/ 3,
+                        width: (width - 40)/ 3,
                         margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
@@ -199,6 +157,107 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildImage(String image, BuildContext context, {required double width, required double height}){
+    return Container(
+      width: width,
+      height: width,
+      color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(50),
+      child: Image.network("https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
+    );
+  }
+
+  Widget _buildDescription(BuildContext context, {required double width}){
+
+    final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
+    final double? maxHeightDes = context.isLargeTablet ? maxWidthImage : null;
+
+    return SizedBox(
+      height: maxHeightDes,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 10),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            child: Text(
+              controller.moonCakeProduct?.productName ?? '',
+              style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 28),
+            ),
+          ),
+          Obx(() => Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Giá: ${controller.formatCurrency(controller.productPrice.value)}",
+              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          )),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Loại bánh: ${controller.moonCakeProduct?.productType}g",
+              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Thành phần:",
+              style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 10).copyWith(left: 25, right: 15),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Bột mì, đường, bơ đậu phộng, dầu ăn, bí xanh, hạt dưa, mứt sen, lạp xưởng",
+              style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20, height: 1.3),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListImage(BuildContext context, {required double width}){
+    final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
+    final double height = context.isLargeTablet ? maxWidthImage : ((width - 20) / 5);
+    final double widthList = context.isLargeTablet ? ((height - 20) / 5) : width;
+    final Axis direction = context.isLargeTablet ? Axis.vertical : Axis.horizontal;
+    final double? heightItem = context.isLargeTablet ? ((height - 20) / 5) : null;
+    final double mgRight = context.isLargeTablet ? 0 : 5;
+    final double mgBottom = context.isLargeTablet ? 5 : 0;
+
+
+    return Container(
+      margin: const EdgeInsets.only(top: 5),
+      height: height,
+      width: widthList,
+      child: ListView(
+        scrollDirection: direction,
+        children: List.generate(6, (e){
+          return Container(
+            height: heightItem,
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.only(right: mgRight, bottom: mgBottom),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(3),
+              color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
+            ),
+            child: Image.network("https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
+          );
+        }),
+      )
     );
   }
 

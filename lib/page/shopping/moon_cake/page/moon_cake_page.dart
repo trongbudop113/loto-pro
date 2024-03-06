@@ -23,17 +23,18 @@ class MoonCakePage extends GetView<MoonCakeController> {
         children: [
           _buildListProduct(context),
           _buildProductSelectBox(context),
-          _buildBottomWidget(context)
+          _buildBottomWidget(context),
+          _buildFloatWidget(context)
         ],
       ),
-      floatingActionButton: _buildFloatWidget(context),
+      //floatingActionButton: _buildFloatWidget(context),
     );
   }
 
-  DraggableFab _buildFloatWidget(BuildContext context) {
-    return DraggableFab(
-      initPosition: Offset(Get.width - 10, Get.height - 70),
-      securityBottom: 80,
+  Positioned _buildFloatWidget(BuildContext context) {
+    return Positioned(
+      bottom: 150,
+      right: 10,
       child: FloatingActionButton(
         onPressed: () {
           controller.goToCart();
@@ -47,19 +48,19 @@ class MoonCakePage extends GetView<MoonCakeController> {
               bottom: 6,
               right: 6,
               child: Obx(() => Container(
-                    padding: EdgeInsets.all(3),
-                    alignment: Alignment.center,
-                    child: Text(
-                      AppCommon.singleton.countCart.value.toString(),
-                      style: TextStyleResource.textStyleBlack(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )),
+                padding: EdgeInsets.all(3),
+                alignment: Alignment.center,
+                child: Text(
+                  AppCommon.singleton.countCart.value.toString(),
+                  style: TextStyleResource.textStyleBlack(context).copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )),
             )
           ],
         ),
-      ),
+      )
     );
   }
 
@@ -250,7 +251,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
   }
 
   Widget _buildListProduct(BuildContext context) {
-    int countColumn = context.isLargeTablet ? 5 : (context.isTablet ? 3 : 2);
+    int countColumn = context.mediaQuerySize.width > 1100 ? 5 : (context.mediaQuerySize.width < 600 ? 2 : 3);
     return Column(
       children: [
         SizedBox(

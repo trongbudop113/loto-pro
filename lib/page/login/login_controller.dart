@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:loto/common/common.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page_config.dart';
@@ -20,6 +21,9 @@ class LoginController extends GetxController {
 
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController otpController = TextEditingController();
+
+  final RxBool isModePhone = false.obs;
 
   Future<void> onClickLogin() async {
     var user = await signInWithGoogle();
@@ -27,7 +31,51 @@ class LoginController extends GetxController {
     Get.back(result: true);
   }
 
+  String verificationId = "";
+
+  Future<void> onSendOTP() async {
+    String phone = "+84${int.parse(userNameController.text.trim().toString())}";
+    print(phone);
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phone,
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance.signInWithCredential(credential).then(
+              (value) => print('Logged In Successfully'),
+        );
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        print(e.message);
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        this.verificationId = verificationId ?? '';
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        print("time out");
+      },
+    );
+  }
+
+  Future<UserCredential> onVerifyOTPCode() async {
+    String otp = otpController.text.trim();
+    print(otp);
+    PhoneAuthCredential credential = PhoneAuthProvider.credential(
+      verificationId: verificationId,
+      smsCode: otp,
+    );
+    final user = await FirebaseAuth.instance.signInWithCredential(credential);
+    return user;
+  }
+
   Future<void> onClickLoginEmail() async {
+    if(isModePhone.value){
+      if(otpController.text.isNotEmpty){
+        var user = await onVerifyOTPCode();
+        print(user.user.toString());
+        await saveUserInfo(user);
+        Get.back(result: true);
+      }
+      return;
+    }
     if(userNameController.text.isEmpty && passwordController.text.isEmpty){
       return;
     }
@@ -67,11 +115,16 @@ class LoginController extends GetxController {
   Future<void> saveUserInfo(UserCredential user) async {
     try{
       CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-      final getUSer = await usersReference.doc(user.user?.email ?? '').get();
+      final getUSer = await usersReference.doc(user.user?.uid ?? '').get();
       if(!getUSer.exists){
+        String userName = user.user?.displayName ?? '';
+        if(isModePhone.value){
+          userName = userNameController.text.trim();
+        }
+
         UserLogin userLogin = UserLogin();
         userLogin.email = user.user?.email ?? '';
-        userLogin.name = user.user?.displayName ?? '';
+        userLogin.name = userName;
         userLogin.uuid = user.user?.uid ?? '';
         userLogin.createTime = DateTime.now().millisecondsSinceEpoch;
         userLogin.updateTime = DateTime.now().millisecondsSinceEpoch;
@@ -80,9 +133,9 @@ class LoginController extends GetxController {
         userLogin.joinRoomID = '';
         userLogin.isAdmin = false;
 
-        await usersReference.doc(user.user?.email ?? '').set(userLogin.toJson());
+        await usersReference.doc(user.user?.uid ?? '').set(userLogin.toJson());
       }else{
-        await usersReference.doc(user.user?.email ?? '').update({
+        await usersReference.doc(user.user?.uid ?? '').update({
           "lastSignInTime":
           DateTime.now().millisecondsSinceEpoch,
         });
@@ -90,6 +143,10 @@ class LoginController extends GetxController {
     }catch(e){
       e.printInfo(info: "saveUserInfo");
     }
+  }
+
+  void onChangeMode(bool isMode) {
+    isModePhone.value = isMode;
   }
 
 }

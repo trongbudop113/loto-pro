@@ -37,7 +37,7 @@ class ContactController extends GetxController {
   Future<void> getDataUser() async {
     try {
       CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
+      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.uid ?? '').get();
       if (getUSer.data() == null) return;
       var userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
       if (userLogin.isAdmin ?? false) {

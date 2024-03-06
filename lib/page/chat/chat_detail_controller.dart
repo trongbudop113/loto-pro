@@ -90,7 +90,7 @@ class ChatDetailController extends GetxController {
     listUUID.sort((a, b) => a.compareTo(b));
     groupChatID.value = '${listUUID[0]}-${listUUID[1]}';
 
-    String emailUser = FirebaseAuth.instance.currentUser!.email ?? '';
+    String emailUser = FirebaseAuth.instance.currentUser?.uid ?? '';
     firestore.collection(DataRowName.Users.name).doc(emailUser).update({'chattingWith': peerID});
   }
 
