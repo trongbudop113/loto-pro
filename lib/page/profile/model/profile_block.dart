@@ -14,4 +14,5 @@ enum ProfileType{
   Contacts,
   Footer,
   Page,
+  Order,
 }

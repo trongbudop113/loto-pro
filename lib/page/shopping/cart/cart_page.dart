@@ -142,6 +142,16 @@ class CartPage extends GetView<CartController> {
                     height: 15,
                   ),
                 ),
+                Text(
+                  "Thanh Toán:",
+                  style: TextStyleResource.textStyleBlack(context)?.copyWith(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 _buildRowPrice(context,
                     title: "Tạm tính", price: 0, isWeb: isWeb),
                 SizedBox(

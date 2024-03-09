@@ -25,9 +25,6 @@ class ProfileController extends GetxController {
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  final box = GetStorage();
-  bool get isDark => box.read('darkmode') ?? false;
-
   final Rx<UserLogin> userLogin = UserLogin().obs;
 
   RxList<ProfileBlock> listBlock = [
@@ -48,7 +45,7 @@ class ProfileController extends GetxController {
 
   void onChangeThemeMode(BuildContext context, String value){
     HapticFeedback.mediumImpact();
-    bool mode = value =="dark_mode" ? true : false;
+    bool mode = value == "dark_mode" ? true : false;
     Provider.of<ThemeProvider>(context, listen:false).toggleMode(mode);
     for (var e in listThemeMode) {
       if(e.value == value){
@@ -57,6 +54,16 @@ class ProfileController extends GetxController {
         e.isSelected.value = false;
       }
     }
+  }
+
+  RxBool get isDarkMode{
+    String value = listThemeMode.firstWhere((e) => e.isSelected.value).value ?? '';
+    return (value == "dark_mode").obs;
+  }
+
+  RxString get currentLanguage{
+    String value = listLanguage.firstWhere((e) => e.isSelected.value).value ?? '';
+    return value.toUpperCase().obs;
   }
 
   void onTapBlock(BuildContext context, ProfileBlock block){
@@ -71,6 +78,8 @@ class ProfileController extends GetxController {
     }else if(block.type == ProfileType.Footer){
       Get.toNamed(PageConfig.FOOTER_MANAGER);
     }else if(block.type == ProfileType.Page){
+      Get.toNamed(PageConfig.FOOTER_MANAGER);
+    }else if(block.type == ProfileType.Order){
       Get.toNamed(PageConfig.FOOTER_MANAGER);
     }
   }
@@ -88,6 +97,13 @@ class ProfileController extends GetxController {
         }
     );
     if(result != null){
+      for (var e in listLanguage) {
+        if(e.value == result){
+          e.isSelected.value = true;
+        }else{
+          e.isSelected.value = false;
+        }
+      }
       LocalizationService.changeLocale(langCode: result.toString());
     }
   }
@@ -120,6 +136,7 @@ class ProfileController extends GetxController {
     try{
       String mode = Provider.of<ThemeProvider>(Get.context!, listen:false).isDark ? "dark_mode" : "light_mode";
       listThemeMode.firstWhere((e) => e.value! == mode).isSelected.value = true;
+      listLanguage[0].isSelected.value = true;
     }catch(e){
       e.printError(info: "aaaaaa");
     }
@@ -127,21 +144,29 @@ class ProfileController extends GetxController {
 
   Future<void> getDataUser() async {
     try{
-      // CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-      // final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.email ?? '').get();
-      // if(getUSer.data() == null) return;
-      // userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+      final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.uid ?? '').get();
+      if(getUSer.data() == null) return;
+      userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
       //if(userLogin.value.isAdmin ?? false){
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: "", icon: "", type: ProfileType.Products),
-          ProfileBlock(blockName: "contact_manager", page: "/contact_manager", icon: "", type: ProfileType.Contacts),
-          ProfileBlock(blockName: "footer_manager", page: "/footer_manager", icon: "", type: ProfileType.Footer),
+          ProfileBlock(blockName: "contact_manager", page: PageConfig.CONTACT_MANAGER, icon: "", type: ProfileType.Contacts),
+          ProfileBlock(blockName: "footer_manager", page: PageConfig.FOOTER_MANAGER, icon: "", type: ProfileType.Footer),
           ProfileBlock(blockName: "page_manager", page: "/page_manager", icon: "", type: ProfileType.Page),
+          ProfileBlock(blockName: "order_management", page: "/order_manager", icon: "", type: ProfileType.Order),
         ]);
       //}
     }catch(e){
 
     }
+  }
+
+  Future<void> goToLoginApp() async {
+    if((userLogin.value.uuid ?? '').isNotEmpty) return;
+    var result = await Get.toNamed(PageConfig.LOGIN);
+    if(result == null || (result ?? false) == false) return;
+    await getDataUser();
   }
 
   Future<void> logOutApp() async {
