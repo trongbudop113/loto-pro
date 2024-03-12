@@ -83,8 +83,15 @@ class ProductOrder {
   ProductOrder({this.productMoonCakeList, this.boxCake});
 
   ProductOrder.fromJson(Map<String, dynamic> json) {
-    productMoonCakeList = json['products'];
-    boxCake = json['box_cake'];
+    if(json['products'] != null){
+      productMoonCakeList = <CakeProduct>[];
+      json['products'].forEach((v) {
+        productMoonCakeList!.add(CakeProduct.fromJson(v));
+      });
+    }
+    if(json['box_cake'] != null){
+      boxCake = CakeProduct.fromJson(json['box_cake']);
+    }
     productType = json['product_type'];
   }
 

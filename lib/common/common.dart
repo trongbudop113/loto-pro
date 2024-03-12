@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
@@ -34,6 +35,13 @@ class AppCommon {
 
   UserLogin userLogin(Object? data){
     return UserLogin.fromJson(data as Map<String, dynamic>);
+  }
+
+  Future<UserLogin> getCurrentUserLogin() async {
+    CollectionReference usersReference = FirebaseFirestore.instance.collection(DataRowName.Users.name);
+    final getUSer = await usersReference.doc(currentUser?.uid ?? '').get();
+    UserLogin userLogin = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
+    return userLogin;
   }
 
   bool get isLogin =>

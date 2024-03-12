@@ -46,7 +46,7 @@ class UserLogin {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['email'] = this.email;
     data['name'] = this.name;
     data['lastSignInTime'] = this.lastSignInTime;
@@ -62,9 +62,13 @@ class UserLogin {
   }
 
   Map<String, dynamic> toOrderJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['name'] = this.name;
-    data['phone'] = this.phoneNumber;
+    if(phoneNumber != null){
+      data['phone'] = this.phoneNumber;
+    }else{
+      data['email'] = this.email;
+    }
     data['uuid'] = this.uuid ?? '';
     return data;
   }

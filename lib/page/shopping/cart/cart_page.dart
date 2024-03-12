@@ -286,6 +286,7 @@ class CartPage extends GetView<CartController> {
     return TextFormField(
       minLines: 6,
       maxLines: null,
+      controller: controller.textNoteController,
       keyboardType: TextInputType.multiline,
       decoration: const InputDecoration(
         alignLabelWithHint: true,

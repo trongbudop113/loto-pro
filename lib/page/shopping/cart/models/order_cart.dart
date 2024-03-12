@@ -1,7 +1,7 @@
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
-class OrderCart{
+class OrderCart {
   String? orderID;
   List<ProductOrder>? listProductItem;
   double? cartPrice;
@@ -10,8 +10,18 @@ class OrderCart{
   DateTime? orderTime;
   int? statusOrder;
   UserLogin? userOrder;
+  String? note;
 
-  OrderCart({this.statusOrder, this.totalPrice, this.orderTime, this.cartPrice, this.discountCart, this.listProductItem, this.orderID, this.userOrder,});
+  OrderCart(
+      {this.statusOrder,
+      this.totalPrice,
+      this.orderTime,
+      this.cartPrice,
+      this.discountCart,
+      this.listProductItem,
+      this.orderID,
+      this.userOrder,
+      this.note});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -21,12 +31,73 @@ class OrderCart{
     data['total_price'] = this.totalPrice;
     data['order_time'] = this.orderTime;
     data['status_order'] = this.statusOrder;
+    data['note'] = this.note;
     if (this.listProductItem != null) {
-      data['product_items'] = this.listProductItem!.map((v) => v.toJson()).toList();
+      data['product_items'] =
+          this.listProductItem!.map((v) => v.toJson()).toList();
     }
-    if(this.userOrder != null){
+    if (this.userOrder != null) {
       data['user_order'] = this.userOrder!.toOrderJson();
     }
     return data;
+  }
+
+  OrderCart.fromJson(Map<String, dynamic> json) {
+    json['order_id'] = orderID;
+    json['cart_price'] = cartPrice;
+    json['discount_cart'] = discountCart;
+    json['total_price'] = totalPrice;
+    json['order_time'] = orderTime;
+    json['status_order'] = statusOrder;
+    json['note'] = note;
+    if (json['product_items'] != null) {
+      listProductItem = <ProductOrder>[];
+      json['product_items'].forEach((v) {
+        listProductItem!.add(ProductOrder.fromJson(v));
+      });
+    }
+    if (json['user_order'] != null) {
+      userOrder = UserLogin.fromJson(json['user_order']);
+    }
+  }
+}
+
+class LsOrderTime{
+  List<OrderTime> lsOrderTime = [];
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['ls_order_time'] = lsOrderTime.map((v) => v.toJson()).toList();
+    return data;
+  }
+
+  LsOrderTime.fromJson(Map<String, dynamic> json) {
+    if (json['ls_order_time'] != null) {
+      lsOrderTime = <OrderTime>[];
+      json['ls_order_time'].forEach((v) {
+        lsOrderTime.add(OrderTime.fromJson(v));
+      });
+
+      lsOrderTime.sort((a, b) => (a.orderDateID ?? '').compareTo(b.orderDateID ?? ''));
+    }
+  }
+}
+
+class OrderTime{
+  String? orderDateID;
+  String? orderDateTitle;
+
+  OrderTime({this.orderDateID, this.orderDateTitle});
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['order_date_id'] = this.orderDateID;
+    data['order_date_title'] = this.orderDateTitle;
+    return data;
+  }
+
+  OrderTime.fromJson(Map<String, dynamic> json) {
+    orderDateID = json['order_date_id'];
+    orderDateTitle = json['order_date_title'];
   }
 }

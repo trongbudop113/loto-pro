@@ -18,6 +18,8 @@ import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/landing_page.dart';
 import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
+import 'package:loto/page/managers/order_manager/order_manager_controller.dart';
+import 'package:loto/page/managers/order_manager/order_manager_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
@@ -66,6 +68,7 @@ class PageConfig {
   static String CART = '/cart_moon_cake';
   static String HPBD = '/hpbd';
   static String FOOTER_MANAGER = '/footer_manager';
+  static String ORDER_MANAGER = '/order_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -173,6 +176,11 @@ class PageConfig {
         name: FOOTER_MANAGER,
         page: () => FooterManagerPage(),
         binding: FooterManagerBinding(),
+      ),
+      GetPage(
+        name: ORDER_MANAGER,
+        page: () => OrderManagerPage(),
+        binding: OrderManagerBinding(),
       ),
     ];
   }

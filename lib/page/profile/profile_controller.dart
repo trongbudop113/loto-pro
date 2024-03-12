@@ -80,7 +80,7 @@ class ProfileController extends GetxController {
     }else if(block.type == ProfileType.Page){
       Get.toNamed(PageConfig.FOOTER_MANAGER);
     }else if(block.type == ProfileType.Order){
-      Get.toNamed(PageConfig.FOOTER_MANAGER);
+      Get.toNamed(block.page ?? '/');
     }
   }
 
@@ -154,7 +154,7 @@ class ProfileController extends GetxController {
           ProfileBlock(blockName: "contact_manager", page: PageConfig.CONTACT_MANAGER, icon: "", type: ProfileType.Contacts),
           ProfileBlock(blockName: "footer_manager", page: PageConfig.FOOTER_MANAGER, icon: "", type: ProfileType.Footer),
           ProfileBlock(blockName: "page_manager", page: "/page_manager", icon: "", type: ProfileType.Page),
-          ProfileBlock(blockName: "order_management", page: "/order_manager", icon: "", type: ProfileType.Order),
+          ProfileBlock(blockName: "order_management", page: PageConfig.ORDER_MANAGER, icon: "", type: ProfileType.Order),
         ]);
       //}
     }catch(e){

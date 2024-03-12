@@ -8,6 +8,7 @@ import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
+import 'package:loto/page_config.dart';
 
 class CartBinding extends Bindings {
   @override
@@ -19,7 +20,9 @@ class CartBinding extends Bindings {
 class CartController extends GetxController {
   final RxDouble finalPrice = 0.0.obs;
 
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference cakeRef = FirebaseFirestore.instance.collection(DataRowName.Cakes.name);
+  TextEditingController textNoteController = TextEditingController();
 
   @override
   void onInit() {
@@ -65,35 +68,64 @@ class CartController extends GetxController {
   }
 
   Future<void> onTapOrder() async {
+    if (!AppCommon.singleton.isLogin) {
+      Get.toNamed(PageConfig.LOGIN);
+      return;
+    }
+    if (currentProductInCart.isEmpty) return;
+
     DateTime current = DateTime.now();
-    var data =  DateFormat("dd/MM/yyyy").format(current);
-    // if (currentProductInCart.isEmpty) return;
-    // CollectionReference cakeRef = firestore.collection(DataRowName.Cakes.name);
-    // DateTime current = DateTime.now();
-    //
-    // OrderCart orderCart = OrderCart();
-    // orderCart.orderTime = current;
-    // orderCart.orderID = current.millisecondsSinceEpoch.toString();
-    // orderCart.listProductItem = AppCommon.singleton.currentProductInCart;
-    // orderCart.totalPrice = finalPrice.value;
-    // orderCart.discountCart = 0.0;
-    // orderCart.statusOrder = 1;
-    // orderCart.cartPrice = finalPrice.value;
-    // orderCart.userOrder =
-    //     UserLogin(name: "Trong", phoneNumber: "0356882046", uuid: "01");
-    //
-    // await cakeRef
-    //     .doc(DataCollection.Orders.name)
-    //     .collection(current.millisecondsSinceEpoch.toString())
-    //     .doc(current.millisecondsSinceEpoch.toString())
-    //     .set(orderCart.toJson());
-    //
-    // AppCommon.singleton.currentProductInCart.clear();
-    // Get.back();
+    String month =
+        current.month < 10 ? "0${current.month}" : "${current.month}";
+    String day = current.day < 10 ? "0${current.day}" : "${current.day}";
+    String orderOfDay = "${current.year}$month${11}";
+    String orderOfDayTitle = "${11}-$month-${current.year}";
+
+    OrderCart orderCart = OrderCart();
+    orderCart.orderTime = current;
+    orderCart.orderID = current.millisecondsSinceEpoch.toString();
+    orderCart.listProductItem = AppCommon.singleton.currentProductInCart;
+    orderCart.totalPrice = finalPrice.value;
+    orderCart.discountCart = 0.0;
+    orderCart.statusOrder = 1;
+    orderCart.cartPrice = finalPrice.value;
+
+    UserLogin currentUserLogin =
+        await AppCommon.singleton.getCurrentUserLogin();
+    orderCart.userOrder = currentUserLogin;
+    orderCart.note = textNoteController.text.trim();
+
+    await handleSaveOrderDate(orderOfDay : orderOfDay, orderOfDayTitle: orderOfDayTitle,);
+
+    await cakeRef
+        .doc(DataCollection.Orders.name)
+        .collection(orderOfDay)
+        .doc(current.millisecondsSinceEpoch.toString())
+        .set(orderCart.toJson());
+
+    AppCommon.singleton.currentProductInCart.clear();
+    Get.back();
   }
 
   void onRemoveAllCart() {
     AppCommon.singleton.currentProductInCart.clear();
     countTotalPrice();
+  }
+
+  Future<void> handleSaveOrderDate({required String orderOfDay, required String orderOfDayTitle}) async {
+
+    DocumentSnapshot<Object?> data = await cakeRef.doc(DataCollection.Orders.name).get();
+    LsOrderTime lsOrderTime = LsOrderTime.fromJson(data.data() as Map<String, dynamic>);
+
+    var filterData = lsOrderTime.lsOrderTime.firstWhereOrNull((e) => e.orderDateID == orderOfDay);
+    if(filterData != null){
+      return;
+    }
+
+    lsOrderTime.lsOrderTime.add(OrderTime(
+      orderDateID: orderOfDay,
+      orderDateTitle: orderOfDayTitle,
+    ));
+    await cakeRef.doc(DataCollection.Orders.name).set(lsOrderTime.toJson());
   }
 }

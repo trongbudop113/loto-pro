@@ -40,128 +40,122 @@ class ProfilePage extends GetView<ProfileController>{
         child: Column(
           children: [
             SizedBox(height: 10,),
-            Row(
-              children: [
-                SizedBox(width: 10),
-                Obx(() => Container(
-                  width: maxWidth,
-                  height: maxHeight,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.amber,
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: Column(
+            Obx(() => Container(
+              width: maxWidth,
+              height: maxHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.amber,
+              ),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          GestureDetector(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(360),
-                              child: Container(
-                                width: 80,
-                                height: 80,
-                                color: Colors.black87,
-                                child: Visibility(
-                                  visible: (controller.userLogin.value.avatar ?? '').isEmpty,
-                                  replacement: Image.network(controller.userLogin.value.avatar ?? ''),
-                                  child: const Icon(Icons.manage_accounts_sharp, size: 35, color: Colors.white,),
-                                ),
-                              ),
+                      GestureDetector(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(360),
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            color: Colors.black87,
+                            child: Visibility(
+                              visible: (controller.userLogin.value.avatar ?? '').isEmpty,
+                              replacement: Image.network(controller.userLogin.value.avatar ?? ''),
+                              child: const Icon(Icons.manage_accounts_sharp, size: 35, color: Colors.white,),
                             ),
-                            onTap: (){
-                              controller.goToLoginApp();
-                            },
                           ),
-                          SizedBox(width: 10),
-                          Column(
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    TextSpan(text: 'Xin chào: '),
-                                    TextSpan(
-                                      text: controller.userLogin.value.name ?? '',
-                                      style: TextStyleResource.textStyleWhite(context),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              Text(
-                                controller.userLogin.value.email ?? '',
-                                style: TextStyleResource.textStyleWhite(context),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 25),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-                                controller.showDialogSelectLanguage(context, "language");
-                              },
-                              child: Obx(() => Container(
-                                width: 55,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(360),
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  controller.currentLanguage.value
-                                ),
-                              )),
-                            ),
-                            GestureDetector(
-                              child: Obx(() => Container(
-                                width: 55,
-                                height: 55,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(360),
-                                  color: Colors.black.withOpacity(0.8),
-                                ),
-                                child: Icon(controller.isDarkMode.value ? Icons.dark_mode : Icons.light_mode, color: Colors.white,),
-                              )),
-                              onTap: (){
-                                controller.showDialogSelectThemeMode(context, "theme_mode");
-                              },
-                            ),
-                            Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                            ),
-                            Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                            )
-                          ]
                         ),
+                        onTap: (){
+                          controller.goToLoginApp();
+                        },
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(text: 'Xin chào: '),
+                                TextSpan(
+                                  text: controller.userLogin.value.name ?? '',
+                                  style: TextStyleResource.textStyleWhite(context),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            controller.userLogin.value.email ?? '',
+                            style: TextStyleResource.textStyleWhite(context),
+                          ),
+                        ],
                       )
                     ],
                   ),
-                )),
-                SizedBox(width: 10),
-              ],
-            ),
+                  SizedBox(height: 25),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              controller.showDialogSelectLanguage(context, "language");
+                            },
+                            child: Obx(() => Container(
+                              width: 55,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(360),
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                  controller.currentLanguage.value
+                              ),
+                            )),
+                          ),
+                          GestureDetector(
+                            child: Obx(() => Container(
+                              width: 55,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(360),
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              child: Icon(controller.isDarkMode.value ? Icons.dark_mode : Icons.light_mode, color: Colors.white,),
+                            )),
+                            onTap: (){
+                              controller.showDialogSelectThemeMode(context, "theme_mode");
+                            },
+                          ),
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(360),
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          ),
+                          Container(
+                            width: 55,
+                            height: 55,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(360),
+                              color: Colors.black.withOpacity(0.8),
+                            ),
+                          )
+                        ]
+                    ),
+                  )
+                ],
+              ),
+            )),
             Obx(() => GridView.builder(
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
