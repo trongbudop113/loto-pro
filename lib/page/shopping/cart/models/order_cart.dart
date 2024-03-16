@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
@@ -43,13 +44,13 @@ class OrderCart {
   }
 
   OrderCart.fromJson(Map<String, dynamic> json) {
-    json['order_id'] = orderID;
-    json['cart_price'] = cartPrice;
-    json['discount_cart'] = discountCart;
-    json['total_price'] = totalPrice;
-    json['order_time'] = orderTime;
-    json['status_order'] = statusOrder;
-    json['note'] = note;
+    orderID = json['order_id'];
+    cartPrice = json['cart_price'];
+    discountCart = json['discount_cart'];
+    totalPrice = json['total_price'];
+    orderTime = (json['order_time'] as Timestamp).toDate();
+    statusOrder = json['status_order'];
+    note = json['note'];
     if (json['product_items'] != null) {
       listProductItem = <ProductOrder>[];
       json['product_items'].forEach((v) {

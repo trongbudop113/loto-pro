@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 
@@ -33,6 +34,10 @@ class OrderManagerController extends GetxController{
 
   OrderCart convertToOrderItem(Object? data) {
     return OrderCart.fromJson(data as Map<String, dynamic>);
+  }
+
+  String formatCurrency(double d) {
+    return "${FormatUtils.oCcy.format(d)}đ";
   }
 
 }

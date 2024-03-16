@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loto/common/common.dart';
+import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
@@ -78,8 +79,8 @@ class CartController extends GetxController {
     String month =
         current.month < 10 ? "0${current.month}" : "${current.month}";
     String day = current.day < 10 ? "0${current.day}" : "${current.day}";
-    String orderOfDay = "${current.year}$month${11}";
-    String orderOfDayTitle = "${11}-$month-${current.year}";
+    String orderOfDay = "${current.year}$month$day";
+    String orderOfDayTitle = "$day-$month-${current.year}";
 
     OrderCart orderCart = OrderCart();
     orderCart.orderTime = current;
@@ -104,6 +105,10 @@ class CartController extends GetxController {
         .set(orderCart.toJson());
 
     AppCommon.singleton.currentProductInCart.clear();
+    MessageUtil.show(
+      msg: "Mua hàng thành công",
+      duration: 1,
+    );
     Get.back();
   }
 

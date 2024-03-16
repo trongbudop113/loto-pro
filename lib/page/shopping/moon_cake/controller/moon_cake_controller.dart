@@ -1,8 +1,10 @@
 import 'package:animations/animations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
+import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
@@ -42,9 +44,14 @@ class MoonCakeController extends GetxController {
       productOrder?.productType = 2;
 
       AppCommon.singleton.currentProductInCart.add(productOrder!);
+      MessageUtil.show(
+        msg: "Thêm vào giỏ hàng thành công",
+        duration: 1,
+      );
       return;
     }
     if (listCakeBoxTemp.length == productOrder?.boxCake!.productType) {
+      MessageUtil.show(msg: "Số lượng bánh đã đủ");
       return;
     }
     listCakeBoxTemp.add(product);
@@ -115,11 +122,22 @@ class MoonCakeController extends GetxController {
 
   void onShowOrCompleteBuyBox(BuildContext context) {
     if (isStatusBuyBox.value) {
+      if (listCakeBoxTemp.length < (productOrder?.boxCake!.productType ?? 0)) {
+        MessageUtil.show(
+          msg: "Số lượng bánh chưa đủ, hãy chọn thêm",
+          duration: 1,
+        );
+        return;
+      }
       productOrder?.productMoonCakeList!.addAll(listCakeBoxTemp);
       AppCommon.singleton.currentProductInCart.add(productOrder!);
 
       listCakeBoxTemp.clear();
       isStatusBuyBox.value = false;
+      MessageUtil.show(
+        msg: "Thêm vào giỏ hàng thành công",
+        duration: 1,
+      );
       return;
     }
     showBoxCakeDialog(context);

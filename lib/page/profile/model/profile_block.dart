@@ -15,4 +15,5 @@ enum ProfileType{
   Footer,
   Page,
   Order,
+  User,
 }

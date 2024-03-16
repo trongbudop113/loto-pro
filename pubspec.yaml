@@ -60,6 +60,7 @@ dependencies:
   material_dialogs: ^1.1.4
   lottie:
   flutter_admin_scaffold: ^1.2.0
+  fluttertoast: ^8.2.4
 
   url_launcher: ^6.2.1
 

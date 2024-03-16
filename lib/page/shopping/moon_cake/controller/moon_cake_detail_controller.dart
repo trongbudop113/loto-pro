@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
+import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
@@ -63,6 +64,10 @@ class MoonCakeDetailController extends GetxController {
     AppCommon.singleton.currentProductInCart.add(productOrder);
     quantity.value = 1;
     print("Thêm thành công");
+    MessageUtil.show(
+      msg: "Thêm vào giỏ hàng thành công",
+      duration: 1,
+    );
   }
 
   ProductOrder? currentProductInCart(CakeProduct product) {

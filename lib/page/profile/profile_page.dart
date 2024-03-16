@@ -5,6 +5,8 @@ import 'package:loto/page/profile/profile_controller.dart';
 import 'package:loto/src/style_resource.dart';
 
 class ProfilePage extends GetView<ProfileController>{
+  const ProfilePage({super.key});
+
 
   @override
   Widget build(BuildContext context) {

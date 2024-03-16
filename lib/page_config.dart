@@ -23,8 +23,13 @@ import 'package:loto/page/managers/order_manager/order_manager_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
+import 'package:loto/page/profile/page_manager/page_manager_controller.dart';
+import 'package:loto/page/profile/page_manager/page_manager_page.dart';
+import 'package:loto/page/profile/product_manager/product_manager_controller.dart';
+import 'package:loto/page/profile/product_manager/product_manager_page.dart';
 import 'package:loto/page/profile/profile_controller.dart';
 import 'package:loto/page/profile/profile_page.dart';
+import 'package:loto/page/profile/user_manager/user_manager_controller.dart';
 import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
@@ -41,6 +46,7 @@ import 'page/chat/chat_detail_page.dart';
 import 'page/contact_manager/contact_manager_page.dart';
 import 'page/footer_manager/manager/footer_manager_page.dart';
 import 'page/portfolior/portfolior_page.dart';
+import 'page/profile/user_manager/user_manager_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'page/stories/stories_page.dart';
@@ -69,6 +75,9 @@ class PageConfig {
   static String HPBD = '/hpbd';
   static String FOOTER_MANAGER = '/footer_manager';
   static String ORDER_MANAGER = '/order_manager';
+  static String PRODUCT_MANAGER = '/product_manager';
+  static String PAGE_MANAGER = '/page_manager';
+  static String USER_MANAGER = '/user_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -181,6 +190,21 @@ class PageConfig {
         name: ORDER_MANAGER,
         page: () => OrderManagerPage(),
         binding: OrderManagerBinding(),
+      ),
+      GetPage(
+        name: PRODUCT_MANAGER,
+        page: () => ProductManagerPage(),
+        binding: ProductManagerBinding(),
+      ),
+      GetPage(
+        name: PAGE_MANAGER,
+        page: () => PageManagerPage(),
+        binding: PageManagerBinding(),
+      ),
+      GetPage(
+        name: USER_MANAGER,
+        page: () => UserManagerPage(),
+        binding: UserManagerBinding(),
       ),
     ];
   }

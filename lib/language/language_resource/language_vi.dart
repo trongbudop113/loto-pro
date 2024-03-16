@@ -28,4 +28,5 @@ const Map<String, String> vi = {
   'happy_birthday' : "Chúc Mừng\nSinh Nhật",
   "footer_manager" : "Quản Lý Footer",
   "page_manager" : "Quản Lý Màn Hình",
+  "user_management" : "Quản Lý Tài Khoản",
 };
