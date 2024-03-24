@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/landing/landing_controller.dart';
-import 'package:loto/page/landing/models/banner_menu.dart';
+import 'package:loto/page/landing/models/block_menu.dart';
 
 class BlockBanner extends GetView<LandingController> {
   const BlockBanner({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class BlockBanner extends GetView<LandingController> {
                     ),
                     items: snapshot.data?.docs.map((e) {
 
-                      BannerMenu banner = BannerMenu.fromJson(e.data() as Map<String, dynamic>);
+                      BlockMenu banner = BlockMenu.fromJson(e.data() as Map<String, dynamic>);
 
                       return Builder(
                         builder: (BuildContext context) {
@@ -48,7 +48,7 @@ class BlockBanner extends GetView<LandingController> {
                                   //child: Image.network(banner.bannerImage ?? '', fit: BoxFit.fill)
                               ),
                               Positioned(
-                                child: Text('text ${banner.bannerID}', style: TextStyle(fontSize: 16.0),),
+                                child: Text('text ${banner.blockID}', style: TextStyle(fontSize: 16.0),),
                               )
                             ],
                           );

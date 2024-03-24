@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/landing/body/border_widget.dart';
 import 'package:loto/page/landing/landing_controller.dart';
-import 'package:loto/page/landing/models/game_menu.dart';
+import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/src/style_resource.dart';
 
 class BlockGame extends GetView<LandingController> {
@@ -40,13 +40,13 @@ class BlockGame extends GetView<LandingController> {
                     itemBuilder: (BuildContext context, int index) {
 
                       if(index <= (snapshot.data!.size - 1)){
-                        final GameMenu gameMenu = GameMenu.fromJson(snapshot.data?.docs[index].data() as Map<String, dynamic>);
+                        final BlockMenu gameMenu = BlockMenu.fromJson(snapshot.data?.docs[index].data() as Map<String, dynamic>);
                         return GestureDetector(
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: BorderWidget(
                               margin: EdgeInsets.zero,
-                              child: Image.network(gameMenu.gameIcon ?? '', fit: BoxFit.fill),
+                              child: Image.network(gameMenu.blockIcon ?? '', fit: BoxFit.fill),
                             ),
                           ),
                           onTap: (){

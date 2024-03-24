@@ -20,7 +20,7 @@ abstract class BannerMenuProvider{
   Stream<QuerySnapshot<Object?>> streamGetBanner() {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference menuRef = firestore.collection(DataRowName.Menus.name);
-    var bannerMenu = menuRef.doc("Banners").collection('AllBanner');
+    var bannerMenu = menuRef.doc("Banners").collection('AllBanner').where("is_show", isEqualTo: true);
 
     return bannerMenu.snapshots();
   }

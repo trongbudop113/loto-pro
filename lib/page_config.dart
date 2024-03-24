@@ -23,8 +23,10 @@ import 'package:loto/page/managers/order_manager/order_manager_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
-import 'package:loto/page/profile/page_manager/page_manager_controller.dart';
-import 'package:loto/page/profile/page_manager/page_manager_page.dart';
+import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_controller.dart';
+import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_page.dart';
+import 'package:loto/page/profile/page_manager/page_manager/page_manager_controller.dart';
+import 'package:loto/page/profile/page_manager/page_manager/page_manager_page.dart';
 import 'package:loto/page/profile/product_manager/product_manager_controller.dart';
 import 'package:loto/page/profile/product_manager/product_manager_page.dart';
 import 'package:loto/page/profile/profile_controller.dart';
@@ -78,6 +80,7 @@ class PageConfig {
   static String PRODUCT_MANAGER = '/product_manager';
   static String PAGE_MANAGER = '/page_manager';
   static String USER_MANAGER = '/user_manager';
+  static String EDIT_PAGE_MANAGER = '/edit_pagg_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -205,6 +208,11 @@ class PageConfig {
         name: USER_MANAGER,
         page: () => UserManagerPage(),
         binding: UserManagerBinding(),
+      ),
+      GetPage(
+        name: EDIT_PAGE_MANAGER,
+        page: () => EditPageManagerPage(),
+        binding: EditPageManagerBinding(),
       ),
     ];
   }

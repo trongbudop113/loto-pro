@@ -9,7 +9,7 @@ abstract class GameMenuProvider{
   Stream<QuerySnapshot<Object?>> streamGetGame() {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference menuRef = firestore.collection(DataRowName.Menus.name);
-    var gameMenu = menuRef.doc("Games").collection('AllGame');
+    var gameMenu = menuRef.doc("Games").collection('AllGame').where("is_show", isEqualTo: true);;
 
     return gameMenu.snapshots();
   }

@@ -15,7 +15,7 @@ const Map<String, String> vi = {
   'stories' : 'Câu Chuyện',
   'shop' : 'Cửa Hàng',
   'portfolior' : 'Giới Thiệu Bản Thân',
-  'moon_cake_order' : 'Đặt Bánh\nTrung Thu',
+  'moon_cake_order' : 'Đặt Bánh Trung Thu',
   'moon_cake' : 'Bánh Trung Thu',
   'products' : 'Hàng Hóa',
   'product_management' : 'Quản Lý Hàng Hóa',
@@ -25,8 +25,9 @@ const Map<String, String> vi = {
   'gen_barcode' : "Tạo Barcode/QR Code",
   'scan_barcode' : "Quét Barcode/QR code",
   'scan_doc' : "Quét Tài Liệu",
-  'happy_birthday' : "Chúc Mừng\nSinh Nhật",
+  'happy_birthday' : "Chúc Mừng Sinh Nhật",
   "footer_manager" : "Quản Lý Footer",
   "page_manager" : "Quản Lý Màn Hình",
   "user_management" : "Quản Lý Tài Khoản",
+  "cooking" : "Nấu Ăn"
 };

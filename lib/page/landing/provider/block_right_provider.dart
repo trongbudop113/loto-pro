@@ -7,7 +7,7 @@ abstract class BlockRightProvider{
   Stream<QuerySnapshot<Object?>> streamGetBlockRight() {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference menuRef = firestore.collection(DataRowName.Menus.name);
-    var BlockRight = menuRef.doc("Blocks").collection('BlockRight');
+    var BlockRight = menuRef.doc("Blocks").collection('BlockRight').where("is_show", isEqualTo: true);
 
     return BlockRight.snapshots();
   }
