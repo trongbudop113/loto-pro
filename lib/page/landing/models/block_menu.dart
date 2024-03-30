@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BlockMenu {
   String? blockID;
   String? blockName;
@@ -8,6 +10,19 @@ class BlockMenu {
   bool? isRequireLogin;
   String? documentID;
   String? image;
+
+  DateTime? createDate;
+  DateTime? updateDate;
+
+  Timestamp get convertCreateDate {
+    createDate ??= DateTime.now();
+    return Timestamp.fromDate(createDate!);
+  }
+
+  Timestamp get convertUpdateDate {
+    createDate ??= DateTime.now();
+    return Timestamp.fromDate(createDate!);
+  }
 
   BlockMenu(
       {this.blockID,
@@ -31,6 +46,12 @@ class BlockMenu {
     isRequireLogin = json['is_require_login'];
     documentID = json['document_id'];
     image = json['image'];
+    if(json['create_date'] != null){
+      createDate = (json['create_date'] as Timestamp).toDate();
+    }
+    if(json['update_date'] != null){
+      updateDate = (json['update_date'] as Timestamp).toDate();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +65,8 @@ class BlockMenu {
     data['is_require_login'] = this.isRequireLogin;
     data['document_id'] = this.documentID;
     data['image'] = this.image;
+    data['create_date'] = this.convertCreateDate;
+    data['update_date'] = this.convertUpdateDate;
     return data;
   }
 }

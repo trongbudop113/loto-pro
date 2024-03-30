@@ -65,7 +65,7 @@ class MoonCakeController extends GetxController {
           product.productType == element.boxCake!.productType;
     });
     if (data != null) {
-      return data!;
+      return data;
     }
     return null;
   }

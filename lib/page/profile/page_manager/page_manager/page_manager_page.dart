@@ -25,7 +25,9 @@ class PageManagerPage extends GetView<PageManagerController> {
         ),
         actions: [
           GestureDetector(
-
+            onTap: (){
+              controller.onAddNewPage();
+            },
             child: Container(
               width: 55,
               color: Colors.transparent,

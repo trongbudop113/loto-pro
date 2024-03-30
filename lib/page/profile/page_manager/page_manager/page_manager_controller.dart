@@ -34,6 +34,10 @@ class PageManagerController extends GetxController {
     });
   }
 
+  void onAddNewPage(){
+    Get.toNamed(PageConfig.EDIT_PAGE_MANAGER, arguments: {"isAdd" : true});
+  }
+
   void goToEditPage({
     required QueryDocumentSnapshot<Object?> snapshotChild,
     required String idBlock,
@@ -42,7 +46,8 @@ class PageManagerController extends GetxController {
     Get.toNamed(PageConfig.EDIT_PAGE_MANAGER, arguments: {
       "snapshotChild" : snapshotChild,
       "idBlock" : idBlock,
-      "idCollection" : idCollection
+      "idCollection" : idCollection,
+      "isAdd" : false,
     });
   }
 }
