@@ -144,12 +144,18 @@ class ProfilePage extends GetView<ProfileController>{
                               color: Colors.black.withOpacity(0.8),
                             ),
                           ),
-                          Container(
-                            width: 55,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(360),
-                              color: Colors.black.withOpacity(0.8),
+                          GestureDetector(
+                            onTap: (){
+                              controller.onEditProfile();
+                            },
+                            child: Container(
+                              width: 55,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(360),
+                                color: Colors.black.withOpacity(0.8),
+                              ),
+                              child: Icon(Icons.edit, color: Colors.white,),
                             ),
                           )
                         ]

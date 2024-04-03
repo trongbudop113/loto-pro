@@ -165,8 +165,8 @@ class EditPageManagerController extends GetxController {
       maxHeight: 300,
       imageQuality: 100,
     );
-
-    imageUserPick.value.localPath = await imagePick?.readAsBytes();
+    if(imagePick == null) return;
+    imageUserPick.value.localPath = await imagePick.readAsBytes();
     imageUserPick.value.type = 2;
     imageUserPick.refresh();
   }

@@ -180,4 +180,8 @@ class ProfileController extends GetxController {
     await FirebaseAuth.instance.signOut();
     Get.back();
   }
+
+  void onEditProfile() {
+    Get.toNamed(PageConfig.PROFILE_MANAGER, arguments: userLogin.value);
+  }
 }

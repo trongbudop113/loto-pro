@@ -30,6 +30,7 @@ import 'package:loto/page/profile/page_manager/page_manager/page_manager_page.da
 import 'package:loto/page/profile/product_manager/product_manager_controller.dart';
 import 'package:loto/page/profile/product_manager/product_manager_page.dart';
 import 'package:loto/page/profile/profile_controller.dart';
+import 'package:loto/page/profile/profile_manager/profile_manager_controller.dart';
 import 'package:loto/page/profile/profile_page.dart';
 import 'package:loto/page/profile/user_manager/user_manager_controller.dart';
 import 'package:loto/page/room/room_controller.dart';
@@ -48,6 +49,7 @@ import 'page/chat/chat_detail_page.dart';
 import 'page/contact_manager/contact_manager_page.dart';
 import 'page/footer_manager/manager/footer_manager_page.dart';
 import 'page/portfolior/portfolior_page.dart';
+import 'page/profile/profile_manager/profile_manager_page.dart';
 import 'page/profile/user_manager/user_manager_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
@@ -80,7 +82,8 @@ class PageConfig {
   static String PRODUCT_MANAGER = '/product_manager';
   static String PAGE_MANAGER = '/page_manager';
   static String USER_MANAGER = '/user_manager';
-  static String EDIT_PAGE_MANAGER = '/edit_pagg_manager';
+  static String EDIT_PAGE_MANAGER = '/edit_page_manager';
+  static String PROFILE_MANAGER = '/profile_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -213,6 +216,11 @@ class PageConfig {
         name: EDIT_PAGE_MANAGER,
         page: () => EditPageManagerPage(),
         binding: EditPageManagerBinding(),
+      ),
+      GetPage(
+        name: PROFILE_MANAGER,
+        page: () => ProfileManagerPage(),
+        binding: ProfileManagerBinding(),
       ),
     ];
   }

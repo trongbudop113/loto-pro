@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class UserLogin {
   String? email;
   String? name;
@@ -9,10 +11,21 @@ class UserLogin {
   int? updateTime;
   bool? isAdmin;
   String? phoneNumber;
+  String? address;
 
   List<String>? listPaper;
 
   String? joinRoomID;
+
+  String get loginDate {
+    var dt = DateTime.now();
+    if(lastSignInTime != null){
+      dt = DateTime.fromMillisecondsSinceEpoch(lastSignInTime!);
+    }
+
+    var date = DateFormat('dd/MM/yyyy, hh:mm:ss').format(dt);
+    return date;
+  }
 
   UserLogin(
       {this.email,
@@ -26,7 +39,8 @@ class UserLogin {
         this.joinRoomID,
         this.listPaper,
         this.isAdmin,
-        this.phoneNumber
+        this.phoneNumber,
+        this.address
       });
 
   UserLogin.fromJson(Map<String, dynamic> json) {
@@ -40,6 +54,7 @@ class UserLogin {
     updateTime = json['updateTime'];
     joinRoomID = json['joinRoomID'];
     isAdmin = json['isAdmin'];
+    address = json['address'];
     if(json['listPaper'] != null){
       listPaper = (json['listPaper'] as List).map((item) => item as String).toList();
     }
@@ -58,6 +73,7 @@ class UserLogin {
     data['joinRoomID'] = this.joinRoomID;
     data['listPaper'] = this.listPaper;
     data['isAdmin'] = this.isAdmin;
+    data['address'] = this.address;
     return data;
   }
 
