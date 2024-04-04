@@ -63,7 +63,7 @@ class ContactController extends GetxController {
 
   Future<void> onSendMessage() async {
 
-    final int createTime = DateTime.now().millisecondsSinceEpoch;
+    final DateTime createTime = DateTime.now();
 
     SendContact sendContact = SendContact();
     sendContact.content = messageController.text;
@@ -73,7 +73,7 @@ class ContactController extends GetxController {
     sendContact.createTime = createTime;
 
     CollectionReference contactRef = firestore.collection(DataRowName.Contacts.name);
-    await contactRef.doc(documentID).collection("SendMessage").doc(createTime.toString()).set(sendContact.toJson());
+    await contactRef.doc(documentID).collection(DataCollection.SendMessage.name).doc(createTime.millisecondsSinceEpoch.toString()).set(sendContact.toJson());
 
     messageController.clear();
     nameController.clear();

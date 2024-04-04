@@ -14,4 +14,6 @@ enum DataCollection{
   Orders,
   Boxs,
   MoonCakes,
+  SendMessage,
+  ContactUs,
 }

@@ -14,7 +14,9 @@ class OrderManagerPage extends GetView<OrderManagerController> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: controller.a,
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('order_management'.tr),
+        ),
         body: StreamBuilder<DocumentSnapshot<Object?>>(
             stream: controller.getDateOrder(),
             builder: (context, snapShot) {

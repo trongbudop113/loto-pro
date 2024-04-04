@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class SendContact {
   String? name;
   String? email;
   String? content;
   bool? isRead;
-  int? createTime;
+  DateTime? createTime;
 
   SendContact(
       {this.name,
@@ -13,16 +15,23 @@ class SendContact {
         this.createTime
       });
 
+  Timestamp get convertCreateDate {
+    createTime ??= DateTime.now();
+    return Timestamp.fromDate(createTime!);
+  }
+
   SendContact.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
     content = json['content'];
     isRead = json['isRead'];
-    createTime = json['createTime'];
+    if(json['createTime'] != null){
+      createTime = (json['createTime'] as Timestamp).toDate();
+    }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['email'] = this.email;
     data['name'] = this.name;
     data['content'] = this.content;

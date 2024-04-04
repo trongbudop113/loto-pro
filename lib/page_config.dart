@@ -84,6 +84,8 @@ class PageConfig {
   static String USER_MANAGER = '/user_manager';
   static String EDIT_PAGE_MANAGER = '/edit_page_manager';
   static String PROFILE_MANAGER = '/profile_manager';
+  static String COOKING = '/cooking';
+  static String COOKING_MANAGER = '/cooking_manager';
 
   static List<GetPage> listPage(){
     return [

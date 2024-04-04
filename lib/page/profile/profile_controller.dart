@@ -182,6 +182,7 @@ class ProfileController extends GetxController {
   }
 
   void onEditProfile() {
+    if(userLogin.value.name == null) return;
     Get.toNamed(PageConfig.PROFILE_MANAGER, arguments: userLogin.value);
   }
 }
