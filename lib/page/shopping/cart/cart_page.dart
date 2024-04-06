@@ -144,7 +144,7 @@ class CartPage extends GetView<CartController> {
                 ),
                 Text(
                   "Thanh Toán:",
-                  style: TextStyleResource.textStyleBlack(context)?.copyWith(
+                  style: TextStyleResource.textStyleBlack(context).copyWith(
                     fontSize: 22,
                     fontWeight: FontWeight.bold
                   ),
@@ -187,17 +187,28 @@ class CartPage extends GetView<CartController> {
       padding: EdgeInsets.all(15),
       shrinkWrap: true,
       physics:
-          isScroll ? BouncingScrollPhysics() : NeverScrollableScrollPhysics(),
+          isScroll ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
       itemBuilder: (c, i) {
+
+        controller.currentProductInCart[i].onTapPlus = (){
+          controller.onTapPlus(controller.currentProductInCart[i]);
+        };
+
+        controller.currentProductInCart[i].onTapSubtract = (){
+          controller.onTapSubtract(controller.currentProductInCart[i]);
+        };
+
+        controller.currentProductInCart[i].onTapRemoveProduct = (){
+          controller.onTapRemoveProductItem(controller.currentProductInCart[i]);
+        };
+
         return Visibility(
           visible: controller.currentProductInCart[i].productType == 1,
           replacement: ItemProductNoBox(
             productItem: controller.currentProductInCart[i],
-            controller: controller,
           ),
           child: ItemProductWithBox(
             productItem: controller.currentProductInCart[i],
-            controller: controller,
           ),
         );
       },

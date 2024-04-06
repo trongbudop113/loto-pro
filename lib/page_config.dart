@@ -18,11 +18,11 @@ import 'package:loto/page/landing/landing_controller.dart';
 import 'package:loto/page/landing/landing_page.dart';
 import 'package:loto/page/login/login_controller.dart';
 import 'package:loto/page/login/login_page.dart';
-import 'package:loto/page/managers/order_manager/order_manager_controller.dart';
-import 'package:loto/page/managers/order_manager/order_manager_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
+import 'package:loto/page/profile/order_manager/order_detail_manager/order_detail_manager_controller.dart';
+import 'package:loto/page/profile/order_manager/order_detail_manager/order_detail_manager_page.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_controller.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_page.dart';
 import 'package:loto/page/profile/page_manager/page_manager/page_manager_controller.dart';
@@ -49,6 +49,8 @@ import 'page/chat/chat_detail_page.dart';
 import 'page/contact_manager/contact_manager_page.dart';
 import 'page/footer_manager/manager/footer_manager_page.dart';
 import 'page/portfolior/portfolior_page.dart';
+import 'page/profile/order_manager/order_manager/order_manager_controller.dart';
+import 'page/profile/order_manager/order_manager/order_manager_page.dart';
 import 'page/profile/profile_manager/profile_manager_page.dart';
 import 'page/profile/user_manager/user_manager_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
@@ -86,6 +88,7 @@ class PageConfig {
   static String PROFILE_MANAGER = '/profile_manager';
   static String COOKING = '/cooking';
   static String COOKING_MANAGER = '/cooking_manager';
+  static String ORDER_DETAIL_MANAGER = '/order_detail_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -223,6 +226,21 @@ class PageConfig {
         name: PROFILE_MANAGER,
         page: () => ProfileManagerPage(),
         binding: ProfileManagerBinding(),
+      ),
+      GetPage(
+        name: COOKING,
+        page: () => ProfileManagerPage(),
+        binding: ProfileManagerBinding(),
+      ),
+      GetPage(
+        name: COOKING_MANAGER,
+        page: () => ProfileManagerPage(),
+        binding: ProfileManagerBinding(),
+      ),
+      GetPage(
+        name: ORDER_DETAIL_MANAGER,
+        page: () => OrderDetailManagerPage(),
+        binding: OrderDetailManagerBinding(),
       ),
     ];
   }

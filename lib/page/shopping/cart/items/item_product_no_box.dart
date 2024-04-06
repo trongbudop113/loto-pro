@@ -6,13 +6,18 @@ import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
+enum ItemMode{
+  view,
+  cart
+}
+
 class ItemProductNoBox extends StatelessWidget {
   final ProductOrder productItem;
-  final CartController controller;
+  final ItemMode itemMode;
   const ItemProductNoBox({
     super.key,
     required this.productItem,
-    required this.controller,
+    this.itemMode = ItemMode.cart
   });
 
   @override
@@ -69,7 +74,7 @@ class ItemProductNoBox extends StatelessWidget {
                     height: 100,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      color: controller.getBackgroundColor(
+                      color: getBackgroundColor(
                           productItem.boxCake!.productColor, context),
                     ),
                     padding: EdgeInsets.all(5),
@@ -105,7 +110,7 @@ class ItemProductNoBox extends StatelessWidget {
               Container(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  "Tổng: $countPrice",
+                  "Giá: $countPrice",
                   style: TextStyleResource.textStyleBlack(context),
                 ),
               ),
@@ -116,69 +121,77 @@ class ItemProductNoBox extends StatelessWidget {
         SizedBox(
           height: 2,
         ),
-        ClipRRect(
-          borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(5),
-            bottomRight: Radius.circular(5),
-          ),
-          child: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  controller.onTapRemoveProductItem(productItem);
-                },
-                child: Container(
-                  height: 35,
-                  width: 80,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: ColorResource.color_main_light,
-                  ),
-                  child: Icon(Icons.delete),
-                ),
-              ),
-              Container(
-                height: 35,
-                width: 2,
-              ),
-              Expanded(
-                child: GestureDetector(
+        Visibility(
+          visible: itemMode == ItemMode.cart,
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(5),
+              bottomRight: Radius.circular(5),
+            ),
+            child: Row(
+              children: [
+                GestureDetector(
                   onTap: () {
-                    controller.onTapSubtract(productItem);
+                    productItem.onTapRemoveProduct?.call();
                   },
                   child: Container(
                     height: 35,
+                    width: 80,
                     alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: ColorResource.color_main_light,
-                    ),
-                    child: Icon(Icons.remove),
-                  ),
-                ),
-              ),
-              Container(
-                height: 35,
-                width: 2,
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    controller.onTapPlus(productItem);
-                  },
-                  child: Container(
-                    height: 35,
                     decoration: BoxDecoration(
                       color: ColorResource.color_main_light,
                     ),
-                    child: Icon(Icons.add),
+                    child: Icon(Icons.delete),
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  height: 35,
+                  width: 2,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      productItem.onTapSubtract?.call();
+                    },
+                    child: Container(
+                      height: 35,
+                      alignment: Alignment.center,
+                      decoration: const BoxDecoration(
+                        color: ColorResource.color_main_light,
+                      ),
+                      child: Icon(Icons.remove),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 35,
+                  width: 2,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      productItem.onTapPlus?.call();
+                    },
+                    child: Container(
+                      height: 35,
+                      decoration: BoxDecoration(
+                        color: ColorResource.color_main_light,
+                      ),
+                      child: Icon(Icons.add),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         )
       ],
     );
+  }
+
+  Color getBackgroundColor(String? color, BuildContext context) {
+    if (color == null) return Theme.of(context).backgroundColor;
+    return Color(int.parse("0xFF$color"));
   }
 
   String get countPrice {

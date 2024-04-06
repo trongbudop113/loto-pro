@@ -80,6 +80,10 @@ class ProductOrder {
     return price;
   }
 
+  Function? onTapSubtract;
+  Function? onTapPlus;
+  Function? onTapRemoveProduct;
+
   ProductOrder({this.productMoonCakeList, this.boxCake});
 
   ProductOrder.fromJson(Map<String, dynamic> json) {

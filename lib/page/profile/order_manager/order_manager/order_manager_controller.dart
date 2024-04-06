@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
+import 'package:loto/page_config.dart';
 
 class OrderManagerBinding extends Bindings {
   @override
@@ -38,6 +39,10 @@ class OrderManagerController extends GetxController{
 
   String formatCurrency(double d) {
     return "${FormatUtils.oCcy.format(d)}đ";
+  }
+
+  void goToOrderDetail(OrderCart orderCart) {
+    Get.toNamed(PageConfig.ORDER_DETAIL_MANAGER, arguments: orderCart);
   }
 
 }
