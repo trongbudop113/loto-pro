@@ -16,4 +16,5 @@ enum ProfileType{
   Page,
   Order,
   User,
+  OrderHistory,
 }

@@ -27,10 +27,7 @@ class ProfileController extends GetxController {
 
   final Rx<UserLogin> userLogin = UserLogin().obs;
 
-  RxList<ProfileBlock> listBlock = [
-    ProfileBlock(blockName: "theme_mode", page: "", icon: "", type: ProfileType.ThemeMode),
-    ProfileBlock(blockName: "language", page: "", icon: "", type: ProfileType.Language)
-  ].obs;
+  RxList<ProfileBlock> listBlock = <ProfileBlock>[].obs;
 
   List<OptionData> listLanguage = [
     OptionData(value: "vi"),
@@ -153,7 +150,7 @@ class ProfileController extends GetxController {
       final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.uid ?? '').get();
       if(getUSer.data() == null) return;
       userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
-      //if(userLogin.value.isAdmin ?? false){
+      if(userLogin.value.isAdmin ?? false){
         listBlock.addAll([
           ProfileBlock(blockName: "products", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.Products),
           ProfileBlock(blockName: "contact_manager", page: PageConfig.CONTACT_MANAGER, icon: "", type: ProfileType.Contacts),
@@ -163,7 +160,11 @@ class ProfileController extends GetxController {
           ProfileBlock(blockName: "product_management", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.Products),
           ProfileBlock(blockName: "user_management", page: PageConfig.USER_MANAGER, icon: "", type: ProfileType.User),
         ]);
-      //}
+      }else{
+        listBlock.addAll([
+          ProfileBlock(blockName: "order_history", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.OrderHistory),
+        ]);
+      }
     }catch(e){
 
     }

@@ -23,4 +23,8 @@ class OrderDetailManagerController extends GetxController{
     orderCartData.value = Get.arguments as OrderCart;
     titleAppbar.value = orderCartData.value.orderID ?? '';
   }
+
+  void onChangeStatusOrder() {
+
+  }
 }

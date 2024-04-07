@@ -29,5 +29,6 @@ const Map<String, String> vi = {
   "footer_manager" : "Quản Lý Footer",
   "page_manager" : "Quản Lý Màn Hình",
   "user_management" : "Quản Lý Tài Khoản",
-  "cooking" : "Nấu Ăn"
+  "cooking" : "Nấu Ăn",
+  "order_history" : "Lịch sử đặt hàng"
 };

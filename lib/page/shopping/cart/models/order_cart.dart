@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
@@ -23,6 +24,11 @@ class OrderCart {
       this.orderID,
       this.userOrder,
       this.note});
+
+  Timestamp get convertCreateDate {
+    orderTime ??= DateTime.now();
+    return Timestamp.fromDate(orderTime!);
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
