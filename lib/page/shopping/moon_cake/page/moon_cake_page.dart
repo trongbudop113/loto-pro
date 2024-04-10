@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:draggable_fab/draggable_fab.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
@@ -21,7 +20,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
       ),
       body: Stack(
         children: [
-          _buildListProduct(context),
+          _buildMainWidget(context),
           _buildProductSelectBox(context),
           _buildBottomWidget(context),
           _buildFloatWidget(context)
@@ -41,7 +40,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
         },
         child: Stack(
           children: [
-            Positioned.fill(
+            const Positioned.fill(
               child: Icon(CustomIcon.shopping_cart),
             ),
             Positioned(
@@ -250,11 +249,13 @@ class MoonCakePage extends GetView<MoonCakeController> {
     );
   }
 
-  Widget _buildListProduct(BuildContext context) {
-    int countColumn = context.mediaQuerySize.width > 1100 ? 5 : (context.mediaQuerySize.width < 600 ? 2 : 3);
+  Widget _buildMainWidget(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(width: 1.5, color: Colors.grey,),
+          ),
           height: 50,
           child: Row(
             children: [
@@ -262,7 +263,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "Lọc theo:",
+                    "Loại:",
                     style: TextStyleResource.textStyleBlack(context),
                   ),
                 ),
@@ -270,62 +271,61 @@ class MoonCakePage extends GetView<MoonCakeController> {
               Container(height: 50, width: 1, color: Colors.grey),
               Expanded(
                 child: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1.5),
-                    ),
+                  onTap: () {
+                    controller.showFilterDialog(context);
+                  },
+                  child: Obx(() => Container(
                     alignment: Alignment.center,
+                    color: Colors.transparent,
                     child: Text(
-                      "Loại",
+                      "${controller.filterData.value.statusName}",
                       style: TextStyleResource.textStyleBlack(context),
                     ),
-                  ),
+                  )),
                 ),
               )
             ],
           ),
         ),
         Expanded(
-          child: StreamBuilder<QuerySnapshot>(
-              stream: controller.streamGetListProduct(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Obx(() => GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: countColumn,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 0.9,
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ).copyWith(
-                          bottom: MediaQuery.of(context).padding.bottom +
-                              80 +
-                              (controller.isStatusBuyBox.value ? 110 : 0),
-                        ),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          CakeProduct product = CakeProduct.fromJson(
-                              snapshot.data!.docs[index].data()
-                                  as Map<String, dynamic>);
-                          return AppListItem(
-                            index: index,
-                            controller: controller,
-                            product: product,
-                          );
-                        },
-                      ));
-                } else {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              }),
+          child: _buildListProduct(context),
         ),
       ],
     );
+  }
+
+  Widget _buildListProduct(BuildContext context){
+    int countColumn = context.mediaQuerySize.width > 1100 ? 5 : (context.mediaQuerySize.width < 600 ? 2 : 3);
+    return Obx((){
+      if (controller.isLoadingData.value) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return Obx(() => GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: countColumn,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 0.9,
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 10,
+        ).copyWith(
+          bottom: MediaQuery.of(context).padding.bottom +
+              80 +
+              (controller.isStatusBuyBox.value ? 110 : 0),
+        ),
+        itemCount: controller.listCake.length,
+        itemBuilder: (BuildContext ctx, index) {
+          return AppListItem(
+            index: index,
+            controller: controller,
+            product: controller.listCake[index],
+          );
+        },
+      ));
+    });
   }
 }

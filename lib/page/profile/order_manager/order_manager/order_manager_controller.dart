@@ -41,8 +41,11 @@ class OrderManagerController extends GetxController{
     return "${FormatUtils.oCcy.format(d)}đ";
   }
 
-  void goToOrderDetail(OrderCart orderCart) {
-    Get.toNamed(PageConfig.ORDER_DETAIL_MANAGER, arguments: orderCart);
+  void goToOrderDetail(OrderCart orderCart, String orderDateID) {
+    Get.toNamed(PageConfig.ORDER_DETAIL_MANAGER, arguments: {
+      "order_cart" : orderCart,
+      "order_date" : orderDateID
+    });
   }
 
 }

@@ -50,15 +50,15 @@ class LandingController extends CustomGetController with BlockLeftProvider, Bloc
       return;
     }
     User? user = AppCommon.singleton.currentUser;
-    if(user != null){
-      CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
-      final getUSer = await usersReference.doc(user.uid ?? '').get();
-      UserLogin userLogin = AppCommon.singleton.userLogin(getUSer.data());
-      if((userLogin.isAdmin ?? false) && (menu.page ?? '') == PageConfig.PROFILE){
-        Get.to(() => DashBoard());
-        return;
-      }
-    }
+    // if(user != null){
+    //   CollectionReference usersReference = firestore.collection(DataRowName.Users.name);
+    //   final getUSer = await usersReference.doc(user.uid ?? '').get();
+    //   UserLogin userLogin = AppCommon.singleton.userLogin(getUSer.data());
+    //   if((userLogin.isAdmin ?? false) && (menu.page ?? '') == PageConfig.PROFILE){
+    //     Get.to(() => DashBoard());
+    //     return;
+    //   }
+    // }
     Get.toNamed(menu.page ?? '', arguments: {
       "blockID" : argument,
       "documentID" : menu.documentID,

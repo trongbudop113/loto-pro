@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
@@ -8,6 +9,9 @@ import 'package:loto/page/shopping/cart/items/item_product_with_box.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/src/style_resource.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 class OrderDetailManagerPage extends GetView<OrderDetailManagerController> {
   const OrderDetailManagerPage({super.key});
@@ -177,34 +181,36 @@ class OrderDetailManagerPage extends GetView<OrderDetailManagerController> {
           SizedBox(
             height: 10,
           ),
-          Row(
-            children: [
-              Text(
-                "Trạng thái: ",
-                style: TextStyleResource.textStyleBlack(context),
-              ),
-              Text(
-                FormatUtils.formatOrderStatus(orderCart.statusOrder ?? 1),
-                style: TextStyleResource.textStyleBlack(context).copyWith(
-                  color: FormatUtils.orderStatusColor(orderCart.statusOrder ?? 1),
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+          Obx((){
+            return Row(
+              children: [
+                Text(
+                  "Trạng thái: ",
+                  style: TextStyleResource.textStyleBlack(context),
                 ),
-              ),
-              Spacer(flex: 1,),
-              GestureDetector(
-                onTap: (){
-                  controller.onChangeStatusOrder();
-                },
-                child: Container(
-                  width: 30,
-                  height: 30,
-                  color: FormatUtils.orderStatusColor(orderCart.statusOrder ?? 1),
-                  child: const Icon(Icons.edit, color: Colors.black,),
+                Text(
+                  FormatUtils.formatOrderStatus(controller.statusOrderData.value.statusID ?? 1),
+                  style: TextStyleResource.textStyleBlack(context).copyWith(
+                    color: FormatUtils.orderStatusColor(controller.statusOrderData.value.statusID ?? 1),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              )
-            ],
-          )
+                Spacer(flex: 1,),
+                GestureDetector(
+                  onTap: (){
+                    controller.onChangeStatusOrder(context);
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    color: FormatUtils.orderStatusColor(controller.statusOrderData.value.statusID ?? 1),
+                    child: const Icon(Icons.edit, color: Colors.black,),
+                  ),
+                )
+              ],
+            );
+          })
         ],
       ),
     );

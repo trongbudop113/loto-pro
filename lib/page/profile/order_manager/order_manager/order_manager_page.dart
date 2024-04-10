@@ -55,7 +55,7 @@ class OrderManagerPage extends GetView<OrderManagerController> {
                                       OrderCart item = controller.convertToOrderItem(snapShot.data!.docs[x].data());
                                       return GestureDetector(
                                         onTap: (){
-                                          controller.goToOrderDetail(item);
+                                          controller.goToOrderDetail(item, lsOrderTime.lsOrderTime[index].orderDateID ?? '');
                                         },
                                         child: Container(
                                           color: Colors.amberAccent,
