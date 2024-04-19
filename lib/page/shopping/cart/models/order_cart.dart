@@ -51,9 +51,15 @@ class OrderCart {
 
   OrderCart.fromJson(Map<String, dynamic> json) {
     orderID = json['order_id'];
-    cartPrice = json['cart_price'];
-    discountCart = json['discount_cart'];
-    totalPrice = json['total_price'];
+    if(json['cart_price'] != null){
+      cartPrice = double.tryParse(json['cart_price'].toString());
+    }
+    if(json['discount_cart'] != null){
+      discountCart = double.tryParse(json['discount_cart'].toString());
+    }
+    if(json['total_price'] != null){
+      totalPrice = double.tryParse(json['total_price'].toString());
+    }
     orderTime = (json['order_time'] as Timestamp).toDate();
     statusOrder = json['status_order'];
     note = json['note'];

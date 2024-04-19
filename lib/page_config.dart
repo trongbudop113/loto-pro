@@ -89,6 +89,7 @@ class PageConfig {
   static String COOKING = '/cooking';
   static String COOKING_MANAGER = '/cooking_manager';
   static String ORDER_DETAIL_MANAGER = '/order_detail_manager';
+  static String EDIT_PRODUCT_MANAGER = '/edit_product_manager';
 
   static List<GetPage> listPage(){
     return [
@@ -239,6 +240,11 @@ class PageConfig {
       ),
       GetPage(
         name: ORDER_DETAIL_MANAGER,
+        page: () => OrderDetailManagerPage(),
+        binding: OrderDetailManagerBinding(),
+      ),
+      GetPage(
+        name: EDIT_PRODUCT_MANAGER,
         page: () => OrderDetailManagerPage(),
         binding: OrderDetailManagerBinding(),
       ),

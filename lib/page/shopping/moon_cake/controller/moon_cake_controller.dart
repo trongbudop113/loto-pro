@@ -22,7 +22,7 @@ class MoonCakeBinding extends Bindings {
 }
 
 class MoonCakeController extends GetxController {
-  ContainerTransitionType transitionType = ContainerTransitionType.fade;
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final List<StatusOrder> listFilter = StatusOrder.listFilterExample();
@@ -122,7 +122,6 @@ class MoonCakeController extends GetxController {
       var products = cakeRef
           .doc(DataCollection.Products.name)
           .collection(DataCollection.MoonCakes.name)
-          .orderBy("sort_order", descending: false)
           .where("product_type", isEqualTo: filter);
 
       List<CakeProduct> listTemp = [];
