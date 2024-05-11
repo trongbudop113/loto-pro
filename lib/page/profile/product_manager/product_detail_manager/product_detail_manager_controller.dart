@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loto/common/mesage_util.dart';
+import 'package:loto/database/data_name.dart';
 import 'package:loto/page/profile/dialog/select_option_layout.dart';
 import 'package:loto/page/profile/image_server/choose_image/choose_image_controller.dart';
 import 'package:loto/page/profile/model/option_data.dart';
@@ -36,11 +37,14 @@ class ProductDetailManagerController extends GetxController {
   final TextEditingController productDiscountController =
       TextEditingController();
   final TextEditingController productPriceController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
 
   final List<int> listType = [150, 200, 250];
   final RxInt currentTypeCake = 150.obs;
 
   final RxList<ImagePick> listImagePick = <ImagePick>[].obs;
+
+  final RxBool isShowLoadingView = false.obs;
 
   List<OptionData> listOption = [
     OptionData(value: "from_gallery", type: 1),
@@ -59,13 +63,21 @@ class ProductDetailManagerController extends GetxController {
     if (data != null) {
       isModeAddNew.value = false;
       cakeProduct.value = data;
+      descriptionController.text = cakeProduct.value.productDescription ?? '';
       productNameController.text = cakeProduct.value.productName ?? '';
       productPriceController.text = "${cakeProduct.value.productPrice ?? 0.0}";
-      productDiscountController.text = "0";
+      productDiscountController.text =
+          "${cakeProduct.value.productDiscount ?? 0.0}";
 
-      if((cakeProduct.value.productImages ?? []).isNotEmpty){
+      if ((cakeProduct.value.productImages ?? []).isNotEmpty) {
         imageUserPick.value.imagePath = cakeProduct.value.productImages!.first;
         imageUserPick.value.type = 1;
+
+        var list = (cakeProduct.value.productImages ?? []).map<ImagePick>((e){
+          return ImagePick(type: 1, imagePath: e);
+        }).toList();
+
+        listImagePick.addAll(list);
       }
       appbarName.value = cakeProduct.value.productName ?? '';
       currentTypeCake.value = cakeProduct.value.productType ?? listType.first;
@@ -87,7 +99,7 @@ class ProductDetailManagerController extends GetxController {
     if (imagePicks.isEmpty) return;
 
     List<ImagePick> newList = [];
-    for(var e in imagePicks){
+    for (var e in imagePicks) {
       ImagePick localImage = ImagePick();
       localImage.localPath = await e.readAsBytes();
       localImage.type = 2;
@@ -98,72 +110,98 @@ class ProductDetailManagerController extends GetxController {
   }
 
   Future<void> onCreateOrUpdateProduct() async {
-    if (productNameController.text == "" || productPriceController.text == '') {
-      MessageUtil.show(
-        msg: "Điền đầy đủ thông tin",
-        duration: 1,
-      );
-      return;
-    }
-
-    for(var data in listImagePick){
-      if(data.type == 2){
-        await uploadFile(data);
+    isShowLoadingView.value = true;
+    try {
+      if (productNameController.text == "" ||
+          productPriceController.text == '') {
+        MessageUtil.show(
+          msg: "Điền đầy đủ thông tin",
+          duration: 1,
+        );
+        isShowLoadingView.value = false;
+        return;
       }
+
+      for (var data in listImagePick) {
+        if (data.type == 2) {
+          await uploadFile(data);
+        }
+      }
+
+      List<String> listImageFinal =
+          listImagePick.map<String>((e) => e.imagePath ?? '').toList();
+
+      // if (isModeAddNew.value) {
+      //   await uploadFile(imageUserPick.value.localPath!);
+      // } else {
+      //   if (imageUserPick.value.type != 1 &&
+      //       imageUserPick.value.imagePath != cakeProduct.value.productImage) {
+      //     await uploadFile(imageUserPick.value.localPath!);
+      //   }
+      // }
+      //
+      // print("isUpdateImageSuccess $isUpdateImageSuccess");
+      // if (!isUpdateImageSuccess) {
+      //   return;
+      // }
+
+      cakeProduct.value.productImages = listImageFinal;
+      if (productNameController.text != (cakeProduct.value.productName ?? '')) {
+        cakeProduct.value.productName = productNameController.text;
+      }
+
+      if (productDiscountController.text !=
+          (cakeProduct.value.productDiscount ?? '')) {
+        cakeProduct.value.productDiscount =
+            double.parse(productDiscountController.text);
+      }
+
+      if (productPriceController.text !=
+          "${(cakeProduct.value.productPrice ?? 0)}") {
+        cakeProduct.value.productPrice =
+            double.parse(productPriceController.text);
+      }
+
+      if (isModeAddNew.value) {
+        cakeProduct.value.createDate = DateTime.now();
+      }
+      cakeProduct.value.updateDate = DateTime.now();
+      cakeProduct.value.productType = currentTypeCake.value;
+
+      CollectionReference collectionRef =
+          firestore.collection(DataRowName.Cakes.name);
+      await collectionRef
+          .doc(DataCollection.Products.name)
+          .collection(DataCollection.MoonCakes.name)
+          .doc(cakeProduct.value.productID)
+          .update(cakeProduct.value.toJson());
+
+      isShowLoadingView.value = false;
+      MessageUtil.show(msg: "Cập nhật thành công");
+      Get.back();
+
+      // if(isModeAddNew.value){
+      //   CollectionReference collectionRef = firestore.collection(DataRowName.Menus.name);
+      //   await collectionRef.doc(idBlock).collection(idCollection)
+      //       .doc(idDocumentChild).set(blockPage.value.toJson());
+      // }else{
+      //   CollectionReference collectionRef = firestore.collection(DataRowName.Menus.name);
+      //   await collectionRef.doc(idBlock).collection(idCollection)
+      //       .doc(idDocumentChild).update(blockPage.value.toJson());
+      // }
+    } catch (e, t) {
+      print(e);
+      print(t);
+      isShowLoadingView.value = false;
+      MessageUtil.show(msg: "Cập nhật không thành công");
     }
-
-    List<String> listImageFinal = listImagePick.map<String>((e) => e.imagePath ?? '').toList();
-
-    // if (isModeAddNew.value) {
-    //   await uploadFile(imageUserPick.value.localPath!);
-    // } else {
-    //   if (imageUserPick.value.type != 1 &&
-    //       imageUserPick.value.imagePath != cakeProduct.value.productImage) {
-    //     await uploadFile(imageUserPick.value.localPath!);
-    //   }
-    // }
-    //
-    // print("isUpdateImageSuccess $isUpdateImageSuccess");
-    // if (!isUpdateImageSuccess) {
-    //   return;
-    // }
-
-    cakeProduct.value.productImages = listImageFinal;
-    if (productNameController.text != (cakeProduct.value.productName ?? '')) {
-      cakeProduct.value.productName = productNameController.text;
-    }
-
-    if (productPriceController.text !=
-        "${(cakeProduct.value.productPrice ?? 0)}") {
-      cakeProduct.value.productPrice =
-          double.parse(productPriceController.text);
-    }
-
-    if (isModeAddNew.value) {
-      cakeProduct.value.createDate = DateTime.now();
-      // blockPage.value.blockID = blockPage.value.blockName;
-      // idDocumentChild = blockPage.value.createDate!.millisecondsSinceEpoch.toString();
-    }
-    cakeProduct.value.updateDate = DateTime.now();
-    cakeProduct.value.productType = currentTypeCake.value;
-
-    // if(isModeAddNew.value){
-    //   CollectionReference collectionRef = firestore.collection(DataRowName.Menus.name);
-    //   await collectionRef.doc(idBlock).collection(idCollection)
-    //       .doc(idDocumentChild).set(blockPage.value.toJson());
-    // }else{
-    //   CollectionReference collectionRef = firestore.collection(DataRowName.Menus.name);
-    //   await collectionRef.doc(idBlock).collection(idCollection)
-    //       .doc(idDocumentChild).update(blockPage.value.toJson());
-    // }
   }
 
   Future<void> uploadFile(ImagePick imagePick) async {
-
     print("uploadFile");
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference reference =
-        FirebaseStorage.instance.ref().child("moon_cake/cake/$fileName");
+        FirebaseStorage.instance.ref().child("moon_cake/cakes/$fileName");
     UploadTask uploadTask = reference.putData(
         imagePick.localPath!,
         SettableMetadata(
@@ -231,14 +269,11 @@ class ProductDetailManagerController extends GetxController {
       PageConfig.CHOOSE_IMAGE,
       arguments: {"type": 2, "path": "moon_cake/cakes"},
     );
-    if(result != null){
+    if (result != null) {
       var object = jsonDecode(result);
       var listImage = (object['images'] as List).map<ImagePick>((e) {
         ImageServer data = ImageServer.fromJson(e);
-        return ImagePick(
-          imagePath: data.imagePathAfterParse,
-          type: 1
-        );
+        return ImagePick(imagePath: data.imagePathAfterParse, type: 1);
       }).toList();
       listImagePick.addAll(listImage);
     }
@@ -251,17 +286,18 @@ class ProductDetailManagerController extends GetxController {
 
   void onDeleteCurrentImage(int index) {
     listImagePick.removeAt(index);
-    if(imageUserPick.value.selectIndexView > 0 && imageUserPick.value.selectIndexView == index){
+    if (imageUserPick.value.selectIndexView > 0 &&
+        imageUserPick.value.selectIndexView == index) {
       imageUserPick.value = ImagePick();
     }
   }
 
   Future<void> onEditCurrentImage(BuildContext context) async {
-    if(imageUserPick.value.selectIndexView == -1) return;
+    if (imageUserPick.value.selectIndexView == -1) return;
     var result = await onShowDialogAddImage(context);
-    if(result == "from_gallery"){
+    if (result == "from_gallery") {
       onChangeCurrentImageLocal(imageUserPick.value.selectIndexView);
-    }else{
+    } else {
       onChangeCurrentImageServer(imageUserPick.value.selectIndexView);
     }
   }
@@ -288,16 +324,18 @@ class ProductDetailManagerController extends GetxController {
       PageConfig.CHOOSE_IMAGE,
       arguments: {"type": 1, "path": "moon_cake/cakes"},
     );
-    if(result != null){
+    if (result != null) {
       var object = jsonDecode(result);
       var listImage = (object['images'] as List).map<ImagePick>((e) {
         ImageServer data = ImageServer.fromJson(e);
-        return ImagePick(
-            imagePath: data.imagePathAfterParse,
-            type: 1
-        );
+        return ImagePick(imagePath: data.imagePathAfterParse, type: 1);
       }).toList();
       listImagePick[index] = listImage.first;
     }
+  }
+
+  void onChangShowHideProduct(bool value) {
+    cakeProduct.value.isShow = value;
+    cakeProduct.refresh();
   }
 }

@@ -1,5 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
@@ -32,6 +33,11 @@ class ProductManagerController extends GetxController {
 
   void onAddNewProduct() {
 
+  }
+
+  Color getBackgroundColor(String? color, BuildContext context) {
+    if (color == null) return Theme.of(context).backgroundColor;
+    return Color(int.parse("0xFF$color"));
   }
 
 }

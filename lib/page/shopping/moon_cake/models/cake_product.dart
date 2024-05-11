@@ -8,6 +8,8 @@ class CakeProduct {
   List<String>? productImages;
   String? productColor;
   double? productPrice;
+  String? productDescription;
+  double? productDiscount;
   bool? isShow;
 
   int numberEggs = 1;
@@ -15,6 +17,11 @@ class CakeProduct {
 
   DateTime? createDate;
   DateTime? updateDate;
+
+  String get productImageMain{
+    if((productImages ?? []).isEmpty) return '';
+    return productImages!.first;
+  }
 
   Timestamp get convertCreateDate {
     createDate ??= DateTime.now();
@@ -38,10 +45,14 @@ class CakeProduct {
 
   CakeProduct.fromJson(Map<String, dynamic> json) {
     productPrice = double.parse(json['product_price'].toString());
+    productDiscount = json['product_discount'];
     productType = json['product_type'];
     productName = json['product_name'];
     productColor = json['product_color'];
-    productImages = json['product_images'].cast<String>();
+    productDescription = json['product_description'];
+    if(json['product_images'] != null){
+      productImages = json['product_images'].cast<String>();
+    }
     productID = json['product_id'];
     isShow = json['is_show'];
 
@@ -56,6 +67,7 @@ class CakeProduct {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['product_price'] = productPrice;
+    data['product_discount'] = productDiscount;
     data['product_type'] = productType;
     data['product_name'] = productName;
     data['product_images'] = productImages;
@@ -64,9 +76,10 @@ class CakeProduct {
     data['is_show'] = isShow;
     data['number_eggs'] = numberEggs;
     data['quantity_order'] = quantity;
+    data['product_description'] = productDescription;
 
-    data['create_date'] = this.convertCreateDate;
-    data['update_date'] = this.convertUpdateDate;
+    data['create_date'] = convertCreateDate;
+    data['update_date'] = convertUpdateDate;
     return data;
   }
 }

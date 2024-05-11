@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
-import 'package:loto/page/home/models/item_model.dart';
-import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/items/item_product_no_box.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';

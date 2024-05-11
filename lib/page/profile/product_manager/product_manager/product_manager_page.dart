@@ -62,13 +62,18 @@ class ProductManagerPage extends GetView<ProductManagerController> {
                             aspectRatio: 1,
                             child: Container(
                               alignment: Alignment.center,
-                              color: Colors.amber,
+                              color: controller.getBackgroundColor(cake.productColor, context),
+                              child: Image.network(cake.productImageMain),
                             ),
                           ),
                           SizedBox(width: 10,),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text("${cake.productName ?? ''}")
+                              const SizedBox(height: 10,),
+                              Text(cake.productName ?? ''),
+                              const SizedBox(height: 10,),
+                              Text("Loại: ${cake.productType ?? 0}g")
                             ],
                           )
                         ],
@@ -89,15 +94,19 @@ class ProductManagerPage extends GetView<ProductManagerController> {
                       children: [
                         Column(
                           children: [
-                            Text("${cake.productName ?? ''}")
+                            const SizedBox(height: 10,),
+                            Text(cake.productName ?? ''),
+                            const SizedBox(height: 10,),
+                            Text("Loại: ${cake.productType ?? 0}g")
                           ],
                         ),
-                        SizedBox(width: 10,),
+                        const SizedBox(width: 10,),
                         AspectRatio(
                           aspectRatio: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            color: Colors.amber,
+                            color: controller.getBackgroundColor(cake.productColor, context),
+                            child: Image.network(cake.productImageMain),
                           ),
                         ),
                       ],

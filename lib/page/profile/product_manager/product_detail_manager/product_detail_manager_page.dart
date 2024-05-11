@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/models/image_pick.dart';
 import 'package:loto/page/profile/product_manager/product_detail_manager/product_detail_manager_controller.dart';
+import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
 class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
@@ -40,39 +41,55 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
           ))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _buildBlockImage(context),
-            const SizedBox(height: 15,),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Obx(() => Column(
-                children: [
-                  SizedBox(height: 15,),
-                  Row(
-                    children: [
-                      Text(
-                        "Màu:",
-                        style: TextStyleResource.textStyleBlack(context),
+      body: Stack(
+        children: [
+          ListView(
+            children: [
+              _buildBlockImage(context),
+              const SizedBox(height: 15,),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Obx(() => Column(
+                  children: [
+                    SizedBox(height: 15,),
+                    Row(
+                      children: [
+                        Text(
+                          "Màu:",
+                          style: TextStyleResource.textStyleBlack(context),
+                        ),
+                        SizedBox(width: 15,),
+                        Container(
+                          width: 100,
+                          height: 35,
+                          color: controller.getBackgroundColor(controller.cakeProduct.value.productColor, context),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 15,),
+                    Container(
+                      height: 50,
+                      child: TextField(
+                        controller: controller.productNameController,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                            labelText: "Tên sản phẩm",
+                            labelStyle: TextStyle(
+                                height: 1.5
+                            ),
+                            contentPadding: EdgeInsets.only(top: 10)
+                        ),
+                        onChanged: (text) {
+
+                        },
                       ),
-                      SizedBox(width: 15,),
-                      Container(
-                        width: 100,
-                        height: 35,
-                        color: controller.getBackgroundColor(controller.cakeProduct.value.productColor, context),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 15,),
-                  Container(
-                    height: 50,
-                    child: TextField(
-                      controller: controller.productNameController,
-                      keyboardType: TextInputType.text,
+                    ),
+                    SizedBox(height: 15,),
+                    TextField(
+                      controller: controller.productPriceController,
+                      keyboardType: TextInputType.number,
                       decoration: const InputDecoration(
-                          labelText: "Tên sản phẩm",
+                          labelText: "Giá sản phẩm",
                           labelStyle: TextStyle(
                               height: 1.5
                           ),
@@ -82,117 +99,124 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
 
                       },
                     ),
-                  ),
-                  SizedBox(height: 15,),
-                  TextField(
-                    controller: controller.productPriceController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: "Giá sản phẩm",
-                        labelStyle: TextStyle(
-                            height: 1.5
-                        ),
-                        contentPadding: EdgeInsets.only(top: 10)
-                    ),
-                    onChanged: (text) {
+                    SizedBox(height: 15,),
+                    TextField(
+                      controller: controller.productDiscountController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          labelText: "Giảm giá",
+                          labelStyle: TextStyle(
+                              height: 1.5
+                          ),
+                          contentPadding: EdgeInsets.only(top: 10)
+                      ),
+                      onChanged: (text) {
 
-                    },
-                  ),
-                  SizedBox(height: 15,),
-                  TextField(
-                    controller: controller.productDiscountController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: "Giảm giá",
-                        labelStyle: TextStyle(
-                            height: 1.5
-                        ),
-                        contentPadding: EdgeInsets.only(top: 10)
+                      },
                     ),
-                    onChanged: (text) {
-
-                    },
-                  ),
-                  SizedBox(height: 15,),
-                  Container(
-                    height: 40,
-                    child: Row(
+                    SizedBox(height: 15,),
+                    _buildNote(context),
+                    SizedBox(height: 15,),
+                    Container(
+                      height: 40,
+                      child: Row(
+                        children: [
+                          Text(
+                            "Loại:",
+                            style: TextStyleResource.textStyleBlack(context),
+                          ),
+                          SizedBox(width: 10,),
+                          Expanded(
+                            child: ListView.separated(
+                              itemCount: controller.listType.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (c, i){
+                                return GestureDetector(
+                                  onTap: (){
+                                    controller.onChangeTypeCake(controller.listType[i]);
+                                  },
+                                  child: Obx((){
+                                    return Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: controller.listType[i] == controller.currentTypeCake.value? Colors.black : Colors.transparent,
+                                          width: 2,
+                                        ),
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.symmetric(horizontal: 15,),
+                                      child: Text("${controller.listType[i]}g"),
+                                    );
+                                  }),
+                                );
+                              },
+                              separatorBuilder: (c, i){
+                                return SizedBox(width: 10);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 15,),
+                    Row(
                       children: [
                         Text(
-                          "Loại:",
+                          "Hiện trên danh sách:",
                           style: TextStyleResource.textStyleBlack(context),
                         ),
                         SizedBox(width: 10,),
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: controller.listType.length,
-                            scrollDirection: Axis.horizontal,
-                            itemBuilder: (c, i){
-                              return GestureDetector(
-                                onTap: (){
-                                  controller.onChangeTypeCake(controller.listType[i]);
-                                },
-                                child: Obx((){
-                                  return Container(
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: controller.listType[i] == controller.currentTypeCake.value? Colors.black : Colors.transparent,
-                                        width: 2,
-                                      ),
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(horizontal: 15,),
-                                    child: Text("${controller.listType[i]}g"),
-                                  );
-                                }),
-                              );
-                            },
-                            separatorBuilder: (c, i){
-                              return SizedBox(width: 10);
-                            },
-                          ),
-                        )
+                        Switch(
+                          value: controller.cakeProduct.value.isShow ?? false,
+                          onChanged: (value){
+                            controller.onChangShowHideProduct(value);
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  SizedBox(height: 15,),
-                  Row(
-                    children: [
-                      Text(
-                        "Hiện trên danh sách:",
+                    SizedBox(height: 15,),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Cập nhật gần nhất: ${controller.cakeProduct.value.updateDate}",
                         style: TextStyleResource.textStyleBlack(context),
                       ),
-                      SizedBox(width: 10,),
-                      Switch(
-                        value: controller.cakeProduct.value.isShow ?? false,
-                        onChanged: (value){
-                          //controller.onChangShowHideBlock(value);
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 15,),
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Cập nhật gần nhất: ${controller.cakeProduct.value.updateDate}",
-                      style: TextStyleResource.textStyleBlack(context),
+                    )
+                  ],
+                )),
+              )
+            ],
+          ),
+          Positioned.fill(
+            child: Obx(() => Visibility(
+              visible: controller.isShowLoadingView.value,
+              child: Container(
+                color: Colors.black45,
+                child: Center(
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: ColorResource.color_background_light,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  )
-                ],
-              )),
-            )
-          ],
-        ),
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+              ),
+            )),
+          )
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
         child: GestureDetector(
           onTap: (){
-            //controller.onCreateOrUpdateBlockPage();
+            controller.onCreateOrUpdateProduct();
           },
           child: Container(
             height: 55,
@@ -257,6 +281,20 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
     );
   }
 
+  Widget _buildNote(BuildContext context){
+    return TextFormField(
+      minLines: 6,
+      maxLines: null,
+      controller: controller.descriptionController,
+      keyboardType: TextInputType.multiline,
+      decoration: const InputDecoration(
+        alignLabelWithHint: true,
+        border: OutlineInputBorder(),
+        labelText: 'Thành phần',
+      ),
+    );
+  }
+
   Widget _buildListImage(BuildContext context, {required double width}){
     final double maxWidthImage = width * 0.4 > 1000 ? 1000 : (width * 0.4);
     final double height = context.isLargeTablet ? maxWidthImage : ((width - 20) / 5);
@@ -300,7 +338,7 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
                 child: Stack(
                   children: [
                     Container(
-                      height: height,
+                      //height: height,
                       width: heightItem,
                       padding: const EdgeInsets.all(5),
                       alignment: Alignment.center,
@@ -313,7 +351,7 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
 
                     Positioned(
                       top: 0,
-                      right: 10,
+                      left: 0,
                       child: GestureDetector(
                         onTap: (){
                           controller.onDeleteCurrentImage(i);
