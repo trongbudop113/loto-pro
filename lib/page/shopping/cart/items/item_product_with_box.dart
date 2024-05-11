@@ -72,7 +72,7 @@ class ItemProductWithBox extends StatelessWidget {
                       width: 120,
                       height: 120,
                       child: Image.network(
-                        productItem.boxCake!.productImage ?? '',
+                        productItem.boxCake!.productImages?.first ?? '',
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -21,14 +21,18 @@ import 'package:loto/page/login/login_page.dart';
 import 'package:loto/page/paper_manager/paper_manager_controller.dart';
 import 'package:loto/page/paper_manager/paper_manager_page.dart';
 import 'package:loto/page/portfolior/portfolior_controller.dart';
+import 'package:loto/page/profile/image_server/choose_image/choose_image_controller.dart';
+import 'package:loto/page/profile/image_server/choose_image/choose_image_page.dart';
 import 'package:loto/page/profile/order_manager/order_detail_manager/order_detail_manager_controller.dart';
 import 'package:loto/page/profile/order_manager/order_detail_manager/order_detail_manager_page.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_controller.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/edit_page_manager_page.dart';
 import 'package:loto/page/profile/page_manager/page_manager/page_manager_controller.dart';
 import 'package:loto/page/profile/page_manager/page_manager/page_manager_page.dart';
-import 'package:loto/page/profile/product_manager/product_manager_controller.dart';
-import 'package:loto/page/profile/product_manager/product_manager_page.dart';
+import 'package:loto/page/profile/product_manager/product_detail_manager/product_detail_manager_controller.dart';
+import 'package:loto/page/profile/product_manager/product_detail_manager/product_detail_manager_page.dart';
+import 'package:loto/page/profile/product_manager/product_manager/product_manager_controller.dart';
+import 'package:loto/page/profile/product_manager/product_manager/product_manager_page.dart';
 import 'package:loto/page/profile/profile_controller.dart';
 import 'package:loto/page/profile/profile_manager/profile_manager_controller.dart';
 import 'package:loto/page/profile/profile_page.dart';
@@ -90,6 +94,7 @@ class PageConfig {
   static String COOKING_MANAGER = '/cooking_manager';
   static String ORDER_DETAIL_MANAGER = '/order_detail_manager';
   static String EDIT_PRODUCT_MANAGER = '/edit_product_manager';
+  static String CHOOSE_IMAGE = '/choose_image';
 
   static List<GetPage> listPage(){
     return [
@@ -245,8 +250,13 @@ class PageConfig {
       ),
       GetPage(
         name: EDIT_PRODUCT_MANAGER,
-        page: () => OrderDetailManagerPage(),
-        binding: OrderDetailManagerBinding(),
+        page: () => ProductDetailManagerPage(),
+        binding: ProductDetailManagerBinding(),
+      ),
+      GetPage(
+        name: CHOOSE_IMAGE,
+        page: () => ChooseImagePage(),
+        binding: ChooseImageBinding(),
       ),
     ];
   }

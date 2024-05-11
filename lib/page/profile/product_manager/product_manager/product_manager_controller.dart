@@ -29,4 +29,9 @@ class ProductManagerController extends GetxController {
   void onTapItem(CakeProduct cake) {
     Get.toNamed(PageConfig.EDIT_PRODUCT_MANAGER, arguments: cake);
   }
+
+  void onAddNewProduct() {
+
+  }
+
 }

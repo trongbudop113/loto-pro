@@ -127,7 +127,7 @@ class SelectBoxLayout extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.center,
                         child: Image.network(
-                          product.productImage ?? '',
+                          product.productImages?.first ?? '',
                           fit: BoxFit.cover,
                           width: Get.width,
                         ),

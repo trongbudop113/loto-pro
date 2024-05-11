@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/profile/product_manager/product_manager_controller.dart';
+import 'package:loto/page/profile/product_manager/product_manager/product_manager_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 
 class ProductManagerPage extends GetView<ProductManagerController> {
@@ -15,6 +15,27 @@ class ProductManagerPage extends GetView<ProductManagerController> {
     return Scaffold(
       appBar: AppBar(
         title: Text("product_management".tr),
+        leading: GestureDetector(
+          onTap: (){
+            Get.back();
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Icon(Icons.arrow_back),
+          ),
+        ),
+        actions: [
+          GestureDetector(
+            onTap: (){
+              controller.onAddNewProduct();
+            },
+            child: Container(
+              width: 55,
+              color: Colors.transparent,
+              child: Icon(Icons.add,),
+            ),
+          )
+        ],
       ),
       body: StreamBuilder<QuerySnapshot<Object?>>(
         stream: controller.streamGetProduct(),

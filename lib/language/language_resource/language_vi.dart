@@ -30,5 +30,7 @@ const Map<String, String> vi = {
   "page_manager" : "Quản Lý Màn Hình",
   "user_management" : "Quản Lý Tài Khoản",
   "cooking" : "Nấu Ăn",
-  "order_history" : "Lịch sử đặt hàng"
+  "order_history" : "Lịch sử đặt hàng",
+  "from_gallery" : "Thư viện ảnh",
+  "from_server" : "Firebase Storage"
 };
