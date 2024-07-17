@@ -10,6 +10,7 @@ import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page_config.dart';
+import 'package:loto/src/color_resource.dart';
 
 class CartBinding extends Bindings {
   @override
@@ -64,7 +65,7 @@ class CartController extends GetxController {
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 

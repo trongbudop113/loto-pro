@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -14,6 +15,7 @@ import 'package:loto/page/profile/model/option_data.dart';
 import 'package:loto/page/profile/page_manager/edit_page_manager/models/image_pick.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page_config.dart';
+import 'package:loto/src/color_resource.dart';
 
 class ProductDetailManagerBinding extends Bindings {
   @override
@@ -43,6 +45,7 @@ class ProductDetailManagerController extends GetxController {
   final RxInt currentTypeCake = 150.obs;
 
   final RxList<ImagePick> listImagePick = <ImagePick>[].obs;
+  final RxString mainColor = Colors.grey.hex.obs;
 
   final RxBool isShowLoadingView = false.obs;
 
@@ -79,6 +82,8 @@ class ProductDetailManagerController extends GetxController {
 
         listImagePick.addAll(list);
       }
+      mainColor.value = cakeProduct.value.productColor ?? '';
+      // print(cakeProduct.value.productColor);
       appbarName.value = cakeProduct.value.productName ?? '';
       currentTypeCake.value = cakeProduct.value.productType ?? listType.first;
       return;
@@ -109,6 +114,23 @@ class ProductDetailManagerController extends GetxController {
     listImagePick.addAll(newList);
   }
 
+  List<String> get listImagePickAfter {
+    if(listImagePick.isEmpty) return [];
+    return listImagePick.map<String>((e) => (e.imageName ?? '')).toList();
+  }
+
+  List<String> get listImagePickBefore {
+    if((cakeProduct.value.productImages ?? []).isEmpty) return [];
+    return cakeProduct.value.productImages!;
+  }
+
+  bool get compareTwoListImage{
+    listImagePickBefore.sort((a, b) => a.compareTo(b));
+    listImagePickAfter.sort((a, b) => a.compareTo(b));
+    return const Equality().equals(listImagePickBefore, listImagePickAfter);
+  }
+
+
   Future<void> onCreateOrUpdateProduct() async {
     isShowLoadingView.value = true;
     try {
@@ -122,14 +144,16 @@ class ProductDetailManagerController extends GetxController {
         return;
       }
 
-      for (var data in listImagePick) {
-        if (data.type == 2) {
-          await uploadFile(data);
+      List<String> listImageFinal = [];
+      if(compareTwoListImage == false){
+        for (var data in listImagePick) {
+          if (data.type == 2) {
+            await uploadFile(data);
+          }
         }
-      }
 
-      List<String> listImageFinal =
-          listImagePick.map<String>((e) => e.imagePath ?? '').toList();
+        listImageFinal = listImagePick.map<String>((e) => e.imagePath ?? '').toList();
+      }
 
       // if (isModeAddNew.value) {
       //   await uploadFile(imageUserPick.value.localPath!);
@@ -145,7 +169,9 @@ class ProductDetailManagerController extends GetxController {
       //   return;
       // }
 
-      cakeProduct.value.productImages = listImageFinal;
+      if(listImageFinal.isNotEmpty){
+        cakeProduct.value.productImages = listImageFinal;
+      }
       if (productNameController.text != (cakeProduct.value.productName ?? '')) {
         cakeProduct.value.productName = productNameController.text;
       }
@@ -167,6 +193,9 @@ class ProductDetailManagerController extends GetxController {
       }
       cakeProduct.value.updateDate = DateTime.now();
       cakeProduct.value.productType = currentTypeCake.value;
+      if(cakeProduct.value.productColor != mainColor.value){
+        cakeProduct.value.productColor = mainColor.value;
+      }
 
       CollectionReference collectionRef =
           firestore.collection(DataRowName.Cakes.name);
@@ -229,7 +258,7 @@ class ProductDetailManagerController extends GetxController {
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 
@@ -338,4 +367,72 @@ class ProductDetailManagerController extends GetxController {
     cakeProduct.value.isShow = value;
     cakeProduct.refresh();
   }
+
+  Future<void> onPickerColor(BuildContext context) async {
+    colorPickerDialog(context);
+  }
+
+  Future<bool> colorPickerDialog(BuildContext context) async {
+    return ColorPicker(
+      color: Color(int.parse("0xFF${mainColor.value}")),
+      onColorChanged: (Color color) {
+        mainColor.value = color.hex;
+      },
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      materialNameTextStyle: Theme.of(context).textTheme.bodySmall,
+      colorNameTextStyle: Theme.of(context).textTheme.bodySmall,
+      colorCodeTextStyle: Theme.of(context).textTheme.bodyMedium,
+      colorCodePrefixStyle: Theme.of(context).textTheme.bodySmall,
+      selectedPickerTypeColor: Theme.of(context).colorScheme.primary,
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: true,
+        ColorPickerType.accent: true,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: true,
+        ColorPickerType.wheel: true,
+      },
+      customColorSwatchesAndNames: colorsNameMap,
+    ).showPickerDialog(
+      context,
+      actionsPadding: const EdgeInsets.all(16),
+      constraints:
+      const BoxConstraints(minHeight: 480, minWidth: 300, maxWidth: 320),
+    );
+  }
+
+  static const Color guidePrimary = Color(0xFF6200EE);
+  static const Color guidePrimaryVariant = Color(0xFF3700B3);
+  static const Color guideSecondary = Color(0xFF03DAC6);
+  static const Color guideSecondaryVariant = Color(0xFF018786);
+  static const Color guideError = Color(0xFFB00020);
+  static const Color guideErrorDark = Color(0xFFCF6679);
+  static const Color blueBlues = Color(0xFF174378);
+
+  final Map<ColorSwatch<Object>, String> colorsNameMap =
+  <ColorSwatch<Object>, String>{
+    ColorTools.createPrimarySwatch(guidePrimary): 'Guide Purple',
+    ColorTools.createPrimarySwatch(guidePrimaryVariant): 'Guide Purple Variant',
+    ColorTools.createAccentSwatch(guideSecondary): 'Guide Teal',
+    ColorTools.createAccentSwatch(guideSecondaryVariant): 'Guide Teal Variant',
+    ColorTools.createPrimarySwatch(guideError): 'Guide Error',
+    ColorTools.createPrimarySwatch(guideErrorDark): 'Guide Error Dark',
+    ColorTools.createPrimarySwatch(blueBlues): 'Blue blues',
+  };
 }

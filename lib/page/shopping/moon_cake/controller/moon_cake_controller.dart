@@ -13,6 +13,7 @@ import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_box_layout.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_filter_layout.dart';
 import 'package:loto/page_config.dart';
+import 'package:loto/src/color_resource.dart';
 
 class MoonCakeBinding extends Bindings {
   @override
@@ -162,7 +163,7 @@ class MoonCakeController extends GetxController {
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 

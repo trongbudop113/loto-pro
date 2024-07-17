@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "loto-fb7ac"
-  }
+  },
+  "targets": {
+    "loto-fb7ac": {
+      "hosting": {
+        "aio": [
+          "aio-app"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

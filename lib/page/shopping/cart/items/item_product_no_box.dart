@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
-import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
@@ -79,7 +78,8 @@ class ItemProductNoBox extends StatelessWidget {
                     ),
                     padding: EdgeInsets.all(5),
                     child: Image.network(
-                      "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+                      productItem.boxCake!.productImageMain ?? '',
+                      fit: BoxFit.cover,
                     ),
                   ),
                   SizedBox(width: 10),
@@ -190,7 +190,7 @@ class ItemProductNoBox extends StatelessWidget {
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 

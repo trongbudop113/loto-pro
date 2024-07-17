@@ -7,5 +7,7 @@ class ImagePick{
 
   int selectIndexView = -1;
 
-  ImagePick({this.type, this.imagePath, this.localPath});
+  String? imageName;
+
+  ImagePick({this.type, this.imagePath, this.localPath, this.imageName});
 }

@@ -6,6 +6,7 @@ import 'package:loto/common/utils.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
+import 'package:loto/src/color_resource.dart';
 
 class MoonCakeDetailBinding extends Bindings {
   @override
@@ -22,7 +23,7 @@ class MoonCakeDetailController extends GetxController {
   List<EggData> listEgg = [];
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 

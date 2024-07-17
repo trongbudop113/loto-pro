@@ -4,6 +4,7 @@ import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dar
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/shapes/quater_circle.dart';
+import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
 class AppListItem extends StatefulWidget {
@@ -174,9 +175,11 @@ class _AppListItemState extends State<AppListItem> {
             child: Container(
               alignment: Alignment.center,
               color: widget.controller.getBackgroundColor(widget.product.productColor, context),
-              padding: const EdgeInsets.all(20),
               child: Image.network(
-                "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+                widget.product.productImageMain ?? '',
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
           ),
@@ -229,7 +232,7 @@ class _AppListItemState extends State<AppListItem> {
                     height: 35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(360),
-                      color: Theme.of(context).backgroundColor,
+                      color: ColorResource.color_background_light,
                     ),
                     alignment: Alignment.center,
                     child: const Icon(

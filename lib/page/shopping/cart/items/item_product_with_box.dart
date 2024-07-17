@@ -120,7 +120,9 @@ class ItemProductWithBox extends StatelessWidget {
                           ),
                           margin: EdgeInsets.only(right: 10),
                           child: Image.network(
-                            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+                            productItem
+                                .productMoonCakeList![index].productImageMain ?? '',
+                            fit: BoxFit.cover,
                           ),
                         )),
               ),
@@ -191,7 +193,7 @@ class ItemProductWithBox extends StatelessWidget {
                     },
                     child: Container(
                       height: 35,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: ColorResource.color_main_light,
                       ),
                       child: Icon(Icons.add),
@@ -207,7 +209,7 @@ class ItemProductWithBox extends StatelessWidget {
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {
-    if (color == null) return Theme.of(context).backgroundColor;
+    if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
   }
 

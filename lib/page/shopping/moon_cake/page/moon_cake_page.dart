@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
@@ -45,20 +44,22 @@ class MoonCakePage extends GetView<MoonCakeController> {
             Positioned(
               bottom: 6,
               right: 6,
-              child: Obx(() => Container(
-                padding: EdgeInsets.all(3),
-                alignment: Alignment.center,
-                child: Text(
-                  AppCommon.singleton.countCart.value.toString(),
-                  style: TextStyleResource.textStyleBlack(context).copyWith(
-                    fontWeight: FontWeight.bold,
+              child: Obx(
+                () => Container(
+                  padding: EdgeInsets.all(3),
+                  alignment: Alignment.center,
+                  child: Text(
+                    AppCommon.singleton.countCart.value.toString(),
+                    style: TextStyleResource.textStyleBlack(context).copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-              )),
+              ),
             )
           ],
         ),
-      )
+      ),
     );
   }
 
@@ -183,7 +184,8 @@ class MoonCakePage extends GetView<MoonCakeController> {
                       ),
                       padding: const EdgeInsets.all(5),
                       child: Image.network(
-                        "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5",
+                        controller.listCakeBoxTemp[i].productImageMain ?? '',
+                        fit: BoxFit.cover,
                       ),
                     ),
                     Positioned(
@@ -204,7 +206,8 @@ class MoonCakePage extends GetView<MoonCakeController> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                                "${controller.listCakeBoxTemp[i].productType}g - ${controller.listCakeBoxTemp[i].numberEggs}T")
+                              "${controller.listCakeBoxTemp[i].productType}g - ${controller.listCakeBoxTemp[i].numberEggs}T",
+                            )
                           ],
                         ),
                       ),
@@ -253,7 +256,10 @@ class MoonCakePage extends GetView<MoonCakeController> {
       children: [
         Container(
           decoration: BoxDecoration(
-            border: Border.all(width: 1.5, color: Colors.grey,),
+            border: Border.all(
+              width: 1.5,
+              color: Colors.grey,
+            ),
           ),
           height: 50,
           child: Row(
@@ -274,13 +280,13 @@ class MoonCakePage extends GetView<MoonCakeController> {
                     controller.showFilterDialog(context);
                   },
                   child: Obx(() => Container(
-                    alignment: Alignment.center,
-                    color: Colors.transparent,
-                    child: Text(
-                      "${controller.filterData.value.statusName}",
-                      style: TextStyleResource.textStyleBlack(context),
-                    ),
-                  )),
+                        alignment: Alignment.center,
+                        color: Colors.transparent,
+                        child: Text(
+                          "${controller.filterData.value.statusName}",
+                          style: TextStyleResource.textStyleBlack(context),
+                        ),
+                      )),
                 ),
               )
             ],
@@ -293,38 +299,40 @@ class MoonCakePage extends GetView<MoonCakeController> {
     );
   }
 
-  Widget _buildListProduct(BuildContext context){
-    int countColumn = context.mediaQuerySize.width > 1100 ? 5 : (context.mediaQuerySize.width < 600 ? 2 : 3);
-    return Obx((){
+  Widget _buildListProduct(BuildContext context) {
+    int countColumn = context.mediaQuerySize.width > 1100
+        ? 5
+        : (context.mediaQuerySize.width < 600 ? 2 : 3);
+    return Obx(() {
       if (controller.isLoadingData.value) {
         return const Center(
           child: CircularProgressIndicator(),
         );
       }
       return Obx(() => GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: countColumn,
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 0.9,
-        ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10,
-          vertical: 10,
-        ).copyWith(
-          bottom: MediaQuery.of(context).padding.bottom +
-              80 +
-              (controller.isStatusBuyBox.value ? 110 : 0),
-        ),
-        itemCount: controller.listCake.length,
-        itemBuilder: (BuildContext ctx, index) {
-          return AppListItem(
-            index: index,
-            controller: controller,
-            product: controller.listCake[index],
-          );
-        },
-      ));
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: countColumn,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.9,
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ).copyWith(
+              bottom: MediaQuery.of(context).padding.bottom +
+                  80 +
+                  (controller.isStatusBuyBox.value ? 110 : 0),
+            ),
+            itemCount: controller.listCake.length,
+            itemBuilder: (BuildContext ctx, index) {
+              return AppListItem(
+                index: index,
+                controller: controller,
+                product: controller.listCake[index],
+              );
+            },
+          ));
     });
   }
 }

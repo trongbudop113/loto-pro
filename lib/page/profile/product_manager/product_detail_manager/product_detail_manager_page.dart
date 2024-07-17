@@ -59,10 +59,15 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
                           style: TextStyleResource.textStyleBlack(context),
                         ),
                         SizedBox(width: 15,),
-                        Container(
-                          width: 100,
-                          height: 35,
-                          color: controller.getBackgroundColor(controller.cakeProduct.value.productColor, context),
+                        GestureDetector(
+                          onTap: (){
+                            controller.onPickerColor(context);
+                          },
+                          child: Obx(() => Container(
+                            width: 100,
+                            height: 35,
+                            color: Color(int.parse("0xFF${controller.mainColor.value}")),
+                          )),
                         )
                       ],
                     ),
@@ -379,9 +384,9 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
 
   Image _getImage(ImagePick imagePick){
     if(imagePick.type == 1){
-      return Image.network(imagePick.imagePath ?? '');
+      return Image.network(imagePick.imagePath ?? '', fit: BoxFit.cover,);
     }else{
-      return Image.memory(imagePick.localPath!);
+      return Image.memory(imagePick.localPath!, fit: BoxFit.cover,);
     }
   }
 
@@ -403,9 +408,9 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
           );
         }
         if(controller.imageUserPick.value.type == 1){
-          return Image.network(controller.imageUserPick.value.imagePath ?? '');
+          return Image.network(controller.imageUserPick.value.imagePath ?? '', fit: BoxFit.cover,);
         }else{
-          return Image.memory(controller.imageUserPick.value.localPath!);
+          return Image.memory(controller.imageUserPick.value.localPath!, fit: BoxFit.cover,);
         }
       }),
     );

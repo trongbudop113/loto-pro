@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
+import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
-class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
-
+class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
   @override
   Widget build(BuildContext context) {
-
     final width = MediaQuery.of(context).size.width;
     final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
 
@@ -19,28 +18,31 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
         actions: [
           Container(
             alignment: Alignment.center,
-            color : Colors.transparent,
-            width : 56,
+            color: Colors.transparent,
+            width: 56,
             child: Stack(
-                children : [
-                  Positioned.fill(
-                    child: const Icon(Icons.shopping_cart)
+              children: [
+                const Positioned.fill(child: Icon(Icons.shopping_cart)),
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Obx(
+                    () => Container(
+                      width: 15,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(60),
+                        color: Colors.amber,
+                      ),
+                      child: Text(
+                        AppCommon.singleton.currentProductInCart.length
+                            .toString(),
+                      ),
+                    ),
                   ),
-                  Positioned(
-                      top : 10,
-                      right : 10,
-                      child: Obx(() => Container(
-                        width: 15,
-                          alignment: Alignment.center,
-                          decoration : BoxDecoration(
-                            borderRadius : BorderRadius.circular(60),
-                            color: Colors.amber,
-                          ),
-                          child : Text(AppCommon.singleton.currentProductInCart.length.toString())
-                      ))
-                  )
-                ]
-            )
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -48,65 +50,79 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
       body: SingleChildScrollView(
         child: Column(
           children: [
-            context.isLargeTablet ?
-            Row(children: [
-              _buildImage("", context, width: maxWidthImage, height: maxWidthImage),
-              SizedBox(width: 5,),
-              _buildListImage(context, width: width),
-              SizedBox(width: 10,),
-              Expanded(
-                child: _buildDescription(context, width: width),
-              )
-            ],) :
-            Column(
-              children: [
-                _buildImage("", context, width: width, height: width),
-                _buildListImage(context, width: width),
-                _buildDescription(context, width: width)
-              ],
-            ),
-
+            context.isLargeTablet
+                ? Row(
+                    children: [
+                      _buildImage("", context,
+                          width: maxWidthImage, height: maxWidthImage),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      _buildListImage(context, width: width),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: _buildDescription(context, width: width),
+                      )
+                    ],
+                  )
+                : Column(
+                    children: [
+                      _buildImage("", context, width: width, height: width),
+                      _buildListImage(context, width: width),
+                      _buildDescription(context, width: width)
+                    ],
+                  ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.centerLeft,
               child: Text(
                 "Trứng muối:",
-                style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20),
+                style: TextStyleResource.textStyleGrey(context)
+                    .copyWith(fontSize: 20),
               ),
             ),
             Container(
               height: 60,
               margin: const EdgeInsets.only(top: 10, left: 10, bottom: 10),
-              child: Obx(() => Row(
-                  children: controller.listEgg.map((e){
+              child: Obx(
+                () => Row(
+                  children: controller.listEgg.map((e) {
                     return GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         controller.selectEgg(e);
                       },
                       child: Container(
-                        width: (width - 40)/ 3,
+                        width: (width - 40) / 3,
                         margin: const EdgeInsets.only(right: 10),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color: Colors.orangeAccent.withOpacity(0.8),
-                            border: Border.all(color: e.isSelect.value ? Colors.pinkAccent : Colors.transparent, width: 2)
-                        ),
+                            border: Border.all(
+                                color: e.isSelect.value
+                                    ? Colors.pinkAccent
+                                    : Colors.transparent,
+                                width: 2)),
                         alignment: Alignment.center,
                         child: Text(
                           e.name.toString(),
-                          style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 18),
+                          style: TextStyleResource.textStyleBlack(context)
+                              .copyWith(fontSize: 18),
                         ),
                       ),
                     );
-                  }).toList()
-              )),
+                  }).toList(),
+                ),
+              ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: Container(
         height: 60,
-        color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
+        color: controller.getBackgroundColor(
+            controller.moonCakeProduct?.productColor, context),
         child: Row(
           children: [
             Expanded(
@@ -116,18 +132,18 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
                 children: [
                   _subtractButton(),
                   Obx(() => Container(
-                    alignment: Alignment.center,
-                    height: 30,
-                    width: 40,
-                    child: Text(
-                      controller.quantity.value.toString(),
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: getTextColor(Theme.of(context).backgroundColor),
-                          height: 1
-                      ),
-                    ),
-                  )),
+                        alignment: Alignment.center,
+                        height: 30,
+                        width: 40,
+                        child: Text(
+                          controller.quantity.value.toString(),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: getTextColor(
+                                  ColorResource.color_background_light),
+                              height: 1),
+                        ),
+                      )),
                   _plusButton()
                 ],
               ),
@@ -147,9 +163,9 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
                     "Thêm vào giỏ",
                     style: TextStyle(
                         fontSize: 18,
-                        color: getTextColor(controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context)),
-                        height: 1
-                    ),
+                        color: getTextColor(controller.getBackgroundColor(
+                            controller.moonCakeProduct?.productColor, context)),
+                        height: 1),
                   ),
                 ),
               ),
@@ -160,19 +176,25 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
     );
   }
 
-  Widget _buildImage(String image, BuildContext context, {required double width, required double height}){
+  Widget _buildImage(String image, BuildContext context,
+      {required double width, required double height}) {
     return Container(
       width: width,
       height: width,
-      color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
+      color: controller.getBackgroundColor(
+          controller.moonCakeProduct?.productColor, context),
       alignment: Alignment.center,
-      padding: const EdgeInsets.all(50),
-      child: Image.network("https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
+      padding: const EdgeInsets.all(5),
+      child: Image.network(
+        width: width,
+        height: width,
+        controller.moonCakeProduct?.productImageMain ?? '',
+        fit: BoxFit.contain,
+      ),
     );
   }
 
-  Widget _buildDescription(BuildContext context, {required double width}){
-
+  Widget _buildDescription(BuildContext context, {required double width}) {
     final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
     final double? maxHeightDes = context.isLargeTablet ? maxWidthImage : null;
 
@@ -188,23 +210,27 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             child: Text(
               controller.moonCakeProduct?.productName ?? '',
-              style: TextStyleResource.textStyleWhite(context).copyWith(fontSize: 28),
+              style: TextStyleResource.textStyleWhite(context)
+                  .copyWith(fontSize: 28),
             ),
           ),
           Obx(() => Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Giá: ${controller.formatCurrency(controller.productPrice.value)}",
-              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
-            ),
-          )),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Giá: ${controller.formatCurrency(controller.productPrice.value)}",
+                  style: TextStyleResource.textStyleBlack(context)
+                      .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              )),
           Container(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
             alignment: Alignment.centerLeft,
             child: Text(
               "Loại bánh: ${controller.moonCakeProduct?.productType}g",
-              style: TextStyleResource.textStyleBlack(context).copyWith(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyleResource.textStyleBlack(context)
+                  .copyWith(fontSize: 25, fontWeight: FontWeight.bold),
             ),
           ),
           Container(
@@ -212,15 +238,18 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
             alignment: Alignment.centerLeft,
             child: Text(
               "Thành phần:",
-              style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20),
+              style: TextStyleResource.textStyleGrey(context)
+                  .copyWith(fontSize: 20),
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10).copyWith(left: 25, right: 15),
+            padding: const EdgeInsets.symmetric(vertical: 10)
+                .copyWith(left: 25, right: 15),
             alignment: Alignment.centerLeft,
             child: Text(
-              "Bột mì, đường, bơ đậu phộng, dầu ăn, bí xanh, hạt dưa, mứt sen, lạp xưởng",
-              style: TextStyleResource.textStyleGrey(context).copyWith(fontSize: 20, height: 1.3),
+              controller.moonCakeProduct?.productDescription ?? '',
+              style: TextStyleResource.textStyleGrey(context)
+                  .copyWith(fontSize: 20, height: 1.3),
             ),
           ),
         ],
@@ -228,37 +257,43 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
     );
   }
 
-  Widget _buildListImage(BuildContext context, {required double width}){
+  Widget _buildListImage(BuildContext context, {required double width}) {
     final double maxWidthImage = width * 0.4 > 800 ? 800 : (width * 0.4);
-    final double height = context.isLargeTablet ? maxWidthImage : ((width - 20) / 5);
-    final double widthList = context.isLargeTablet ? ((height - 20) / 5) : width;
-    final Axis direction = context.isLargeTablet ? Axis.vertical : Axis.horizontal;
-    final double? heightItem = context.isLargeTablet ? ((height - 20) / 5) : null;
+    final double height =
+        context.isLargeTablet ? maxWidthImage : ((width - 20) / 5);
+    final double widthList =
+        context.isLargeTablet ? ((height - 20) / 5) : width;
+    final Axis direction =
+        context.isLargeTablet ? Axis.vertical : Axis.horizontal;
+    final double? heightItem =
+        context.isLargeTablet ? ((height - 20) / 5) : null;
     final double mgRight = context.isLargeTablet ? 0 : 5;
     final double mgBottom = context.isLargeTablet ? 5 : 0;
 
-
     return Container(
-      margin: const EdgeInsets.only(top: 5),
-      height: height,
-      width: widthList,
-      child: ListView(
-        scrollDirection: direction,
-        children: List.generate(6, (e){
-          return Container(
-            height: heightItem,
-            padding: EdgeInsets.all(5),
-            margin: EdgeInsets.only(right: mgRight, bottom: mgBottom),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
-              color: controller.getBackgroundColor(controller.moonCakeProduct?.productColor, context),
-            ),
-            child: Image.network("https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=48655c5c-b0c8-4291-b775-ec70c0011df5"),
-          );
-        }),
-      )
-    );
+        margin: const EdgeInsets.only(top: 5),
+        height: height,
+        width: widthList,
+        child: ListView.builder(
+            scrollDirection: direction,
+            itemCount: (controller.moonCakeProduct?.productImages ?? []).length,
+            itemBuilder: (c, i) {
+              return Container(
+                height: heightItem,
+                padding: const EdgeInsets.all(5),
+                margin: EdgeInsets.only(right: mgRight, bottom: mgBottom),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: controller.getBackgroundColor(
+                      controller.moonCakeProduct?.productColor, context),
+                ),
+                child: Image.network(
+                  (controller.moonCakeProduct?.productImages ?? [])[i] ?? '',
+                  fit: BoxFit.fill,
+                ),
+              );
+            }));
   }
 
   Color getTextColor(Color color) {
@@ -277,36 +312,38 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController>{
     return Color.fromARGB(color.alpha, d, d, d);
   }
 
-  Widget _plusButton(){
+  Widget _plusButton() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.onIncreaseQuantity();
       },
       child: Container(
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: Colors.pink
+            borderRadius: BorderRadius.circular(5), color: Colors.pink),
+        child: const Icon(
+          Icons.add,
+          size: 15,
         ),
-        child: const Icon(Icons.add, size: 15,),
       ),
     );
   }
 
-  Widget _subtractButton(){
+  Widget _subtractButton() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.onDecreaseQuantity();
       },
       child: Container(
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Colors.pink
+            borderRadius: BorderRadius.circular(5), color: Colors.pink),
+        child: const Icon(
+          Icons.remove,
+          size: 15,
         ),
-        child: const Icon(Icons.remove, size: 15,),
       ),
     );
   }
