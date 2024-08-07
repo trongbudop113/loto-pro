@@ -14,25 +14,25 @@ class ThemeResource{
             backgroundColor: ColorResource.color_white_light
         ),
       textTheme: TextTheme(
-        bodyMedium: GoogleFonts.pacifico(
+        bodyMedium: GoogleFonts.josefinSans(
           fontSize: 16,
           color: ColorResource.color_black_light,
           fontWeight: FontWeight.w500,
           height: 1
         ),
-        bodyLarge: GoogleFonts.pacifico(
+        bodyLarge: GoogleFonts.josefinSans(
           fontSize: 16,
           color: ColorResource.color_white_light,
           fontWeight: FontWeight.w500,
             height: 1
         ),
-        labelLarge: GoogleFonts.pacifico(
+        labelLarge: GoogleFonts.josefinSans(
             fontSize: 18,
             color: ColorResource.color_black_light,
             fontWeight: FontWeight.bold,
             height: 1
         ),
-        bodySmall: GoogleFonts.pacifico(
+        bodySmall: GoogleFonts.josefinSans(
             fontSize: 14,
             color: ColorResource.color_grey_light,
             fontWeight: FontWeight.w400,

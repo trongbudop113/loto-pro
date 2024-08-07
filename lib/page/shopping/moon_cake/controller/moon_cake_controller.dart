@@ -1,7 +1,7 @@
-import 'package:animations/animations.dart';
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/common/mesage_util.dart';
@@ -9,11 +9,13 @@ import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/profile/order_manager/order_detail_manager/models/status_order.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/moon_cake/models/cake_product_model.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_box_layout.dart';
 import 'package:loto/page/shopping/moon_cake/widgets/select_filter_layout.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/src/color_resource.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 class MoonCakeBinding extends Bindings {
   @override
@@ -37,7 +39,10 @@ class MoonCakeController extends GetxController {
 
   final RxBool isLoadingData = true.obs;
 
-  final RxList<CakeProduct> listCake = <CakeProduct>[].obs;
+  final RxList<CakeProductModel> listCake = <CakeProductModel>[].obs;
+  List<CakeProductModel> listCakeTemp = <CakeProductModel>[];
+
+  var searchController = TextEditingController();
 
   void listClick(CakeProduct product) async {
     print(product.toJson());
@@ -101,15 +106,17 @@ class MoonCakeController extends GetxController {
           .collection(DataCollection.MoonCakes.name)
           .orderBy("sort_order", descending: false);
 
-      List<CakeProduct> listTemp = [];
+      List<CakeProductModel> listTemp = [];
       var data = await products.get();
       for (var e in data.docs) {
         CakeProduct product = CakeProduct.fromJson(e.data());
-        listTemp.add(product);
+        CakeProductModel cakeProductModel = CakeProductModel(product);
+        listTemp.add(cakeProductModel);
       }
 
-      listCake.clear();
-      listCake.addAll(listTemp);
+      listCakeTemp.clear();
+      listCakeTemp.addAll(listTemp);
+      listCake.value = listCakeTemp;
       isLoadingData.value = false;
     }catch(e){
       isLoadingData.value = false;
@@ -125,11 +132,12 @@ class MoonCakeController extends GetxController {
           .collection(DataCollection.MoonCakes.name)
           .where("product_type", isEqualTo: filter);
 
-      List<CakeProduct> listTemp = [];
+      List<CakeProductModel> listTemp = [];
       var data = await products.get();
       for (var e in data.docs) {
         CakeProduct product = CakeProduct.fromJson(e.data());
-        listTemp.add(product);
+        CakeProductModel cakeProductModel = CakeProductModel(product);
+        listTemp.add(cakeProductModel);
       }
 
       listCake.clear();
@@ -312,5 +320,33 @@ class MoonCakeController extends GetxController {
 
     filterData.value = data;
     Get.back();
+  }
+
+  Timer? _debounce;
+
+  void onChangeSearchCake(String value) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      onQueryCake(value.trim().toString());
+    });
+  }
+
+  void onQueryCake(String value){
+    if(value == "") {
+      listCake.value = listCakeTemp;
+      return;
+    }
+    String convertText = TiengViet.parse(value).toLowerCase();
+    var data = listCakeTemp.where((e){
+      String productName = TiengViet.parse(e.productName).toLowerCase();
+      return productName.contains(convertText);
+    }).toList();
+    listCake.value = data;
+  }
+
+  @override
+  void onClose() {
+    _debounce?.cancel();
+    super.onClose();
   }
 }

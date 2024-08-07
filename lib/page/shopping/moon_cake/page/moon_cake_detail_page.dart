@@ -6,6 +6,8 @@ import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
 class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
+  const MoonCakeDetailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -46,7 +48,7 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
           ),
         ],
       ),
-      backgroundColor: Theme.of(context).cardColor.withOpacity(0.3),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -55,11 +57,11 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
                     children: [
                       _buildImage("", context,
                           width: maxWidthImage, height: maxWidthImage),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
                       _buildListImage(context, width: width),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
@@ -75,7 +77,7 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
                     ],
                   ),
             Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               alignment: Alignment.centerLeft,
               child: Text(
                 "Trứng muối:",

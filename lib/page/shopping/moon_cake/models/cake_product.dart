@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 
 class CakeProduct {
   String? productID;

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loto/language/localization_service.dart';
+import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
+import 'package:loto/page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'package:loto/page/splash/splash_page.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/src/theme_resource.dart';
@@ -47,7 +49,8 @@ class MyApp extends StatelessWidget  {
             debugShowCheckedModeBanner: false,
             theme: ThemeResource.lightTheme(),
             darkTheme: ThemeResource.darkTheme(),
-            home: const SplashPage(),
+            home: const MoonCakePage(),
+            initialBinding: MoonCakeBinding(),
             getPages: PageConfig.listPage(),
             locale: LocalizationService.locale,
             fallbackLocale: LocalizationService.fallbackLocale,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/login/login_controller.dart';
-import 'package:loto/page/resources/image_resource.dart';
+import 'package:loto/src/image_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -28,7 +28,7 @@ class LoginPage extends GetView<LoginController> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset(ImageResource.ic_app_loto, width: 120),
+                Image.asset(ImageResource.ic_app_logo, width: 120),
                 const SizedBox(height: 40),
                 _buildSwitchMode(context),
                 SizedBox(height: 20),

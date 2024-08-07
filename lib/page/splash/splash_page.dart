@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/page/resources/image_resource.dart';
+import 'package:loto/src/image_resource.dart';
 import 'package:loto/page_config.dart';
 
 class SplashPage extends StatefulWidget {

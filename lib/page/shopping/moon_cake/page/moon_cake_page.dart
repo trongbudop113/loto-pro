@@ -11,20 +11,83 @@ class MoonCakePage extends GetView<MoonCakeController> {
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("moon_cake".tr),
-        centerTitle: false,
-      ),
       body: Stack(
         children: [
-          _buildMainWidget(context),
+          //_buildMainWidget(context),
+          _buildSliverList(width, context),
           _buildProductSelectBox(context),
           _buildBottomWidget(context),
           _buildFloatWidget(context)
         ],
       ),
       //floatingActionButton: _buildFloatWidget(context),
+    );
+  }
+
+  Widget _buildSliverList(double width, BuildContext context) {
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverAppBar(
+          pinned: true,
+          snap: false,
+          floating: false,
+          expandedHeight: (width * 0.41) + Get.mediaQuery.padding.top + 60,
+          collapsedHeight: 60,
+          actions: [
+            const SizedBox(
+              width: 60,
+              height: 60,
+              child: Icon(Icons.home),
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: Text(
+                "Pixel Baker",
+                style: TextStyleResource.textStyleBlack(context).copyWith(
+                  color: Color(0xFFFE8160),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+            ),
+            const Spacer(
+              flex: 1,
+            ),
+            GestureDetector(
+              onTap: (){
+                controller.goToCart();
+              },
+              child: Container(
+                width: 60,
+                height: 60,
+                color: Colors.transparent,
+                child: const Icon(Icons.shopping_cart),
+              ),
+            ),
+          ],
+          flexibleSpace: FlexibleSpaceBar(
+            background: _buildBanner(context),
+          ),
+        ),
+        SliverAppBar(
+          pinned: true,
+          snap: false,
+          floating: false,
+          expandedHeight: 70,
+          collapsedHeight: 70,
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          flexibleSpace: FlexibleSpaceBar(
+            background: _buildSearchBar(context),
+          ),
+        ),
+        _buildListProduct(context),
+      ],
     );
   }
 
@@ -251,88 +314,160 @@ class MoonCakePage extends GetView<MoonCakeController> {
     );
   }
 
-  Widget _buildMainWidget(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(
-              width: 1.5,
-              color: Colors.grey,
-            ),
-          ),
-          height: 50,
-          child: Row(
-            children: [
-              Expanded(
-                child: Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Loại:",
-                    style: TextStyleResource.textStyleBlack(context),
-                  ),
-                ),
+  Widget _buildListProduct(BuildContext context) {
+    int countColumn = context.mediaQuerySize.width > 1300
+        ? 5
+        : (context.mediaQuerySize.width < 600 ? 2 : 3);
+    return SliverToBoxAdapter(
+      child: Obx(() {
+        if (controller.isLoadingData.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Obx(() => GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: countColumn,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 179 / 239,
               ),
-              Container(height: 50, width: 1, color: Colors.grey),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    controller.showFilterDialog(context);
-                  },
-                  child: Obx(() => Container(
-                        alignment: Alignment.center,
-                        color: Colors.transparent,
-                        child: Text(
-                          "${controller.filterData.value.statusName}",
-                          style: TextStyleResource.textStyleBlack(context),
-                        ),
-                      )),
-                ),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-          child: _buildListProduct(context),
-        ),
-      ],
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 15,
+                vertical: 15,
+              ).copyWith(
+                bottom: MediaQuery.of(context).padding.bottom +
+                    80 +
+                    (controller.isStatusBuyBox.value ? 110 : 0),
+              ),
+              itemCount: controller.listCake.length,
+              itemBuilder: (BuildContext ctx, index) {
+                return MoonCakeProductItem(
+                  controller: controller,
+                  productModel: controller.listCake[index],
+                );
+              },
+            ));
+      }),
     );
   }
 
-  Widget _buildListProduct(BuildContext context) {
-    int countColumn = context.mediaQuerySize.width > 1100
-        ? 5
-        : (context.mediaQuerySize.width < 600 ? 2 : 3);
-    return Obx(() {
-      if (controller.isLoadingData.value) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      return Obx(() => GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: countColumn,
-              mainAxisSpacing: 10,
-              crossAxisSpacing: 10,
-              childAspectRatio: 0.9,
+  Widget _buildSearchBar(BuildContext context) {
+    return SizedBox(
+      height: 70,
+      child: Row(
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(width: 1.5, color: Colors.black)),
+              child: TextField(
+                controller: controller.searchController,
+                cursorRadius: const Radius.circular(10),
+                style: TextStyleResource.textStyleBlack(context).copyWith(
+                  height: 1,
+                  fontSize: 14,
+                ),
+                onChanged: (value) {
+                  controller.onChangeSearchCake(value);
+                },
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.only(left: 15),
+                  border: InputBorder.none, // Loại bỏ viền
+                  hintMaxLines: 1,
+                  hintText: 'Bạn muốn tìm bánh nào...',
+                  labelStyle:
+                      TextStyleResource.textStyleBlack(context).copyWith(
+                    height: 1,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintStyle: TextStyleResource.textStyleGrey(context).copyWith(
+                    height: 1,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 10,
-            ).copyWith(
-              bottom: MediaQuery.of(context).padding.bottom +
-                  80 +
-                  (controller.isStatusBuyBox.value ? 110 : 0),
-            ),
-            itemCount: controller.listCake.length,
-            itemBuilder: (BuildContext ctx, index) {
-              return AppListItem(
-                index: index,
-                controller: controller,
-                product: controller.listCake[index],
-              );
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          GestureDetector(
+            onTap: (){
+              controller.showFilterDialog(context);
             },
-          ));
-    });
+            child: Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.blue,
+              ),
+              child: const Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBanner(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 60),
+      color: Color(0xFFFAE8D4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const SizedBox(
+            width: 10,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "Pixel Baker",
+                style: TextStyleResource.textStyleBlack(context).copyWith(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 30,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Xin chào",
+                style: TextStyleResource.textStyleBlack(context).copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30,
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=a7d877c5-69d8-4d54-b218-e18d486421de",
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
