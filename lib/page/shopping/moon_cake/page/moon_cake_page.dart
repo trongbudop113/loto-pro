@@ -13,14 +13,23 @@ class MoonCakePage extends GetView<MoonCakeController> {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Stack(
-        children: [
-          //_buildMainWidget(context),
-          _buildSliverList(width, context),
-          _buildProductSelectBox(context),
-          _buildBottomWidget(context),
-          _buildFloatWidget(context)
-        ],
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints:  const BoxConstraints(
+            maxWidth: 1600,
+            minWidth: 600,
+          ),
+          child: Stack(
+            children: [
+              //_buildMainWidget(context),
+              _buildSliverList(width, context),
+              _buildProductSelectBox(context),
+              _buildBottomWidget(context),
+              _buildFloatWidget(context)
+            ],
+          ),
+        ),
       ),
       //floatingActionButton: _buildFloatWidget(context),
     );
@@ -228,10 +237,10 @@ class MoonCakePage extends GetView<MoonCakeController> {
                     width: 100,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: Colors.black45,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: const Icon(Icons.add),
+                    child: const Icon(Icons.add, color: Colors.white54,),
                   );
                 }
                 return Stack(

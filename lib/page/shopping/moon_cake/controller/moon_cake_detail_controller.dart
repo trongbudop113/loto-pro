@@ -22,6 +22,8 @@ class MoonCakeDetailController extends GetxController {
 
   List<EggData> listEgg = [];
 
+  final RxString currentImage = "".obs;
+
   Color getBackgroundColor(String? color, BuildContext context) {
     if (color == null) return ColorResource.color_background_light;
     return Color(int.parse("0xFF$color"));
@@ -92,11 +94,16 @@ class MoonCakeDetailController extends GetxController {
 
   void initData() {
     moonCakeProduct = Get.arguments as CakeProduct;
+    currentImage.value = moonCakeProduct?.productImageMain ?? '';
     listEgg = EggData.listTwo();
     if (moonCakeProduct?.productType == 200) {
       listEgg = EggData.listThree();
     }
     listEgg[1].isSelect.value = true;
     productPrice.value = (moonCakeProduct!.productPrice ?? 0).toDouble() + (listEgg[1].defaultPrice ?? 0).toDouble();
+  }
+
+  void onTapViewImage(String image) {
+    currentImage.value = image;
   }
 }
