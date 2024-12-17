@@ -190,6 +190,7 @@ class ProductDetailManagerController extends GetxController {
 
       if (isModeAddNew.value) {
         cakeProduct.value.createDate = DateTime.now();
+        cakeProduct.value.productID = DateTime.now().millisecondsSinceEpoch.toString();
       }
       cakeProduct.value.updateDate = DateTime.now();
       cakeProduct.value.productType = currentTypeCake.value;
@@ -199,11 +200,22 @@ class ProductDetailManagerController extends GetxController {
 
       CollectionReference collectionRef =
           firestore.collection(DataRowName.Cakes.name);
-      await collectionRef
-          .doc(DataCollection.Products.name)
-          .collection(DataCollection.MoonCakes.name)
-          .doc(cakeProduct.value.productID)
-          .update(cakeProduct.value.toJson());
+      if(isModeAddNew.value){
+        CollectionReference collectionRef =
+        firestore.collection(DataRowName.Cakes.name);
+        await collectionRef
+            .doc(DataCollection.Products.name)
+            .collection(DataCollection.MoonCakes.name)
+            .doc(cakeProduct.value.productID)
+            .set(cakeProduct.value.toJson());
+      }else{
+        await collectionRef
+            .doc(DataCollection.Products.name)
+            .collection(DataCollection.MoonCakes.name)
+            .doc(cakeProduct.value.productID)
+            .update(cakeProduct.value.toJson());
+      }
+
 
       isShowLoadingView.value = false;
       MessageUtil.show(msg: "Cập nhật thành công");

@@ -8,6 +8,7 @@ import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
+import 'package:loto/page/shopping/home_main/home_main_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/src/color_resource.dart';
@@ -25,6 +26,8 @@ class CartController extends GetxController {
   //final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference cakeRef = FirebaseFirestore.instance.collection(DataRowName.Cakes.name);
   TextEditingController textNoteController = TextEditingController();
+
+  // final CartRepositories _cartRepositories = CartRepositories(products: );
 
   @override
   void onInit() {

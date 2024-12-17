@@ -185,7 +185,7 @@ class PageConfig {
       ),
       GetPage(
         name: CART,
-        page: () => CartPage(),
+        page: () => const CartPage(),
         binding: CartBinding(),
       ),
       GetPage(

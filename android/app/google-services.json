@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "223090207254-f4jvltdej4ksqhne6k1r788kk8q0jlqk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trong.loto",
+            "certificate_hash": "7a174c8d299324b63e9394f7467deb013a303c47"
+          }
+        },
+        {
           "client_id": "223090207254-ik5fspo88jgnk4mtnv19b99trj2g2l8k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -22,7 +30,15 @@
           }
         },
         {
-          "client_id": "223090207254-rtrmn07khmu264gu4545dci1lr8ofn1n.apps.googleusercontent.com",
+          "client_id": "223090207254-qrdhfggdkki221ggkvlg02kjqs71ra0t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trong.loto",
+            "certificate_hash": "3bbde4a9c75d47065e4610c1754ba1d95fed5248"
+          }
+        },
+        {
+          "client_id": "223090207254-bb1568hh38eubn1albkckl9vagnctv8a.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -35,8 +51,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "223090207254-rtrmn07khmu264gu4545dci1lr8ofn1n.apps.googleusercontent.com",
+              "client_id": "223090207254-bb1568hh38eubn1albkckl9vagnctv8a.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "223090207254-d10ao826to3ecuvjfp7jg4v8srr9hi1r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.trong.loto"
+              }
             }
           ]
         }

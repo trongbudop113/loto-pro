@@ -15,33 +15,21 @@ class CartPage extends GetView<CartController> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width > 1440
+        ? 1440
+        : MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("Giỏ hàng"),
-        leading: GestureDetector(
-          onTap: () => Get.back(),
-          child: Container(
-            width: 55,
-            child: Icon(Icons.arrow_back),
-            color: Colors.transparent,
-          ),
-        ),
-        actions: [
-          _buttonActionDelete(context),
-        ],
-      ),
       body: Obx(() => Visibility(
             visible: controller.currentProductInCart.isNotEmpty,
-            replacement: Container(
+            replacement: SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   SizedBox(
@@ -52,7 +40,7 @@ class CartPage extends GetView<CartController> {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -61,7 +49,7 @@ class CartPage extends GetView<CartController> {
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                 ],
@@ -72,13 +60,13 @@ class CartPage extends GetView<CartController> {
                     children: [
                       Container(
                         width: width * .5,
-                        child: _buildListProduct(context, isScroll: true),
                         alignment: Alignment.topCenter,
+                        child: _buildListProduct(context, isScroll: true),
                       ),
                       Container(
                         width: (width * .5) - 10,
                         alignment: Alignment.topCenter,
-                        child: _buildPayment(context, isWeb: true),
+                        child: _buildPayment(context, isWeb: true, width: width),
                       )
                     ],
                   )
@@ -90,7 +78,7 @@ class CartPage extends GetView<CartController> {
                           height: 2,
                           color: Colors.black,
                         ),
-                        _buildPayment(context, isWeb: false),
+                        _buildPayment(context, isWeb: false, width: width),
                       ],
                     ),
                   ),
@@ -111,50 +99,56 @@ class CartPage extends GetView<CartController> {
               },
               child: Container(
                 height: 50,
-                margin: EdgeInsets.symmetric(horizontal: 15),
                 decoration: BoxDecoration(
                   color: Colors.amber,
                   borderRadius: BorderRadius.circular(60),
                 ),
                 alignment: Alignment.center,
-                child: Text("Đặt hàng"),
+                child: const Text("Đặt hàng"),
               ),
             ),
           )),
     );
   }
 
-  Widget _buildPayment(BuildContext context, {required bool isWeb}) {
+  Widget _buildPayment(
+    BuildContext context, {
+    required bool isWeb,
+    required double width,
+  }) {
     return Obx(() => Visibility(
           visible: controller.currentProductInCart.isNotEmpty,
           child: Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
               right: 15,
               top: 20,
               bottom: 20,
-              left: 15
+              left: 15,
             ),
             child: Column(
               children: [
                 Visibility(
                   visible: isWeb,
-                  child: SizedBox(
+                  child: const SizedBox(
                     height: 15,
                   ),
                 ),
                 Text(
                   "Thanh Toán:",
-                  style: TextStyleResource.textStyleBlack(context).copyWith(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold
-                  ),
+                  style: TextStyleResource.textStyleBlack(context)
+                      .copyWith(fontSize: 22, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                _buildRowPrice(context,
-                    title: "Tạm tính", price: 0, isWeb: isWeb),
-                SizedBox(
+                _buildRowPrice(
+                  context,
+                  title: "Tạm tính",
+                  price: 0,
+                  isWeb: isWeb,
+                  width: width,
+                ),
+                const SizedBox(
                   height: 15,
                 ),
                 _buildRowPrice(
@@ -162,8 +156,9 @@ class CartPage extends GetView<CartController> {
                   title: "Giảm giá",
                   price: 0,
                   isWeb: isWeb,
+                  width: width,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Obx(() => _buildRowPrice(
@@ -171,8 +166,9 @@ class CartPage extends GetView<CartController> {
                       title: "Tổng tiền",
                       price: controller.finalPrice.value,
                       isWeb: isWeb,
+                      width: width,
                     )),
-                SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 _buildNote(context)
@@ -184,21 +180,21 @@ class CartPage extends GetView<CartController> {
 
   Widget _buildListProduct(BuildContext context, {required bool isScroll}) {
     return ListView.separated(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       shrinkWrap: true,
-      physics:
-          isScroll ? const BouncingScrollPhysics() : const NeverScrollableScrollPhysics(),
+      physics: isScroll
+          ? const BouncingScrollPhysics()
+          : const NeverScrollableScrollPhysics(),
       itemBuilder: (c, i) {
-
-        controller.currentProductInCart[i].onTapPlus = (){
+        controller.currentProductInCart[i].onTapPlus = () {
           controller.onTapPlus(controller.currentProductInCart[i]);
         };
 
-        controller.currentProductInCart[i].onTapSubtract = (){
+        controller.currentProductInCart[i].onTapSubtract = () {
           controller.onTapSubtract(controller.currentProductInCart[i]);
         };
 
-        controller.currentProductInCart[i].onTapRemoveProduct = (){
+        controller.currentProductInCart[i].onTapRemoveProduct = () {
           controller.onTapRemoveProductItem(controller.currentProductInCart[i]);
         };
 
@@ -238,7 +234,7 @@ class CartPage extends GetView<CartController> {
                       },
                       text: 'Cancel',
                       iconData: Icons.cancel_outlined,
-                      textStyle: TextStyle(color: Colors.grey),
+                      textStyle: const TextStyle(color: Colors.grey),
                       iconColor: Colors.grey,
                     ),
                     IconsButton(
@@ -249,7 +245,7 @@ class CartPage extends GetView<CartController> {
                       text: "Delete",
                       iconData: Icons.delete,
                       color: Colors.red,
-                      textStyle: TextStyle(color: Colors.white),
+                      textStyle: const TextStyle(color: Colors.white),
                       iconColor: Colors.white,
                     ),
                   ]);
@@ -257,8 +253,8 @@ class CartPage extends GetView<CartController> {
             child: Container(
               width: 55,
               alignment: Alignment.center,
-              child: Icon(Icons.delete),
               color: Colors.transparent,
+              child: const Icon(Icons.delete),
             ),
           ),
         ));
@@ -269,6 +265,7 @@ class CartPage extends GetView<CartController> {
     required String title,
     required double price,
     required bool isWeb,
+    required double width,
   }) {
     return Row(
       mainAxisAlignment:
@@ -282,7 +279,7 @@ class CartPage extends GetView<CartController> {
           width: 10,
         ),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.3,
+          width: width * 0.3,
           child: Text(
             controller.formatCurrency(price),
             textAlign: TextAlign.end,
@@ -293,12 +290,13 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-  Widget _buildNote(BuildContext context){
+  Widget _buildNote(BuildContext context) {
     return TextFormField(
       minLines: 6,
       maxLines: null,
       controller: controller.textNoteController,
       keyboardType: TextInputType.multiline,
+      style: TextStyleResource.textStyleGrey(context),
       decoration: const InputDecoration(
         alignLabelWithHint: true,
         border: OutlineInputBorder(),

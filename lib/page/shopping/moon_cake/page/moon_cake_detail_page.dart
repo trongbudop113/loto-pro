@@ -19,10 +19,15 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
         constraints: const BoxConstraints(maxWidth: 1600, minWidth: 600),
         child: Scaffold(
           appBar: AppBar(
-            title: Text(
-              controller.moonCakeProduct?.productName ?? '',
-              style: TextStyleResource.textStyleBlack(context),
-            ),
+            title: Obx((){
+              if(controller.isLoadingPage.value){
+                return const SizedBox();
+              }
+              return Text(
+                controller.moonCakeProduct?.productName ?? '',
+                style: TextStyleResource.textStyleBlack(context),
+              );
+            }),
             centerTitle: false,
             actions: [
               Container(
@@ -56,9 +61,13 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
             ],
           ),
           backgroundColor: Colors.white,
-          body: Align(
-            alignment: Alignment.topCenter,
-            child: SingleChildScrollView(
+          body: Obx((){
+            if(controller.isLoadingPage.value){
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return SingleChildScrollView(
               child: Column(
                 children: [
                   _buildListImageWidget(context, width),
@@ -83,7 +92,7 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
                     alignment: Alignment.centerLeft,
                     child: Html(
                       data:
-                          controller.moonCakeProduct?.productDescription ?? '',
+                      controller.moonCakeProduct?.productDescription ?? '',
                       style: {
                         "p": Style(
                           fontSize: FontSize(20),
@@ -95,8 +104,8 @@ class MoonCakeDetailPage extends GetView<MoonCakeDetailController> {
                   _buildEggWidget(context, width > 1600 ? 1600 : width),
                 ],
               ),
-            ),
-          ),
+            );
+          }),
           bottomNavigationBar: Container(
             height: 60,
             color: controller.getBackgroundColor(

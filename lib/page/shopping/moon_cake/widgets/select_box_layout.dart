@@ -170,6 +170,7 @@ class SelectBoxLayout extends StatelessWidget {
             Expanded(
               child: Text(
                 product.productName ?? '',
+                style: TextStyleResource.textStyleWhite(context),
               ),
             ),
             Text(
@@ -190,7 +191,7 @@ class SelectBoxLayout extends StatelessWidget {
     return Positioned(
       top: 10,
       right: 10,
-      child: Container(
+      child: SizedBox(
         width: 60,
         height: 60,
         child: GridView.count(

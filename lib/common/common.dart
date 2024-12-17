@@ -46,4 +46,7 @@ class AppCommon {
 
   bool get isLogin =>
       currentUser != null && (currentUser?.uid ?? '').isNotEmpty;
+
+  String blogRoute = "";
+  String shopRoute = "";
 }

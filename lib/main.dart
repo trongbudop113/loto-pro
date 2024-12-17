@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:loto/language/localization_service.dart';
-import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
-import 'package:loto/page/shopping/moon_cake/page/moon_cake_page.dart';
-import 'package:loto/page/splash/splash_page.dart';
+import 'package:loto/page/shopping/home_main/home_main_controller.dart';
+import 'package:loto/page/shopping/home_main/home_main_page.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/src/theme_resource.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +26,7 @@ Future<void> main() async {
           measurementId: "G-GFQGZC5BQ1"
       )
   );
+  initializeDateFormatting("vi_VN", "");
   await GetStorage.init();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
@@ -44,14 +45,15 @@ class MyApp extends StatelessWidget  {
       ],
       child: Consumer<ThemeProvider>(
           builder: (ctx, themeObject, _) => GetMaterialApp(
-            title: 'SS App',
+            title: 'Pixel Baker',
             themeMode: themeObject.mode,
             debugShowCheckedModeBanner: false,
             theme: ThemeResource.lightTheme(),
             darkTheme: ThemeResource.darkTheme(),
-            home: const MoonCakePage(),
-            initialBinding: MoonCakeBinding(),
+            home: const HomeMainPage(),
+            initialBinding: HomeMainBinding(),
             getPages: PageConfig.listPage(),
+            smartManagement: SmartManagement.keepFactory,
             locale: LocalizationService.locale,
             fallbackLocale: LocalizationService.fallbackLocale,
             translations: LocalizationService(),

@@ -19,9 +19,14 @@ class ProductManagerPage extends GetView<ProductManagerController> {
           onTap: (){
             Get.back();
           },
-          child: Container(
-            color: Colors.transparent,
-            child: Icon(Icons.arrow_back),
+          child: GestureDetector(
+            onTap: (){
+              Get.back();
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Icon(Icons.arrow_back),
+            ),
           ),
         ),
         actions: [
@@ -32,7 +37,7 @@ class ProductManagerPage extends GetView<ProductManagerController> {
             child: Container(
               width: 55,
               color: Colors.transparent,
-              child: Icon(Icons.add,),
+              child: const Icon(Icons.add,),
             ),
           )
         ],

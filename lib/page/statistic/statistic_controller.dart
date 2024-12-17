@@ -24,6 +24,8 @@ class StatisticController extends GetxController {
   RxDouble angleValue = 0.0.obs;
   RxBool relativeAngleMode = true.obs;
 
+  final RxInt touchedIndex = (-1).obs;
+
   List<RawDataSet> rawDataSets() {
     return [
       RawDataSet(

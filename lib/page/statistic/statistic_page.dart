@@ -4,173 +4,192 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loto/page/statistic/app_color.dart';
 import 'package:loto/page/statistic/statistic_controller.dart';
+import 'package:loto/page/statistic/widget/indicator.dart';
 
 class StatisticPage extends GetView<StatisticController> {
   const StatisticPage({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey,
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Title configuration',
-              style: TextStyle(
-                color: AppColors.mainTextColor2,
-              ),
-            ),
-            Row(
-              children: [
-                const Text(
-                  'Angle',
-                  style: TextStyle(
-                    color: AppColors.mainTextColor2,
+      body:  Column(
+        children: [
+          const Text("Tong doanh thu: 21.000.000 dong"),
+          const Text("Tong so luong ban ra: 300 cai"),
+          const Text("Bieu dô thong ke:"),
+          AspectRatio(
+            aspectRatio: 1.3,
+            child: Obx(() {
+              return Column(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 28,
                   ),
-                ),
-                Obx(() => Slider(
-                    value: controller.angleValue.value,
-                    max: 360,
-                    onChanged: (double value) {
-                      controller.angleValue.value = value;
-                    }
-                )),
-                Obx(() => Checkbox(
-                  value: controller.relativeAngleMode.value,
-                  onChanged: (v) {
-                    controller.relativeAngleMode.value = v!;
-                  },
-                )),
-                const Text('Relative'),
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                controller.selectedDataSetIndex.value = -1;
-              },
-              child: Text(
-                'Categories'.toUpperCase(),
-                style: const TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.w300,
-                  color: AppColors.mainTextColor1,
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            Obx(() => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: controller.rawDataSets()
-                  .asMap()
-                  .map((index, value) {
-                final isSelected = index == controller.selectedDataSetIndex.value;
-                return MapEntry(
-                  index,
-                  GestureDetector(
-                    onTap: () {
-                      controller.selectedDataSetIndex.value = index;
-                    },
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      margin: const EdgeInsets.symmetric(vertical: 2),
-                      height: 26,
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppColors.pageBackground
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(46),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 4,
-                        horizontal: 6,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInToLinear,
-                            padding: EdgeInsets.all(isSelected ? 8 : 6),
-                            decoration: BoxDecoration(
-                              color: value.color,
-                              shape: BoxShape.circle,
+                  Expanded(
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Obx(() {
+                        return PieChart(
+                          PieChartData(
+                            pieTouchData: PieTouchData(
+                              touchCallback:
+                                  (FlTouchEvent event, pieTouchResponse) {
+                                if (!event.isInterestedForInteractions ||
+                                    pieTouchResponse == null ||
+                                    pieTouchResponse.touchedSection == null) {
+                                  controller.touchedIndex.value = -1;
+                                  return;
+                                }
+                                controller.touchedIndex.value = pieTouchResponse
+                                    .touchedSection!.touchedSectionIndex;
+                              },
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          AnimatedDefaultTextStyle(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInToLinear,
-                            style: TextStyle(
-                              color:
-                              isSelected ? value.color : controller.gridColor,
+                            startDegreeOffset: 180,
+                            borderData: FlBorderData(
+                              show: false,
                             ),
-                            child: Text(value.title),
+                            sectionsSpace: 0,
+                            centerSpaceRadius: 40,
+                            sections: showingSections(),
                           ),
-                        ],
-                      ),
+                        );
+                      }),
                     ),
                   ),
-                );
-              })
-                  .values
-                  .toList(),
-            )),
-            AspectRatio(
-              aspectRatio: 1.3,
-              child: RadarChart(
-                RadarChartData(
-                  radarTouchData: RadarTouchData(
-                    touchCallback: (FlTouchEvent event, response) {
-                      if (!event.isInterestedForInteractions) {
-                        controller.selectedDataSetIndex.value = -1;
-                        return;
-                      }
-                      controller.selectedDataSetIndex.value = response?.touchedSpot?.touchedDataSetIndex ?? -1;
-                    },
+                  const SizedBox(
+                    height: 18,
                   ),
-                  dataSets: controller.showingDataSets(),
-                  radarBackgroundColor: Colors.transparent,
-                  borderData: FlBorderData(show: false),
-                  radarBorderData: const BorderSide(color: Colors.transparent),
-                  titlePositionPercentageOffset: 0.2,
-                  titleTextStyle:
-                  TextStyle(color: controller.titleColor, fontSize: 14),
-                  getTitle: (index, angle) {
-                    final usedAngle = controller.relativeAngleMode.value ? angle + controller.angleValue.value : controller.angleValue.value;
-                    switch (index) {
-                      case 0:
-                        return RadarChartTitle(
-                          text: 'Mobile or Tablet',
-                          angle: usedAngle,
-                        );
-                      case 2:
-                        return RadarChartTitle(
-                          text: 'Desktop',
-                          angle: usedAngle,
-                        );
-                      case 1:
-                        return RadarChartTitle(text: 'TV', angle: usedAngle);
-                      default:
-                        return const RadarChartTitle(text: '');
-                    }
-                  },
-                  tickCount: 1,
-                  ticksTextStyle:
-                  const TextStyle(color: Colors.transparent, fontSize: 10),
-                  tickBorderData: const BorderSide(color: Colors.transparent),
-                  gridBorderData: BorderSide(color: controller.gridColor, width: 2),
-                ),
-                swapAnimationDuration: const Duration(milliseconds: 400),
-              ),
-            ),
-          ],
-        ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Indicator(
+                        color: AppColors.contentColorBlue,
+                        text: 'Thâp cẩm',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 0 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 0
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                      Indicator(
+                        color: AppColors.contentColorYellow,
+                        text: 'Hạt sen',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 1 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 1
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                      Indicator(
+                        color: AppColors.contentColorPink,
+                        text: 'Khoai môn',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 2 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 2
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                      Indicator(
+                        color: AppColors.contentColorGreen,
+                        text: 'Dau do',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 3 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 3
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                      Indicator(
+                        color: AppColors.contentColorGreen,
+                        text: 'Sữa dưa',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 3 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 3
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                      Indicator(
+                        color: AppColors.contentColorGreen,
+                        text: 'Dau xanh',
+                        isSquare: false,
+                        size: controller.touchedIndex.value == 3 ? 18 : 16,
+                        textColor: controller.touchedIndex.value == 3
+                            ? AppColors.mainTextColor1
+                            : AppColors.mainTextColor3,
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }),
+          ),
+        ],
       ),
     );
+  }
+
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == controller.touchedIndex.value;
+      final fontSize = isTouched ? 25.0 : 16.0;
+      final radius = isTouched ? 60.0 : 50.0;
+      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+      switch (i) {
+        case 0:
+          return PieChartSectionData(
+            color: AppColors.contentColorBlue,
+            value: 40,
+            title: '40%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 1:
+          return PieChartSectionData(
+            color: AppColors.contentColorYellow,
+            value: 30,
+            title: '30%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 2:
+          return PieChartSectionData(
+            color: AppColors.contentColorPurple,
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        case 3:
+          return PieChartSectionData(
+            color: AppColors.contentColorGreen,
+            value: 15,
+            title: '15%',
+            radius: radius,
+            titleStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: AppColors.mainTextColor1,
+              shadows: shadows,
+            ),
+          );
+        default:
+          throw Error();
+      }
+    });
   }
 }

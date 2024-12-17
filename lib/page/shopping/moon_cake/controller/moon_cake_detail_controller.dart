@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
+import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
@@ -16,9 +19,11 @@ class MoonCakeDetailBinding extends Bindings {
 }
 
 class MoonCakeDetailController extends GetxController {
+  final RxBool isLoadingPage = true.obs;
   CakeProduct? moonCakeProduct;
   final RxInt quantity = 1.obs;
   final RxDouble productPrice = 0.0.obs;
+  final box = GetStorage();
 
   List<EggData> listEgg = [];
 
@@ -50,15 +55,15 @@ class MoonCakeDetailController extends GetxController {
   }
 
   void onClickAddToCart() {
-    moonCakeProduct!.quantity = quantity.value;
+    moonCakeProduct?.quantity = quantity.value;
     if (currentProductInCart(moonCakeProduct!) != null) {
       currentProductInCart(moonCakeProduct!)!.quantity +=
           moonCakeProduct!.quantity;
       quantity.value = 1;
       return;
     }
-    moonCakeProduct!.numberEggs = listEgg.firstWhereOrNull((e) => e.isSelect.value)!.value ?? 1;
-    moonCakeProduct!.productPrice = productPrice.value;
+    moonCakeProduct?.numberEggs = listEgg.firstWhereOrNull((e) => e.isSelect.value)!.value ?? 1;
+    moonCakeProduct?.productPrice = productPrice.value;
     ProductOrder productOrder = ProductOrder();
     productOrder.productMoonCakeList = [];
     productOrder.boxCake = moonCakeProduct;
@@ -92,8 +97,21 @@ class MoonCakeDetailController extends GetxController {
     super.onInit();
   }
 
-  void initData() {
-    moonCakeProduct = Get.arguments as CakeProduct;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<void> initData() async {
+    if(Get.arguments == null){
+      String productID = box.read("product_id");
+      CollectionReference cakeRef = firestore.collection(DataRowName.Cakes.name);
+      DocumentSnapshot productsDetail = await cakeRef
+          .doc(DataCollection.Products.name)
+          .collection(DataCollection.MoonCakes.name).doc(productID).get();
+      moonCakeProduct = CakeProduct.fromJson(productsDetail.data() as Map<String, dynamic>);
+    }else{
+      moonCakeProduct = Get.arguments as CakeProduct;
+      box.write("product_id", moonCakeProduct?.productID);
+    }
+
     currentImage.value = moonCakeProduct?.productImageMain ?? '';
     listEgg = EggData.listTwo();
     if (moonCakeProduct?.productType == 200) {
@@ -101,6 +119,7 @@ class MoonCakeDetailController extends GetxController {
     }
     listEgg[1].isSelect.value = true;
     productPrice.value = (moonCakeProduct!.productPrice ?? 0).toDouble() + (listEgg[1].defaultPrice ?? 0).toDouble();
+    isLoadingPage.value = false;
   }
 
   void onTapViewImage(String image) {

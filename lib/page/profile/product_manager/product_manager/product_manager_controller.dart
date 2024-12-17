@@ -33,7 +33,7 @@ class ProductManagerController extends GetxController {
   }
 
   void onAddNewProduct() {
-
+    Get.toNamed(PageConfig.EDIT_PRODUCT_MANAGER);
   }
 
   Color getBackgroundColor(String? color, BuildContext context) {

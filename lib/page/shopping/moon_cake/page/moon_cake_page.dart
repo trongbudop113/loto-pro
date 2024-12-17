@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
@@ -11,12 +12,18 @@ class MoonCakePage extends GetView<MoonCakeController> {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
+    final double width = MediaQuery.of(context).size.width > 1600
+        ? 1600
+        : MediaQuery.of(context).size.width;
     return Scaffold(
+      drawer: Drawer(
+        child: _buildDrawer(context),
+      ),
+      key: controller.scaffoldKey,
       body: Align(
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
-          constraints:  const BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 1600,
             minWidth: 600,
           ),
@@ -31,7 +38,6 @@ class MoonCakePage extends GetView<MoonCakeController> {
           ),
         ),
       ),
-      //floatingActionButton: _buildFloatWidget(context),
     );
   }
 
@@ -45,10 +51,16 @@ class MoonCakePage extends GetView<MoonCakeController> {
           expandedHeight: (width * 0.41) + Get.mediaQuery.padding.top + 60,
           collapsedHeight: 60,
           actions: [
-            const SizedBox(
-              width: 60,
-              height: 60,
-              child: Icon(Icons.home),
+            GestureDetector(
+              onTap: () {
+                controller.onTapMenu(context);
+              },
+              child: Container(
+                color: Colors.transparent,
+                width: 60,
+                height: 60,
+                child: const Icon(Icons.menu),
+              ),
             ),
             const Spacer(
               flex: 1,
@@ -58,7 +70,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
               child: Text(
                 "Pixel Baker",
                 style: TextStyleResource.textStyleBlack(context).copyWith(
-                  color: Color(0xFFFE8160),
+                  color: const Color(0xFFFE8160),
                   fontSize: 20,
                   fontWeight: FontWeight.w900,
                 ),
@@ -68,14 +80,35 @@ class MoonCakePage extends GetView<MoonCakeController> {
               flex: 1,
             ),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 controller.goToCart();
               },
-              child: Container(
-                width: 60,
-                height: 60,
-                color: Colors.transparent,
-                child: const Icon(Icons.shopping_cart),
+              child: Stack(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    color: Colors.transparent,
+                    child: const Icon(Icons.shopping_cart),
+                  ),
+                  Positioned(
+                    bottom: 6,
+                    right: 6,
+                    child: Obx(
+                      () => Container(
+                        padding: const EdgeInsets.all(3),
+                        alignment: Alignment.center,
+                        child: Text(
+                          AppCommon.singleton.countCart.value.toString(),
+                          style: TextStyleResource.textStyleBlack(context)
+                              .copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ],
@@ -87,8 +120,8 @@ class MoonCakePage extends GetView<MoonCakeController> {
           pinned: true,
           snap: false,
           floating: false,
-          expandedHeight: 70,
-          collapsedHeight: 70,
+          expandedHeight: 125 + 70,
+          collapsedHeight: 125 + 70,
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           flexibleSpace: FlexibleSpaceBar(
@@ -118,7 +151,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
               right: 6,
               child: Obx(
                 () => Container(
-                  padding: EdgeInsets.all(3),
+                  padding: const EdgeInsets.all(3),
                   alignment: Alignment.center,
                   child: Text(
                     AppCommon.singleton.countCart.value.toString(),
@@ -137,86 +170,89 @@ class MoonCakePage extends GetView<MoonCakeController> {
 
   Positioned _buildBottomWidget(BuildContext context) {
     return Positioned(
-        bottom: MediaQuery.of(context).padding.bottom + 10,
-        left: 10,
-        right: 10,
-        child: Obx(() => Visibility(
-              visible: !controller.isStatusBuyBox.value,
-              replacement: Row(
-                children: [
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.onTapDeleteBuyBox();
-                      },
-                      child: Container(
-                        height: 55,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(60),
-                            bottomLeft: Radius.circular(60),
-                          ),
-                          color: Colors.redAccent,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text("Xóa"),
+      bottom: MediaQuery.of(context).padding.bottom + 10,
+      left: 10,
+      right: 10,
+      child: Obx(
+        () => Visibility(
+          visible: !controller.isStatusBuyBox.value,
+          replacement: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    controller.onTapDeleteBuyBox();
+                  },
+                  child: Container(
+                    height: 55,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        bottomLeft: Radius.circular(60),
                       ),
+                      color: Colors.redAccent,
                     ),
+                    alignment: Alignment.center,
+                    child: const Text("Xóa"),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        controller.onShowOrCompleteBuyBox(context);
-                      },
-                      child: Container(
-                        height: 55,
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(60),
-                            bottomRight: Radius.circular(60),
-                          ),
-                          color: Colors.amber,
-                        ),
-                        alignment: Alignment.center,
-                        child: Text("Thêm vào giỏ"),
+                ),
+              ),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    controller.onShowOrCompleteBuyBox(context);
+                  },
+                  child: Container(
+                    height: 55,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(60),
+                        bottomRight: Radius.circular(60),
                       ),
+                      color: Colors.amber,
+                    ),
+                    alignment: Alignment.center,
+                    child: const Text("Thêm vào giỏ"),
+                  ),
+                ),
+              )
+            ],
+          ),
+          child: GestureDetector(
+            onTap: () {
+              controller.onShowOrCompleteBuyBox(context);
+            },
+            child: Container(
+              height: 55,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(60),
+                color: Colors.amber,
+              ),
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Icon(
+                    CustomIcon.gift,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    margin: const EdgeInsets.only(top: 5),
+                    child: Text(
+                      "Mua Theo Hộp",
+                      style: TextStyleResource.textStyleWhite(context),
                     ),
                   )
                 ],
               ),
-              child: GestureDetector(
-                onTap: () {
-                  controller.onShowOrCompleteBuyBox(context);
-                },
-                child: Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(60),
-                    color: Colors.amber,
-                  ),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        CustomIcon.gift,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      SizedBox(width: 10),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: Text(
-                          "Mua Theo Hộp",
-                          style: TextStyleResource.textStyleWhite(context),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Positioned _buildProductSelectBox(BuildContext context) {
@@ -240,7 +276,10 @@ class MoonCakePage extends GetView<MoonCakeController> {
                       color: Colors.black45,
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: const Icon(Icons.add, color: Colors.white54,),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white54,
+                    ),
                   );
                 }
                 return Stack(
@@ -279,6 +318,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
                           children: [
                             Text(
                               "${controller.listCakeBoxTemp[i].productType}g - ${controller.listCakeBoxTemp[i].numberEggs}T",
+                              style: TextStyleResource.textStyleWhite(context),
                             )
                           ],
                         ),
@@ -294,7 +334,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
                         child: Container(
                           width: 30,
                           height: 30,
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           alignment: Alignment.center,
                           color: Colors.transparent,
                           child: const Icon(
@@ -319,6 +359,67 @@ class MoonCakePage extends GetView<MoonCakeController> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildListCategory(BuildContext context) {
+    return Container(
+      height: 110,
+      margin: const EdgeInsets.only(top: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(bottom: 10),
+      child: ListView.separated(
+        itemCount: 3,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (c, i) {
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: LinearGradient(
+                  colors: [
+                    Color(
+                      int.parse("0xFFFFFF00"),
+                    ).withOpacity(0.1),
+                    Color(
+                      int.parse("0xFFFFFF00"),
+                    ),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: [0, 1],
+                ),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.light_mode,
+                    size: 50,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    "Bánh bông lan",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+        separatorBuilder: (c, i) {
+          return const SizedBox(
+            width: 40,
+          );
+        },
       ),
     );
   }
@@ -364,119 +465,234 @@ class MoonCakePage extends GetView<MoonCakeController> {
   }
 
   Widget _buildSearchBar(BuildContext context) {
-    return SizedBox(
-      height: 70,
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(width: 1.5, color: Colors.black)),
-              child: TextField(
-                controller: controller.searchController,
-                cursorRadius: const Radius.circular(10),
-                style: TextStyleResource.textStyleBlack(context).copyWith(
-                  height: 1,
-                  fontSize: 14,
+    return Column(
+      children: [
+        SizedBox(
+          height: 70,
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 1.5, color: Colors.black),
+                  ),
+                  child: TextField(
+                    controller: controller.searchController,
+                    cursorRadius: const Radius.circular(10),
+                    style: TextStyleResource.textStyleBlack(context).copyWith(
+                      height: 1,
+                      fontSize: 14,
+                    ),
+                    onChanged: (value) {
+                      controller.onChangeSearchCake(value);
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      contentPadding: const EdgeInsets.only(left: 15),
+                      border: InputBorder.none, // Loại bỏ viền
+                      hintMaxLines: 1,
+                      hintText: 'Bạn muốn tìm bánh nào...',
+                      labelStyle:
+                          TextStyleResource.textStyleBlack(context).copyWith(
+                        height: 1,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      hintStyle:
+                          TextStyleResource.textStyleGrey(context).copyWith(
+                        height: 1,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
-                onChanged: (value) {
-                  controller.onChangeSearchCake(value);
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              GestureDetector(
+                onTap: () {
+                  controller.showFilterDialog(context);
                 },
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.only(left: 15),
-                  border: InputBorder.none, // Loại bỏ viền
-                  hintMaxLines: 1,
-                  hintText: 'Bạn muốn tìm bánh nào...',
-                  labelStyle:
-                      TextStyleResource.textStyleBlack(context).copyWith(
-                    height: 1,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.blue,
                   ),
-                  hintStyle: TextStyleResource.textStyleGrey(context).copyWith(
-                    height: 1,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                  child: const Icon(
+                    Icons.menu,
+                    color: Colors.black,
                   ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          GestureDetector(
-            onTap: (){
-              controller.showFilterDialog(context);
-            },
-            child: Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.blue,
+              const SizedBox(
+                width: 10,
               ),
-              child: const Icon(
-                Icons.menu,
-                color: Colors.black,
+            ],
+          ),
+        ),
+        _buildListCategory(context)
+      ],
+    );
+  }
+
+  Widget shopBanner(BuildContext context){
+    return   Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const SizedBox(
+          width: 10,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Pixel Baker",
+              style: TextStyleResource.textStyleBlack(context).copyWith(
+                fontWeight: FontWeight.w900,
+                fontSize: 30,
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Xin chào",
+              style: TextStyleResource.textStyleBlack(context).copyWith(
+                fontWeight: FontWeight.w500,
+                fontSize: 30,
+              ),
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Image.network(
+            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=a7d877c5-69d8-4d54-b218-e18d486421de",
           ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
   Widget _buildBanner(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(top: 60),
-      color: Color(0xFFFAE8D4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const SizedBox(
-            width: 10,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      color: const Color(0xFFFAE8D4),
+      child: CarouselSlider(
+        //carouselController: controller.bannerController,
+        options: CarouselOptions(
+            autoPlay: true,
+            aspectRatio: 16 / 9,
+            viewportFraction: 1,
+            enlargeCenterPage: true,
+            autoPlayInterval: const Duration(seconds: 10 ),
+            enlargeStrategy: CenterPageEnlargeStrategy.height,
+            onPageChanged: (index, c){
+              //controller.onPageChange(index);
+            }
+        ),
+        items: List.generate(2, (e) {
+          if(e == 1){
+            return shopBanner(context);
+          }
+          return Stack(
             children: [
-              Text(
-                "Pixel Baker",
-                style: TextStyleResource.textStyleBlack(context).copyWith(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 30,
+              Container(
+                alignment: Alignment.center,
+                //child: Image.network(banner.bannerImage ?? '', fit: BoxFit.fill)
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text("Chao mừng den voi tiệm bánh Chui"),
+                    Text("Chuyen cung cap nhung loai banh kem chat luong"),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Xin chào",
-                style: TextStyleResource.textStyleBlack(context).copyWith(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 30,
-                ),
-              ),
+
             ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Image.network(
-              "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/moon_cake.png?alt=media&token=a7d877c5-69d8-4d54-b218-e18d486421de",
-            ),
-          ),
-        ],
+          );
+        }).toList(),
       ),
+    );
+  }
+
+  Widget _buildDrawer(BuildContext context) {
+    return Column(
+      children: [
+        Stack(
+          children: [
+            Container(
+              height: 100,
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: GestureDetector(
+                onTap: (){
+                  controller.onCloseDraw();
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  color: Colors.transparent,
+                  child: const Icon(Icons.close),
+                ),
+              ),
+            )
+          ],
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "Thông Tin Huu Ich",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "Cong Thuc Lam Banh",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "Phan Tích",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "Dat Hang",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          alignment: Alignment.center,
+          child: Text(
+            "Phan Tich Cong Thuc",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+        )
+      ],
     );
   }
 }

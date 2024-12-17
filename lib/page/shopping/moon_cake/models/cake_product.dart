@@ -10,6 +10,11 @@ class CakeProduct {
   String? productDescription;
   double? productDiscount;
   bool? isShow;
+  int? sortOrder;
+  int? limitCart;
+
+  int? productCategory;
+  bool? isFeature;
 
   int numberEggs = 1;
   int quantity = 1;
@@ -17,8 +22,8 @@ class CakeProduct {
   DateTime? createDate;
   DateTime? updateDate;
 
-  String get productImageMain{
-    if((productImages ?? []).isEmpty) return '';
+  String get productImageMain {
+    if ((productImages ?? []).isEmpty) return '';
     return productImages!.first;
   }
 
@@ -32,15 +37,19 @@ class CakeProduct {
     return Timestamp.fromDate(createDate!);
   }
 
-  CakeProduct(
-      {this.productID,
-        this.productColor,
-        this.productImages,
-        this.productName,
-        this.productPrice,
-        this.productType,
-        this.isShow
-      });
+  CakeProduct({
+    this.productID,
+    this.productColor,
+    this.productImages,
+    this.productName,
+    this.productPrice,
+    this.productType,
+    this.isShow,
+    this.sortOrder,
+    this.isFeature,
+    this.productCategory,
+    this.limitCart,
+  });
 
   CakeProduct.fromJson(Map<String, dynamic> json) {
     productPrice = double.parse(json['product_price'].toString());
@@ -49,16 +58,20 @@ class CakeProduct {
     productName = json['product_name'];
     productColor = json['product_color'];
     productDescription = json['product_description'];
-    if(json['product_images'] != null){
+    isFeature = json['is_feature'];
+    productCategory = json['product_category'];
+    limitCart = json['limit_cart'];
+    if (json['product_images'] != null) {
       productImages = json['product_images'].cast<String>();
     }
     productID = json['product_id'];
     isShow = json['is_show'];
+    sortOrder = json['sort_order'];
 
-    if(json['create_date'] != null){
+    if (json['create_date'] != null) {
       createDate = (json['create_date'] as Timestamp).toDate();
     }
-    if(json['update_date'] != null){
+    if (json['update_date'] != null) {
       updateDate = (json['update_date'] as Timestamp).toDate();
     }
   }
@@ -76,6 +89,7 @@ class CakeProduct {
     data['number_eggs'] = numberEggs;
     data['quantity_order'] = quantity;
     data['product_description'] = productDescription;
+    data['limit_cart'] = limitCart;
 
     data['create_date'] = convertCreateDate;
     data['update_date'] = convertUpdateDate;

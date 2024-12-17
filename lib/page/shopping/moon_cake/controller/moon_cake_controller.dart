@@ -26,6 +26,8 @@ class MoonCakeBinding extends Bindings {
 
 class MoonCakeController extends GetxController {
 
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final List<StatusOrder> listFilter = StatusOrder.listFilterExample();
@@ -223,12 +225,12 @@ class MoonCakeController extends GetxController {
         Tween<Offset> tween;
         if (anim.status == AnimationStatus.reverse) {
           tween = Tween(
-            begin: Offset(-1, 0),
+            begin: const Offset(-1, 0),
             end: Offset.zero,
           );
         } else {
           tween = Tween(
-            begin: Offset(1, 0),
+            begin: const Offset(1, 0),
             end: Offset.zero,
           );
         }
@@ -250,7 +252,7 @@ class MoonCakeController extends GetxController {
       barrierLabel: "Change Status",
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) {
         return SelectFilterLayout(controller: this,);
       },
@@ -348,5 +350,13 @@ class MoonCakeController extends GetxController {
   void onClose() {
     _debounce?.cancel();
     super.onClose();
+  }
+
+  void onTapMenu(BuildContext context) {
+    scaffoldKey.currentState?.openDrawer();
+  }
+
+  void onCloseDraw() {
+    scaffoldKey.currentState?.closeDrawer();
   }
 }
