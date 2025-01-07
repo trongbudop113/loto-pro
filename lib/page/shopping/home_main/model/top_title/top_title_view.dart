@@ -7,22 +7,26 @@ class TopTitleView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.sizeOf(context).width;
+    final double textSize1 = width > 900 ? 38 : 28;
+    final double textSize2 = width > 900 ? 40 : 28;
     return Column(
       children: [
-        const SizedBox(height: 68),
+        SizedBox(height: width > 900 ? 68 : 40),
         Text(
           model.title1 ?? '',
-          style: const TextStyle(
-              fontSize: 38,
-              fontWeight: FontWeight.w600,
-              color: Color(0xFFF4952C)
+          style: TextStyle(
+              fontSize: textSize1,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFFF4952C)
           ),
         ),
+        const SizedBox(height: 5),
         Text(
           model.title2 ?? '',
           textAlign: TextAlign.center,
-          style: const TextStyle(
-              fontSize: 40,
+          style: TextStyle(
+              fontSize: textSize2,
               fontWeight: FontWeight.w600,
               color: Colors.black
           ),

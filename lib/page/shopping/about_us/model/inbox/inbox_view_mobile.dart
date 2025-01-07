@@ -24,11 +24,13 @@ class InboxViewMobile extends StatelessWidget {
           Container(
             //height: width * 0.35,
             width: double.maxFinite,
-            // decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //       image: AssetImage(ImageResource.bgInbox),
-            //       fit: BoxFit.fill,
-            //     ),),
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage(
+                    "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fcategories%2Fregister.webp?alt=media&token=8fed6fb2-272d-4517-86e2-8950ad09ef87"),
+                fit: BoxFit.cover,
+              ),
+            ),
             child: Column(
               children: [
                 SizedBox(height: width * 0.05,),

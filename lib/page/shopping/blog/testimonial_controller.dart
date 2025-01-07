@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_model.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view.dart';
+import 'package:loto/page/shopping/about_us/model/inbox/inbox_view_mobile.dart';
 import 'package:loto/page/shopping/blog/model/add_review/add_review_model.dart';
 import 'package:loto/page/shopping/blog/model/add_review/add_review_view.dart';
 import 'package:loto/page/shopping/blog/model/blog_event/block_event_view.dart';
+import 'package:loto/page/shopping/blog/model/blog_event/block_event_view_mobile.dart';
 import 'package:loto/page/shopping/blog/model/blog_event/blog_event_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view.dart';
+import 'package:loto/page/shopping/home_main/model/footer/footer_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/top_title/top_title_model.dart';
 import 'package:loto/page/shopping/home_main/model/top_title/top_title_view.dart';
 
@@ -49,6 +52,10 @@ class TestimonialController extends GetxController{
 
     listModelViewMobile.addAll([
       TopTitleView(model: titleModel,),
+      AddReviewView(model: addReviewModel,),
+      BlockEventViewMobile(model: blogEventModel,),
+      InboxViewMobile(model: inboxModel,),
+      FooterViewMobile(model: footerModel,)
     ]);
   }
 }

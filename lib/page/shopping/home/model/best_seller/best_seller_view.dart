@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:loto/page/shopping/home/model/best_seller/best_seller_model.dart';
 import 'package:loto/page/shopping/shop_product/items/product_view_item.dart';
 
-class TastyRecipeView extends StatelessWidget {
+class BestSellerView extends StatelessWidget {
   final TastyRecipeModel model;
-  const TastyRecipeView({super.key, required this.model});
+  const BestSellerView({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,14 @@ class TastyRecipeView extends StatelessWidget {
       children: [
         const SizedBox(height: 67),
         const Text(
-          "Best seller",
+          "Bán Chạy",
           style: TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.w600,
               color: Color(0xFFF4952C)),
         ),
         const Text(
-          "Best Seller this week!",
+          "Sản phẩm bán chạy trong tháng",
           style: TextStyle(
             fontSize: 40,
             fontWeight: FontWeight.w600,

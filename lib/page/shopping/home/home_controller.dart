@@ -51,7 +51,7 @@ class HomeController extends GetxController{
     listModelView.addAll([
       BannerView(model: bannerModel),
       CategoryRecipeView(model: categoryRecipeModel),
-      TastyRecipeView(model: tastyRecipeModel),
+      BestSellerView(model: tastyRecipeModel),
       ChefView(model: chefModel,),
       TestimonialView(model: testimonialModel,),
       InboxView(model: inboxModel,),
@@ -89,7 +89,7 @@ class HomeController extends GetxController{
       }
       case TastyRecipeModel : {
         TastyRecipeModel model = data as TastyRecipeModel;
-        return TastyRecipeView(model: model);
+        return BestSellerView(model: model);
       }
       case ChefModel : {
         ChefModel model = data as ChefModel;

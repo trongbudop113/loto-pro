@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:loto/page/shopping/home/model/category/category_recipe_model.dart';
 import 'package:flutter/material.dart';
 
@@ -12,11 +13,8 @@ class CategoryRecipeViewMobile extends StatelessWidget {
   }
 
   Widget buildCategory(double width) {
-
-    final double paddingItem = width * 0.055;
-
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: paddingItem),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
           const SizedBox(height: 20),
@@ -30,88 +28,89 @@ class CategoryRecipeViewMobile extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color(0xFFF9913E),
-                ),
-                padding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-                child: const Text(
-                  "Xem tất cả",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    height: 1,
-                    color: Colors.white
+              GestureDetector(
+                onTap: (){
+                  model.onTapViewAll();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFFF9913E),
+                  ),
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+                  child: const Text(
+                    "Xem tất cả",
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      height: 1,
+                      color: Colors.white
+                    ),
                   ),
                 ),
               )
             ],
           ),
-          SizedBox(
-            height: paddingItem,
+          const SizedBox(
+            height: 15,
           ),
-          // SizedBox(
-          //   height: (((width - (paddingItem * 2) + 50) / 6) * 1.1) < 120 ? 120 : (((width - (paddingItem * 2) + 50) / 6) * 1.1),
-          //   child: ListView.separated(
-          //     itemCount: model.listCategory.length,
-          //     scrollDirection: Axis.horizontal,
-          //     itemBuilder: (c, i) {
-          //       final widthItem = (width - ((paddingItem * 2) + 50)) / 6;
-          //       return Container(
-          //         width: widthItem < 100 ? 100 : widthItem,
-          //         decoration: BoxDecoration(
-          //           borderRadius: BorderRadius.circular(15),
-          //           gradient: LinearGradient(
-          //             colors: [
-          //               Color(
-          //                 int.parse(
-          //                     "0x00${model.listCategory[i].categoryColor}"),
-          //               ),
-          //               Color(
-          //                 int.parse(
-          //                     "0xFF${model.listCategory[i].categoryColor}"),
-          //               ).withOpacity(0.1),
-          //             ],
-          //             begin: Alignment.topCenter,
-          //             end: Alignment.bottomCenter,
-          //             stops: [0, 1],
-          //           ),
-          //         ),
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.center,
-          //           mainAxisAlignment: MainAxisAlignment.start,
-          //           children: [
-          //             Padding(
-          //               padding: const EdgeInsets.only(left: 20),
-          //               child: Image.asset(
-          //                 model.listCategory[i].categoryIcon ?? '',
-          //                 height: ((width - (paddingItem * 2) + 50) / 6) * 0.67,
-          //                 fit: BoxFit.fitWidth,
-          //               ),
-          //             ),
-          //             const SizedBox(
-          //               height: 30,
-          //             ),
-          //             Text(
-          //               "${model.listCategory[i].categoryName}",
-          //               style: const TextStyle(
-          //                 fontWeight: FontWeight.w800,
-          //                 fontSize: 13,
-          //               ),
-          //             )
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //     separatorBuilder: (c, i) {
-          //       return const SizedBox(
-          //         width: 10,
-          //       );
-          //     },
-          //   ),
-          // )
+          SizedBox(
+            height: ((width - 40) / 4) * 1.2,
+            child: Obx((){
+              if(model.listCategory.isEmpty){
+                return const SizedBox();
+              }
+              return ListView.separated(
+                itemCount: model.listCategory.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (c, i) {
+                  return GestureDetector(
+                    onTap: (){
+                      model.onTapCategory(model.listCategory[i]);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: const Color(0xFFF9913E),
+                      ),
+                      height: (width / 4) * 1.2,
+                      width: (width - 40) / 4,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 20),
+                          //   child: Image.asset(
+                          //     model.listCategory[i].categoryImage ?? '',
+                          //     height: ((width - (paddingItem * 2) + 50) / 6) * 0.67,
+                          //     fit: BoxFit.fitWidth,
+                          //   ),
+                          // ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Text(
+                            "${model.listCategory[i].categoryName}",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 13,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+                separatorBuilder: (c, i) {
+                  return const SizedBox(
+                    width: 10,
+                  );
+                },
+              );
+            }),
+          )
         ],
       ),
     );

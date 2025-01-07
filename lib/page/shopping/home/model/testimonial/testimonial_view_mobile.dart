@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loto/page/shopping/home/model/testimonial/testimonial_model.dart';
 
 class TestimonialViewMobile extends StatelessWidget {
@@ -35,22 +36,78 @@ class TestimonialViewMobile extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 30),
-          SizedBox(
+          Container(
             height: 250,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: 6,
-              itemBuilder: (c, i){
-                return Container(
-                  color: Colors.red,
-                  alignment: Alignment.center,
-                  width: 150,
-                );
-              },
-              separatorBuilder: (c, i){
-                return const SizedBox(width: 15);
-              },
-            ),
+            alignment: Alignment.centerLeft,
+            child: Obx(() {
+              if (model.listData.isEmpty) {
+                return const SizedBox();
+              }
+              return ListView.separated(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: model.listData.length,
+                itemBuilder: (c, i) {
+                  return Container(
+                    color: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    width: 150,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(360),
+                          child: Container(
+                            color: Colors.red,
+                            width: 70,
+                            height: 70,
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                        Text(
+                          model.listData[i].userName ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          model.listData[i].userContent ?? '',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                            color: Colors.black,
+                            height: 1.2,
+                          ),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 10,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: List.generate(
+                            model.listData[i].rating ?? 0,
+                                (e) {
+                              return const Icon(
+                                Icons.star,
+                                color: Color(0xFFDBFF01),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                separatorBuilder: (c, i) {
+                  return const SizedBox(width: 15);
+                },
+              );
+            }),
           )
         ],
       ),

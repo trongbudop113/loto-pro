@@ -5,10 +5,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_model.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view.dart';
+import 'package:loto/page/shopping/about_us/model/inbox/inbox_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view.dart';
+import 'package:loto/page/shopping/home_main/model/footer/footer_view_mobile.dart';
 import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_model.dart';
 import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_view.dart';
+import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_view_mobile.dart';
 
 import '../moon_cake/models/cake_product.dart';
 
@@ -91,6 +94,21 @@ class BlogDetailController extends GetxController {
           model: inboxModel,
         ),
         FooterView(
+          model: footerModel,
+        ),
+      ],
+    );
+
+
+    listModelViewMobile.addAll(
+      [
+        TopDescriptionViewMobile(
+          model: topDescriptionModel,
+        ),
+        InboxViewMobile(
+          model: inboxModel,
+        ),
+        FooterViewMobile(
           model: footerModel,
         ),
       ],

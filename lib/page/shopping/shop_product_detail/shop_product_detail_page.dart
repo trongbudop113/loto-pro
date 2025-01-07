@@ -36,7 +36,7 @@ class ShopProductDetailPage extends GetView<BlogDetailController> {
 
   Widget buildMobileUI(BuildContext context) {
     return Column(
-      children: controller.listModelView,
+      children: controller.listModelViewMobile,
     );
   }
 

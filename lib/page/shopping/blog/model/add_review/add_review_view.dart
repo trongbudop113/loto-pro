@@ -12,6 +12,13 @@ class AddReviewView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15),
+                height: 4,
+                color: const Color(0xFFF4952C)
+            ),
+          ),
           GestureDetector(
             onTap: (){
               model.onTapAddReview();
@@ -22,7 +29,7 @@ class AddReviewView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(60),
                   color: const Color(0xFFF4952C)
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
               child: const Text(
                 "Viết đánh giá",
                 style: TextStyle(

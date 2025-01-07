@@ -98,7 +98,6 @@ class HomeMainPage extends GetView<HomeMainController> {
           ),
           const SizedBox(width: 20),
           listHeaderWidget(),
-          const Spacer(flex: 1),
           buildCart(),
         ],
       ),
@@ -184,43 +183,49 @@ class HomeMainPage extends GetView<HomeMainController> {
   }
 
   Widget listHeaderWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: controller.headerMenu.asMap().entries.map((e) {
-        return GestureDetector(
-          onTap: () {
-            controller.onChangeTap(e.key);
-          },
-          child: Obx(() => Container(
-                height: 43,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: Container(
-                  decoration: BoxDecoration(
+    return Expanded(
+      flex: 10,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: controller.headerMenu.asMap().entries.map((e) {
+            return GestureDetector(
+              onTap: () {
+                controller.onChangeTap(e.key);
+              },
+              child: Obx(() => Container(
+                    height: 43,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     color: Colors.transparent,
-                    border: Border(
-                      bottom: BorderSide(
-                        color: controller.currentIndexPage.value == e.key
-                            ? Colors.white
-                            : Colors.transparent,
-                        width: 1.5,
+                    alignment: Alignment.center,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border(
+                          bottom: BorderSide(
+                            color: controller.currentIndexPage.value == e.key
+                                ? Colors.white
+                                : Colors.transparent,
+                            width: 1.5,
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        e.value,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
                       ),
                     ),
-                  ),
-                  child: Text(
-                    e.value,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                ),
-              )),
-        );
-      }).toList(),
+                  )),
+            );
+          }).toList(),
+        ),
+      ),
     );
   }
 

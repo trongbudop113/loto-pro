@@ -15,7 +15,7 @@ class CategoryRecipeView extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "Which One",
+          "Danh Mục",
           style: TextStyle(
             fontSize: 35,
             fontWeight: FontWeight.w600,

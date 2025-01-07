@@ -23,11 +23,11 @@ class FooterViewMobile extends StatelessWidget {
           ),
           const Column(
             children: [
-              Text("Foodieland."),
+              Text("Pixel Baker"),
               SizedBox(
                 height: 16,
               ),
-              Text("Lorem ipsum dolor sit amet, consectetuipisicing elit, "),
+              Text("Chào mừng bạn đến với tiệm bánh chui, bánh lậu"),
               SizedBox(
                 height: 20,
               ),
@@ -35,7 +35,18 @@ class FooterViewMobile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Recipes",
+                  "Công Thức",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    "Nguyên Liệu",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -57,18 +68,7 @@ class FooterViewMobile extends StatelessWidget {
                     width: 15,
                   ),
                   Text(
-                    "Contact",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    "About us",
+                    "Thanh Toán",
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,

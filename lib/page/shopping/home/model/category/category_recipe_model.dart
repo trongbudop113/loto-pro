@@ -17,11 +17,19 @@ class CategoryRecipeModel extends BaseModel{
 
   void setListCategory(List<LsCategory> lsCategory){
     listCategory.addAll(lsCategory);
+    if(listCategory.isNotEmpty){
+      listCategory.removeWhere((e) => e.categoryId == 1);
+    }
   }
 
   void onTapCategory(LsCategory item){
     int index = listCategory.indexWhere((e) => e.categoryId == item.categoryId);
     Get.find<ShopProductController>().searchArticleModel.onSelectCategory(index);
+    Get.find<HomeMainController>().onChangeTap(2);
+  }
+
+  void onTapViewAll(){
+    Get.find<ShopProductController>().searchArticleModel.onSelectCategory(0);
     Get.find<HomeMainController>().onChangeTap(2);
   }
 

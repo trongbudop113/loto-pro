@@ -6,8 +6,10 @@ import 'package:loto/page/shopping/about_us/model/inbox/inbox_view.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view_mobile.dart';
 import 'package:loto/page/shopping/about_us/model/time_line/time_line_model.dart';
 import 'package:loto/page/shopping/about_us/model/time_line/time_line_view.dart';
+import 'package:loto/page/shopping/about_us/model/time_line/time_line_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view.dart';
+import 'package:loto/page/shopping/home_main/model/footer/footer_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/top_title/top_title_model.dart';
 import 'package:loto/page/shopping/home_main/model/top_title/top_title_view.dart';
 
@@ -45,13 +47,15 @@ class AboutController extends CustomGetController {
     ]);
     listModelViewTablet.addAll([
       TopTitleView(model: model),
+      TimeLineViewMobile(model: timeLineModel),
       InboxViewMobile(model: inboxModel),
-      FooterView(model: footerModel)
+      FooterViewMobile(model: footerModel)
     ]);
     listModelViewMobile.addAll([
       TopTitleView(model: model),
+      TimeLineViewMobile(model: timeLineModel),
       InboxViewMobile(model: inboxModel),
-      FooterView(model: footerModel)
+      FooterViewMobile(model: footerModel)
     ]);
   }
 }
