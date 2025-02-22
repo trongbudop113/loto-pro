@@ -24,7 +24,7 @@ class ItemProductNoBox extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
             color: ColorResource.color_main_light,
             borderRadius: BorderRadius.only(
@@ -34,7 +34,7 @@ class ItemProductNoBox extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Row(
@@ -51,7 +51,7 @@ class ItemProductNoBox extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Obx(() => Text(
@@ -63,7 +63,7 @@ class ItemProductNoBox extends StatelessWidget {
                       )),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,35 +76,38 @@ class ItemProductNoBox extends StatelessWidget {
                       color: getBackgroundColor(
                           productItem.boxCake!.productColor, context),
                     ),
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     child: Image.network(
                       productItem.boxCake!.productImageMain ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Loại:",
-                          style: TextStyleResource.textStyleBlack(context),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "${productItem.boxCake!.numberEggs} Trứng - ${productItem.boxCake!.productType}g",
-                          style: TextStyleResource.textStyleBlack(context),
-                        ),
-                      ],
+                    child: Visibility(
+                      visible: productItem.boxCake?.productCategory == 4,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Loại:",
+                            style: TextStyleResource.textStyleBlack(context),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "${productItem.boxCake!.numberEggs} Trứng - ${productItem.boxCake!.productType}g",
+                            style: TextStyleResource.textStyleBlack(context),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -114,11 +117,11 @@ class ItemProductNoBox extends StatelessWidget {
                   style: TextStyleResource.textStyleBlack(context),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 2,
         ),
         Visibility(
@@ -138,13 +141,13 @@ class ItemProductNoBox extends StatelessWidget {
                     height: 35,
                     width: 80,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: ColorResource.color_main_light,
                     ),
-                    child: Icon(Icons.delete),
+                    child: const Icon(Icons.delete),
                   ),
                 ),
-                Container(
+                const SizedBox(
                   height: 35,
                   width: 2,
                 ),
@@ -159,7 +162,7 @@ class ItemProductNoBox extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: ColorResource.color_main_light,
                       ),
-                      child: Icon(Icons.remove),
+                      child: const Icon(Icons.remove),
                     ),
                   ),
                 ),
@@ -174,10 +177,10 @@ class ItemProductNoBox extends StatelessWidget {
                     },
                     child: Container(
                       height: 35,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: ColorResource.color_main_light,
                       ),
-                      child: Icon(Icons.add),
+                      child: const Icon(Icons.add),
                     ),
                   ),
                 ),

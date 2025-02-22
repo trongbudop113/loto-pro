@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
@@ -12,6 +11,7 @@ import 'package:loto/page/shopping/home_main/home_main_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/src/color_resource.dart';
+import 'package:loto/widget/loading/loading_overlay.dart';
 
 class CartBinding extends Bindings {
   @override
@@ -23,17 +23,8 @@ class CartBinding extends Bindings {
 class CartController extends GetxController {
   final RxDouble finalPrice = 0.0.obs;
 
-  //final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference cakeRef = FirebaseFirestore.instance.collection(DataRowName.Cakes.name);
   TextEditingController textNoteController = TextEditingController();
-
-  // final CartRepositories _cartRepositories = CartRepositories(products: );
-
-  @override
-  void onInit() {
-    countTotalPrice();
-    super.onInit();
-  }
 
   double countTotalPrice() {
     double price = 0.0;
@@ -51,19 +42,24 @@ class CartController extends GetxController {
   List<ProductOrder> get currentProductInCart =>
       AppCommon.singleton.currentProductInCart;
 
-  void onTapRemoveProductItem(ProductOrder productItem) {
+  Future<void> onTapRemoveProductItem(ProductOrder productItem) async {
     AppCommon.singleton.currentProductInCart.remove(productItem);
+    await AppCommon.singleton.onUpdateCartToServer();
     countTotalPrice();
   }
 
-  void onTapSubtract(ProductOrder productItem) {
+  Future<void> onTapSubtract(ProductOrder productItem) async {
     if (productItem.quantity.value == 1) return;
     productItem.quantity.value--;
+    await 0.5.delay();
+    await AppCommon.singleton.onUpdateCartToServer();
     countTotalPrice();
   }
 
-  void onTapPlus(ProductOrder productItem) {
+  Future<void> onTapPlus(ProductOrder productItem) async {
     productItem.quantity.value++;
+    await 0.5.delay();
+    await AppCommon.singleton.onUpdateCartToServer();
     countTotalPrice();
   }
 
@@ -72,13 +68,14 @@ class CartController extends GetxController {
     return Color(int.parse("0xFF$color"));
   }
 
-  Future<void> onTapOrder() async {
+  Future<void> onTapOrder(BuildContext context) async {
     if (!AppCommon.singleton.isLogin) {
       Get.toNamed(PageConfig.LOGIN);
       return;
     }
     if (currentProductInCart.isEmpty) return;
 
+    LoadingOverlay.instance().show(context: context);
     DateTime current = DateTime.now();
     String month =
         current.month < 10 ? "0${current.month}" : "${current.month}";
@@ -113,11 +110,13 @@ class CartController extends GetxController {
       msg: "Mua hàng thành công",
       duration: 1,
     );
-    Get.back();
+    LoadingOverlay.instance().hide();
+    Get.find<HomeMainController>().onBackPage(context);
   }
 
-  void onRemoveAllCart() {
+  Future<void> onRemoveAllCart() async {
     AppCommon.singleton.currentProductInCart.clear();
+    await AppCommon.singleton.onUpdateCartToServer();
     countTotalPrice();
   }
 

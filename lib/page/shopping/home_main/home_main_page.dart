@@ -15,7 +15,7 @@ class HomeMainPage extends GetView<HomeMainController> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvoked: (value){
+      onPopInvoked: (value) {
         controller.onBackPage(context);
       },
       canPop: false,
@@ -106,11 +106,11 @@ class HomeMainPage extends GetView<HomeMainController> {
 
   Widget buildCart() {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         controller.onChangeTap(5);
       },
-      child: Obx((){
-        if(controller.currentIndexPage.value == 5){
+      child: Obx(() {
+        if (controller.currentIndexPage.value == 5) {
           return const SizedBox();
         }
         return Container(
@@ -125,7 +125,7 @@ class HomeMainPage extends GetView<HomeMainController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Obx(
-                    () => Container(
+                () => Container(
                   padding: const EdgeInsets.all(3),
                   alignment: Alignment.center,
                   child: Text(
@@ -152,33 +152,47 @@ class HomeMainPage extends GetView<HomeMainController> {
   }
 
   Widget buildCartMobile() {
-    return Container(
-      width: 70,
-      height: 44,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(30),
-        color: const Color(0xFFFF8E25),
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            "(0)",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.white,
-            ),
+    return GestureDetector(
+      onTap: () {
+        controller.onChangeTap(5);
+      },
+      child: Obx(() {
+        if (controller.currentIndexPage.value == 5) {
+          return const SizedBox(
+            width: 70,
+          );
+        }
+        return Container(
+          width: 70,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: const Color(0xFFFF8E25),
           ),
-          SizedBox(width: 5),
-          Icon(
-            Icons.shopping_cart_rounded,
-            color: Colors.white,
-            size: 20,
-          )
-        ],
-      ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Obx(() {
+                return Text(
+                  "(${AppCommon.singleton.countCart.value.toString()})",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                );
+              }),
+              const SizedBox(width: 5),
+              const Icon(
+                Icons.shopping_cart_rounded,
+                color: Colors.white,
+                size: 20,
+              )
+            ],
+          ),
+        );
+      }),
     );
   }
 
@@ -230,7 +244,7 @@ class HomeMainPage extends GetView<HomeMainController> {
   }
 
   Widget buildAppBarMobile(BuildContext context) {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top,
       ),
@@ -243,6 +257,10 @@ class HomeMainPage extends GetView<HomeMainController> {
           children: [
             GestureDetector(
               onTap: () {
+                if(controller.currentIndexPage.value == 5){
+                  controller.onBackCart();
+                  return;
+                }
                 controller.scaffoldKey.currentState?.openDrawer();
               },
               child: Container(
@@ -252,10 +270,18 @@ class HomeMainPage extends GetView<HomeMainController> {
                   borderRadius: BorderRadius.circular(30),
                   color: const Color(0xFFFF8E25),
                 ),
-                child: const Icon(
-                  Icons.menu,
-                  color: Colors.white,
-                ),
+                child: Obx((){
+                  if (controller.currentIndexPage.value == 5) {
+                    return const Icon(
+                      Icons.arrow_back_ios_new,
+                      color: Colors.white,
+                    );
+                  }
+                  return const Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  );
+                }),
               ),
             ),
             const Text(

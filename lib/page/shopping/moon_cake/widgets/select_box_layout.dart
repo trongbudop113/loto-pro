@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
+import 'package:loto/page/shopping/shop_product/model/top_product_model.dart';
 import 'package:loto/src/style_resource.dart';
 
 class SelectBoxLayout extends StatelessWidget {
-  final MoonCakeController controller;
+  final TopProductModel controller;
   const SelectBoxLayout({super.key, required this.controller});
 
   @override

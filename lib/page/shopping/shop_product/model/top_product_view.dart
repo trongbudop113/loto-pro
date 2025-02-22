@@ -2,24 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/shop_product/items/product_view_item.dart';
 import 'package:loto/page/shopping/shop_product/model/top_product_model.dart';
+import 'package:loto/src/style_resource.dart';
 
 class TopProductView extends StatelessWidget {
-  final SearchArticleModel model;
+  final TopProductModel model;
   const TopProductView({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
-    return buildCategory();
+    return buildCategory(context);
   }
 
-  Widget buildCategory() {
+  Widget buildCategory(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 64).copyWith(top: 80),
-      child: _buildMain(),
+      child: _buildMain(context),
     );
   }
 
-  Widget _buildMain() {
+  Widget _buildMain(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,36 +30,9 @@ class TopProductView extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Featured products",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      height: 2,
-                      color: Colors.black,
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFF8E25),
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    child: const Text(
-                      "Lọc theo:",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  )
-                ],
-              ),
+              _topTitle(),
+              const SizedBox(height: 18),
+              _buyWithBox(context),
               const SizedBox(height: 18),
               _buildListProduct(),
             ],
@@ -66,6 +40,205 @@ class TopProductView extends StatelessWidget {
         )
       ],
     );
+  }
+
+  Widget _topTitle(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          "Featured products",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 36,
+            fontWeight: FontWeight.bold,
+            height: 2,
+            color: Colors.black,
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFF8E25),
+            borderRadius: BorderRadius.circular(60),
+          ),
+          child: const Text(
+            "Lọc theo:",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _buyWithBox(BuildContext context){
+    return Obx((){
+      if(model.isShowBuyBox.value && !model.isStatusBuyBox.value){
+        return GestureDetector(
+          onTap: (){
+            model.onShowOrCompleteBuyBox(context);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.black38,
+            height: 80,
+            margin: const EdgeInsets.only(bottom: 15),
+            child: const Text("Mua theo hôp"),
+          ),
+        );
+      }
+      return Obx(
+            () => Visibility(
+          visible: model.isStatusBuyBox.value,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  itemBuilder: (c, i) {
+                    if (i > model.listCakeBoxTemp.length - 1) {
+                      return Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white54,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: model.getBackgroundColor(
+                                model.listCakeBoxTemp[i].productColor,
+                                context),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Image.network(
+                            model.listCakeBoxTemp[i].productImageMain ?? '',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: const BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                )),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${model.listCakeBoxTemp[i].productType}g - ${model.listCakeBoxTemp[i].numberEggs}T",
+                                  style: TextStyleResource.textStyleWhite(context),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              model.onRemoveItemInBox(i);
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              padding: const EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: const Icon(
+                                Icons.highlight_remove_outlined,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                  separatorBuilder: (c, i) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                  itemCount: model.listCakeBoxTemp.length +
+                      ((model.productOrder?.boxCake?.productType ?? 0) -
+                          model.listCakeBoxTemp.length),
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        model.onTapDeleteBuyBox();
+                      },
+                      child: Container(
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(60),
+                            bottomLeft: Radius.circular(60),
+                          ),
+                          color: Colors.redAccent,
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text("Xóa"),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        model.onShowOrCompleteBuyBox(context);
+                      },
+                      child: Container(
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(60),
+                            bottomRight: Radius.circular(60),
+                          ),
+                          color: Colors.amber,
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text("Thêm vào giỏ"),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 15),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   Widget _buildListProduct() {

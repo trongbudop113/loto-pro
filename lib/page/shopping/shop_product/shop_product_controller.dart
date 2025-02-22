@@ -24,7 +24,7 @@ class ShopProductController extends GetxController{
   List<Widget> listModelView = [];
   List<Widget> listModelViewMobile = [];
 
-  SearchArticleModel searchArticleModel = SearchArticleModel();
+  TopProductModel searchArticleModel = TopProductModel();
   InboxModel inboxModel = InboxModel();
   FooterModel footerModel = FooterModel();
 

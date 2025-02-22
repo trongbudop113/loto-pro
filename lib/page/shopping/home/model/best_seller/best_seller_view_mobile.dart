@@ -17,8 +17,7 @@ class BestSellerViewMobile extends StatelessWidget {
 
   Widget buildSimpleAndTasty(double width) {
 
-    const double paddingItem = 15;
-    final itemCount = width < 600 ? 2 : 3;
+    final itemCount = width <= 750 ? 2 : 3;
 
     return Column(
       children: [
@@ -76,27 +75,6 @@ class BestSellerViewMobile extends StatelessWidget {
                   );
                 },
                 itemCount: model.listCakeFeature.length,
-              );
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: model.listCakeFeature.map((e) {
-                  return ClipRRect(
-                    child: SizedBox(
-                      width: (Get.width - 30 - 20) / 3,
-                      height: 307,
-                      child: ProductViewItem(
-                        cakeProductModel: e,
-                        onAddToCart: () {
-                          e.cakeProduct.productPrice = e.productPrice.value;
-                          model.listClick(e.cakeProduct);
-                        },
-                        onTapItem: () {
-                          model.onTapDetail(e.cakeProduct);
-                        },
-                      ),
-                    ),
-                  );
-                }).toList(),
               );
             }))
       ],

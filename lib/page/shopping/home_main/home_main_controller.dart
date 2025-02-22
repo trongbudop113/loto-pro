@@ -45,11 +45,13 @@ class HomeMainController extends GetxController{
   @override
   void onInit() {
     initRoutePage();
+    syncCart();
     super.onInit();
   }
 
-  void goToCart() {
-    Get.toNamed(PageConfig.CART);
+  Future<void> syncCart() async {
+    await AppCommon.singleton.syncProductCart();
+    Get.find<CartController>().countTotalPrice();
   }
 
   void initRoutePage(){
@@ -63,6 +65,16 @@ class HomeMainController extends GetxController{
     // });
   }
 
+  void onBackCart(){
+    if(previousPage != currentIndexPage.value){
+      currentIndexPage.value = previousPage;
+      box.write("tab", previousPage);
+    }else{
+      currentIndexPage.value = 0;
+      box.write("tab", 0);
+    }
+  }
+
   void onBackPage(BuildContext context){
     if(currentIndexPage.value == 2){
       if(AppCommon.singleton.shopRoute == "/shop_product_detail"){
@@ -73,6 +85,7 @@ class HomeMainController extends GetxController{
     if(currentIndexPage.value == 3){
       if(AppCommon.singleton.blogRoute == "/blog_detail"){
         Get.nestedKey(2)?.currentState?.pop();
+        return;
       }
     }
     print("aasdasdasdasdasd....");

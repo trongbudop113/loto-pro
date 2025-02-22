@@ -66,13 +66,15 @@ class CartPage extends GetView<CartController> {
                       Container(
                         width: (width * .5) - 10,
                         alignment: Alignment.topCenter,
-                        child: _buildPayment(context, isWeb: true, width: width),
+                        child:
+                            _buildPayment(context, isWeb: true, width: width),
                       )
                     ],
                   )
                 : SingleChildScrollView(
                     child: Column(
                       children: [
+                        _buildDeleteCart(context),
                         _buildListProduct(context, isScroll: true),
                         Container(
                           height: 2,
@@ -87,6 +89,61 @@ class CartPage extends GetView<CartController> {
     );
   }
 
+  Widget _buildDeleteCart(BuildContext context){
+    return GestureDetector(
+      onTap: (){
+        Dialogs.materialDialog(
+            msg: 'Bạn có chắc là xóa hết sản phẩm?',
+            title: "Thông báo",
+            color: Colors.white,
+            context: context,
+            dialogWidth: kIsWeb ? 0.3 : null,
+            onClose: (value) => print("returned value is '$value'"),
+            actions: [
+              IconsOutlineButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                text: 'Cancel',
+                iconData: Icons.cancel_outlined,
+                textStyle: const TextStyle(color: Colors.grey),
+                iconColor: Colors.grey,
+              ),
+              IconsButton(
+                onPressed: () {
+                  controller.onRemoveAllCart();
+                  Navigator.of(context).pop();
+                },
+                text: "Delete",
+                iconData: Icons.delete,
+                color: Colors.red,
+                textStyle: const TextStyle(color: Colors.white),
+                iconColor: Colors.white,
+              ),
+            ]);
+      },
+      child: Container(
+        color: Colors.yellow,
+        height: 45,
+        margin: const EdgeInsets.only(bottom: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Icon(Icons.delete_forever_outlined, size: 25,),
+            const SizedBox(width: 5),
+            Text(
+              "Xóa tất cả",
+              style: TextStyleResource.textStyleBlack(context).copyWith(
+                fontSize: 18,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildBottomBar(BuildContext context) {
     return BottomAppBar(
       elevation: 0,
@@ -95,7 +152,7 @@ class CartPage extends GetView<CartController> {
             visible: controller.currentProductInCart.isNotEmpty,
             child: GestureDetector(
               onTap: () {
-                controller.onTapOrder();
+                controller.onTapOrder(context);
               },
               child: Container(
                 height: 50,
@@ -104,7 +161,11 @@ class CartPage extends GetView<CartController> {
                   borderRadius: BorderRadius.circular(60),
                 ),
                 alignment: Alignment.center,
-                child: const Text("Đặt hàng"),
+                child: Text(
+                  "Đặt hàng",
+                  style: TextStyleResource.textStyleBlack(context)
+                      .copyWith(fontSize: 18),
+                ),
               ),
             ),
           )),
@@ -127,6 +188,7 @@ class CartPage extends GetView<CartController> {
             ),
             child: Column(
               children: [
+                _buildDeleteCart(context),
                 Visibility(
                   visible: isWeb,
                   child: const SizedBox(
@@ -136,7 +198,7 @@ class CartPage extends GetView<CartController> {
                 Text(
                   "Thanh Toán:",
                   style: TextStyleResource.textStyleBlack(context)
-                      .copyWith(fontSize: 22, fontWeight: FontWeight.bold),
+                      .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 20,
@@ -215,51 +277,6 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-  Widget _buttonActionDelete(BuildContext context) {
-    return Obx(() => Visibility(
-          visible: controller.currentProductInCart.isNotEmpty,
-          child: GestureDetector(
-            onTap: () {
-              Dialogs.materialDialog(
-                  msg: 'Bạn có chắc là xóa hết sản phẩm?',
-                  title: "Thông báo",
-                  color: Colors.white,
-                  context: context,
-                  dialogWidth: kIsWeb ? 0.3 : null,
-                  onClose: (value) => print("returned value is '$value'"),
-                  actions: [
-                    IconsOutlineButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      text: 'Cancel',
-                      iconData: Icons.cancel_outlined,
-                      textStyle: const TextStyle(color: Colors.grey),
-                      iconColor: Colors.grey,
-                    ),
-                    IconsButton(
-                      onPressed: () {
-                        controller.onRemoveAllCart();
-                        Navigator.of(context).pop();
-                      },
-                      text: "Delete",
-                      iconData: Icons.delete,
-                      color: Colors.red,
-                      textStyle: const TextStyle(color: Colors.white),
-                      iconColor: Colors.white,
-                    ),
-                  ]);
-            },
-            child: Container(
-              width: 55,
-              alignment: Alignment.center,
-              color: Colors.transparent,
-              child: const Icon(Icons.delete),
-            ),
-          ),
-        ));
-  }
-
   Widget _buildRowPrice(
     BuildContext context, {
     required String title,
@@ -273,7 +290,10 @@ class CartPage extends GetView<CartController> {
       children: [
         Text(
           '$title:',
-          style: TextStyleResource.textStyleBlack(context),
+          style: TextStyleResource.textStyleBlack(context).copyWith(
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
         const SizedBox(
           width: 10,
@@ -283,7 +303,10 @@ class CartPage extends GetView<CartController> {
           child: Text(
             controller.formatCurrency(price),
             textAlign: TextAlign.end,
-            style: TextStyleResource.textStyleBlack(context),
+            style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ],

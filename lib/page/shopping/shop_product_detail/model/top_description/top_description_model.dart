@@ -9,6 +9,7 @@ import 'package:loto/page/shopping/moon_cake/models/egg_data.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 
 import '../../../../../src/color_resource.dart';
+import '../../../cart/cart_controller.dart';
 
 class TopDescriptionModel extends BaseModel{
 
@@ -64,24 +65,26 @@ class TopDescriptionModel extends BaseModel{
     initData();
   }
 
-  void onClickAddToCart() {
-    moonCakeProduct.value.quantity = quantity.value;
-    if (currentProductInCart(moonCakeProduct.value) != null) {
-      currentProductInCart(moonCakeProduct.value)!.quantity +=
-          moonCakeProduct.value.quantity;
+  Future<void> onClickAddToCart() async {
+    await AppCommon.singleton.onAddCartToServer(onHandleNext: (){
+      moonCakeProduct.value.quantity = quantity.value;
+      if (currentProductInCart(moonCakeProduct.value) != null) {
+        currentProductInCart(moonCakeProduct.value)!.quantity +=
+            moonCakeProduct.value.quantity;
+        quantity.value = 1;
+        return;
+      }
+      moonCakeProduct.value.numberEggs = listEgg.firstWhereOrNull((e) => e.isSelect.value)?.value ?? 1;
+      moonCakeProduct.value.productPrice = productPrice.value;
+      ProductOrder productOrder = ProductOrder();
+      productOrder.productMoonCakeList = [];
+      productOrder.boxCake = moonCakeProduct.value;
+      productOrder.quantity.value = 1;
+      productOrder.productType = 2;
+      AppCommon.singleton.currentProductInCart.add(productOrder);
       quantity.value = 1;
-      return;
-    }
-    moonCakeProduct.value.numberEggs = listEgg.firstWhereOrNull((e) => e.isSelect.value)!.value ?? 1;
-    moonCakeProduct.value.productPrice = productPrice.value;
-    ProductOrder productOrder = ProductOrder();
-    productOrder.productMoonCakeList = [];
-    productOrder.boxCake = moonCakeProduct.value;
-    productOrder.quantity.value = 1;
-    productOrder.productType = 1;
-    AppCommon.singleton.currentProductInCart.add(productOrder);
-    quantity.value = 1;
-
+      Get.find<CartController>().countTotalPrice();
+    });
     MessageUtil.show(
       msg: "Thêm vào giỏ hàng thành công",
       duration: 1,
@@ -103,13 +106,17 @@ class TopDescriptionModel extends BaseModel{
   }
 
   Future<void> initData() async {
-    currentImage.value = moonCakeProduct.value.productImageMain ?? '';
-    listEgg = EggData.listTwo();
-    if (moonCakeProduct.value.productType == 200) {
-      listEgg = EggData.listThree();
+    currentImage.value = moonCakeProduct.value.productImageMain;
+    if(moonCakeProduct.value.productCategory == 4){
+      listEgg = EggData.listTwo();
+      if (moonCakeProduct.value.productType == 200) {
+        listEgg = EggData.listThree();
+      }
+      listEgg[1].isSelect.value = true;
+      productPrice.value = (moonCakeProduct.value.productPrice ?? 0).toDouble() + (listEgg[1].defaultPrice ?? 0).toDouble();
+    }else{
+      productPrice.value = (moonCakeProduct.value.productPrice ?? 0).toDouble();
     }
-    listEgg[1].isSelect.value = true;
-    productPrice.value = (moonCakeProduct.value.productPrice ?? 0).toDouble() + (listEgg[1].defaultPrice ?? 0).toDouble();
     isLoadingPage.value = false;
   }
 

@@ -97,18 +97,42 @@ class ProductOrder {
       boxCake = CakeProduct.fromJson(json['box_cake']);
     }
     productType = json['product_type'];
+    quantity.value = json['quantity'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (this.productMoonCakeList != null) {
-      data['products'] = this.productMoonCakeList!.map((v) => v.toJson()).toList();
+    if (productMoonCakeList != null) {
+      data['products'] = productMoonCakeList!.map((v) => v.toJson()).toList();
     }
-    if(this.boxCake != null){
-      data['box_cake'] = this.boxCake!.toJson();
+    if(boxCake != null){
+      data['box_cake'] = boxCake!.toJson();
     }
     data['quantity'] = quantity.value;
     data['product_type'] = productType;
+    return data;
+  }
+}
+
+class SaveCartServer{
+  List<ProductOrder>? lsCart;
+
+  SaveCartServer({this.lsCart});
+
+  SaveCartServer.fromJson(Map<String, dynamic> json) {
+    if(json['ls_cart'] != null){
+      lsCart = <ProductOrder>[];
+      json['ls_cart'].forEach((v) {
+        lsCart!.add(ProductOrder.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (lsCart != null) {
+      data['ls_cart'] = lsCart!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

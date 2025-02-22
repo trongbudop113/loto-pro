@@ -206,45 +206,45 @@ class MoonCakeController extends GetxController {
       );
       return;
     }
-    showBoxCakeDialog(context);
+    //showBoxCakeDialog(context);
   }
 
-  void showBoxCakeDialog(BuildContext context) {
-    showGeneralDialog(
-      context: context,
-      barrierLabel: "Select Box",
-      barrierDismissible: true,
-      barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 500),
-      pageBuilder: (_, __, ___) {
-        return SelectBoxLayout(
-          controller: this,
-        );
-      },
-      transitionBuilder: (_, anim, __, child) {
-        Tween<Offset> tween;
-        if (anim.status == AnimationStatus.reverse) {
-          tween = Tween(
-            begin: const Offset(-1, 0),
-            end: Offset.zero,
-          );
-        } else {
-          tween = Tween(
-            begin: const Offset(1, 0),
-            end: Offset.zero,
-          );
-        }
-
-        return SlideTransition(
-          position: tween.animate(anim),
-          child: FadeTransition(
-            opacity: anim,
-            child: child,
-          ),
-        );
-      },
-    );
-  }
+  // void showBoxCakeDialog(BuildContext context) {
+  //   showGeneralDialog(
+  //     context: context,
+  //     barrierLabel: "Select Box",
+  //     barrierDismissible: true,
+  //     barrierColor: Colors.black.withOpacity(0.5),
+  //     transitionDuration: Duration(milliseconds: 500),
+  //     pageBuilder: (_, __, ___) {
+  //       return SelectBoxLayout(
+  //         controller: this,
+  //       );
+  //     },
+  //     transitionBuilder: (_, anim, __, child) {
+  //       Tween<Offset> tween;
+  //       if (anim.status == AnimationStatus.reverse) {
+  //         tween = Tween(
+  //           begin: const Offset(-1, 0),
+  //           end: Offset.zero,
+  //         );
+  //       } else {
+  //         tween = Tween(
+  //           begin: const Offset(1, 0),
+  //           end: Offset.zero,
+  //         );
+  //       }
+  //
+  //       return SlideTransition(
+  //         position: tween.animate(anim),
+  //         child: FadeTransition(
+  //           opacity: anim,
+  //           child: child,
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   void showFilterDialog(BuildContext context){
     showGeneralDialog(

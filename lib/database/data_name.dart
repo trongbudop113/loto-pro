@@ -19,4 +19,5 @@ enum DataCollection{
   MoonCakes,
   SendMessage,
   ContactUs,
+  Cart,
 }

@@ -1,20 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/shop_product/items/product_view_item.dart';
 import 'package:loto/page/shopping/shop_product/model/top_product_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:loto/src/style_resource.dart';
 
 class TopProductViewMobile extends StatelessWidget {
-  final SearchArticleModel model;
+  final TopProductModel model;
   const TopProductViewMobile({super.key, required this.model});
 
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
-    return buildCategory(width);
+    return buildCategory(context, width);
   }
 
-  Widget buildCategory(double width) {
+  Widget buildCategory(BuildContext context, double width) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(
         top: 20,
@@ -22,10 +22,177 @@ class TopProductViewMobile extends StatelessWidget {
       child: Column(
         children: [
           _buildCategories(),
+          _buyWithBox(context),
           _buildListProduct(width),
         ],
       ),
     );
+  }
+
+  Widget _buyWithBox(BuildContext context){
+    return Obx((){
+      if(model.isShowBuyBox.value && !model.isStatusBuyBox.value){
+        return GestureDetector(
+          onTap: (){
+            model.onShowOrCompleteBuyBox(context);
+          },
+          child: Container(
+            alignment: Alignment.center,
+            color: Colors.black38,
+            height: 80,
+            margin: const EdgeInsets.only(bottom: 15),
+            child: const Text("Mua theo hôp"),
+          ),
+        );
+      }
+      return Obx(
+            () => Visibility(
+          visible: model.isStatusBuyBox.value,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  itemBuilder: (c, i) {
+                    if (i > model.listCakeBoxTemp.length - 1) {
+                      return Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white54,
+                        ),
+                      );
+                    }
+                    return Stack(
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: model.getBackgroundColor(
+                                model.listCakeBoxTemp[i].productColor,
+                                context),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.all(5),
+                          child: Image.network(
+                            model.listCakeBoxTemp[i].productImageMain ?? '',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 5,
+                            ),
+                            decoration: const BoxDecoration(
+                                color: Colors.black54,
+                                borderRadius: BorderRadius.only(
+                                  bottomRight: Radius.circular(12),
+                                  bottomLeft: Radius.circular(12),
+                                )),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${model.listCakeBoxTemp[i].productType}g - ${model.listCakeBoxTemp[i].numberEggs}T",
+                                  style: TextStyleResource.textStyleWhite(context),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () {
+                              model.onRemoveItemInBox(i);
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              padding: const EdgeInsets.all(5),
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: const Icon(
+                                Icons.highlight_remove_outlined,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    );
+                  },
+                  separatorBuilder: (c, i) {
+                    return const SizedBox(
+                      width: 10,
+                    );
+                  },
+                  itemCount: model.listCakeBoxTemp.length +
+                      ((model.productOrder?.boxCake?.productType ?? 0) -
+                          model.listCakeBoxTemp.length),
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        model.onTapDeleteBuyBox();
+                      },
+                      child: Container(
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(60),
+                            bottomLeft: Radius.circular(60),
+                          ),
+                          color: Colors.redAccent,
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text("Xóa"),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        model.onShowOrCompleteBuyBox(context);
+                      },
+                      child: Container(
+                        height: 45,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(60),
+                            bottomRight: Radius.circular(60),
+                          ),
+                          color: Colors.amber,
+                        ),
+                        alignment: Alignment.center,
+                        child: const Text("Thêm vào giỏ"),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 15),
+            ],
+          ),
+        ),
+      );
+    });
   }
 
   Widget _buildCategories() {
@@ -105,16 +272,6 @@ class TopProductViewMobile extends StatelessWidget {
                 );
               }).toList(),
             );
-            return ListView.separated(
-              scrollDirection: Axis.horizontal,
-              itemCount: model.listCategories.length,
-              itemBuilder: (c, i) {
-                return;
-              },
-              separatorBuilder: (c, i) {
-                return const SizedBox(width: 25);
-              },
-            );
           }),
         ),
         const SizedBox(
@@ -125,7 +282,7 @@ class TopProductViewMobile extends StatelessWidget {
   }
 
   Widget _buildListProduct(double width) {
-    final itemCount = width <= 600 ? 2 : 3;
+    final itemCount = width <= 750 ? 2 : 3;
     return SizedBox(
       height: (307 * 3),
       child: Obx(() {
