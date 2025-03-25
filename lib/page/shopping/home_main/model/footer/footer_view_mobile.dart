@@ -1,4 +1,5 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 
@@ -21,7 +22,7 @@ class FooterViewMobile extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          const Column(
+          Column(
             children: [
               Text("Pixel Baker"),
               SizedBox(
@@ -34,12 +35,20 @@ class FooterViewMobile extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                  "Công Thức",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                  GestureDetector(
+                    onTap: (){
+                      model.onGotoRecipePage();
+                    },
+                    child: Container(
+                      color: Colors.transparent,
+                      child: Text(
+                      "Công Thức",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(

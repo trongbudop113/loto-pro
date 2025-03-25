@@ -20,4 +20,6 @@ enum DataCollection{
   SendMessage,
   ContactUs,
   Cart,
+  Recipes,
+  Ingredients
 }

@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page_config.dart';
+
+import '../page/shopping/recipe/model/ingredient.dart';
 
 class AppCommon {
   static final AppCommon singleton = AppCommon._internal();
@@ -14,6 +17,8 @@ class AppCommon {
   }
 
   AppCommon._internal();
+
+  final List<IngredientModel> listIngredientMaster = [];
 
   final RxList<ProductOrder> currentProductInCart = <ProductOrder>[].obs;
 
@@ -128,4 +133,9 @@ class AppCommon {
 
   String blogRoute = "";
   String shopRoute = "";
+
+  String formatCurrency(double d) {
+    d.roundToDouble();
+    return "${FormatUtils.oCcy.format(d)}đ";
+  }
 }

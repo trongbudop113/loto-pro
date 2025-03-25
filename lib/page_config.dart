@@ -45,6 +45,10 @@ import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/cart_page.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
 import 'package:loto/page/shopping/moon_cake/page/moon_cake_detail_page.dart';
+import 'package:loto/page/shopping/recipe/recipe_controller.dart';
+import 'package:loto/page/shopping/recipe/recipe_detail_controller.dart';
+import 'package:loto/page/shopping/recipe/recipe_detail_page.dart';
+import 'package:loto/page/shopping/recipe/recipe_page.dart';
 import 'package:loto/page/statistic/statistic_controller.dart';
 import 'package:loto/page/statistic/statistic_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
@@ -95,6 +99,8 @@ class PageConfig {
   static String ORDER_DETAIL_MANAGER = '/order_detail_manager';
   static String EDIT_PRODUCT_MANAGER = '/edit_product_manager';
   static String CHOOSE_IMAGE = '/choose_image';
+  static String RECIPE = '/recipe';
+  static String RECIPE_DETAIL = '/recipe_detail';
 
   static List<GetPage> listPage(){
     return [
@@ -230,33 +236,43 @@ class PageConfig {
       ),
       GetPage(
         name: PROFILE_MANAGER,
-        page: () => ProfileManagerPage(),
+        page: () => const ProfileManagerPage(),
         binding: ProfileManagerBinding(),
       ),
       GetPage(
         name: COOKING,
-        page: () => ProfileManagerPage(),
+        page: () => const ProfileManagerPage(),
         binding: ProfileManagerBinding(),
       ),
       GetPage(
         name: COOKING_MANAGER,
-        page: () => ProfileManagerPage(),
+        page: () => const ProfileManagerPage(),
         binding: ProfileManagerBinding(),
       ),
       GetPage(
         name: ORDER_DETAIL_MANAGER,
-        page: () => OrderDetailManagerPage(),
+        page: () => const OrderDetailManagerPage(),
         binding: OrderDetailManagerBinding(),
       ),
       GetPage(
         name: EDIT_PRODUCT_MANAGER,
-        page: () => ProductDetailManagerPage(),
+        page: () => const ProductDetailManagerPage(),
         binding: ProductDetailManagerBinding(),
       ),
       GetPage(
         name: CHOOSE_IMAGE,
-        page: () => ChooseImagePage(),
+        page: () => const ChooseImagePage(),
         binding: ChooseImageBinding(),
+      ),
+      GetPage(
+        name: RECIPE,
+        page: () => const RecipePage(),
+        binding: RecipeBinding(),
+      ),
+      GetPage(
+        name: RECIPE_DETAIL,
+        page: () => const RecipeDetailPage(),
+        binding: RecipeDetailBinding(),
       ),
     ];
   }

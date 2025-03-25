@@ -15,7 +15,7 @@ class FooterView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 80),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -38,12 +38,20 @@ class FooterView extends StatelessWidget {
               Spacer(
                 flex: 1,
               ),
-              Text(
-                "Công Thức",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+              GestureDetector(
+                onTap: (){
+                  model.onGotoRecipePage();
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: Text(
+                    "Công Thức",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
               ),
               SizedBox(
