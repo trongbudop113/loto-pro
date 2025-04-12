@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/items/item_product_no_box.dart';
 import 'package:loto/page/shopping/cart/items/item_product_with_box.dart';
+import 'package:loto/page/shopping/cart/layout/confirm_delete_cart_layout.dart';
 import 'package:loto/src/style_resource.dart';
 import 'package:lottie/lottie.dart';
-import 'package:material_dialogs/material_dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 class CartPage extends GetView<CartController> {
   const CartPage({super.key});
@@ -89,59 +86,106 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-  Widget _buildDeleteCart(BuildContext context){
+  Widget _buildDeleteCart(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Dialogs.materialDialog(
-            msg: 'Bạn có chắc là xóa hết sản phẩm?',
-            title: "Thông báo",
-            color: Colors.white,
-            context: context,
-            dialogWidth: kIsWeb ? 0.3 : null,
-            onClose: (value) => print("returned value is '$value'"),
-            actions: [
-              IconsOutlineButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                text: 'Cancel',
-                iconData: Icons.cancel_outlined,
-                textStyle: const TextStyle(color: Colors.grey),
-                iconColor: Colors.grey,
-              ),
-              IconsButton(
-                onPressed: () {
-                  controller.onRemoveAllCart();
-                  Navigator.of(context).pop();
-                },
-                text: "Delete",
-                iconData: Icons.delete,
-                color: Colors.red,
-                textStyle: const TextStyle(color: Colors.white),
-                iconColor: Colors.white,
-              ),
-            ]);
+      onTap: () {
+        Get.dialog(
+          Dialog(
+            backgroundColor: Colors.transparent,
+            child: ConfirmDeleteCartLayout(
+              controller: controller,
+            ),
+          ),
+        );
       },
       child: Container(
-        color: Colors.yellow,
-        height: 45,
-        margin: const EdgeInsets.only(bottom: 20),
-        child: Row(
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFFF8E25).withOpacity(0.15),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        height: 50,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Icon(Icons.delete_forever_outlined, size: 25,),
-            const SizedBox(width: 5),
+            Icon(Icons.delete_forever_outlined, size: 24, color: Colors.white),
+            SizedBox(width: 12),
             Text(
               "Xóa tất cả",
-              style: TextStyleResource.textStyleBlack(context).copyWith(
-                fontSize: 18,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
               ),
             )
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildPayment(BuildContext context, {required bool isWeb, required double width}) {
+    return Obx(() => Visibility(
+          visible: controller.currentProductInCart.isNotEmpty,
+          child: Container(
+            margin: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Thanh Toán",
+                  style: TextStyleResource.textStyleBlack(context).copyWith(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFFFF8E25),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                _buildRowPrice(context, title: "Tạm tính", price: 0, isWeb: isWeb, width: width),
+                const SizedBox(height: 16),
+                _buildRowPrice(context, title: "Giảm giá", price: 0, isWeb: isWeb, width: width),
+                const SizedBox(height: 16),
+                Container(
+                  height: 1,
+                  color: const Color(0xFFFF8E25).withOpacity(0.1),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                ),
+                Obx(() => _buildRowPrice(
+                    context,
+                    title: "Tổng tiền",
+                    price: controller.finalPrice.value,
+                    isWeb: isWeb,
+                    width: width,
+                )),
+                const SizedBox(height: 24),
+                _buildNote(context),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget _buildBottomBar(BuildContext context) {
@@ -151,20 +195,32 @@ class CartPage extends GetView<CartController> {
       child: Obx(() => Visibility(
             visible: controller.currentProductInCart.isNotEmpty,
             child: GestureDetector(
-              onTap: () {
-                controller.onTapOrder(context);
-              },
+              onTap: () => controller.onTapOrder(context),
               child: Container(
-                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 decoration: BoxDecoration(
-                  color: Colors.amber,
-                  borderRadius: BorderRadius.circular(60),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(38),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF8E25).withOpacity(0.25),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
                 child: Text(
                   "Đặt hàng",
-                  style: TextStyleResource.textStyleBlack(context)
-                      .copyWith(fontSize: 18),
+                  style: TextStyleResource.textStyleBlack(context).copyWith(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -172,72 +228,56 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-  Widget _buildPayment(
-    BuildContext context, {
-    required bool isWeb,
-    required double width,
-  }) {
-    return Obx(() => Visibility(
-          visible: controller.currentProductInCart.isNotEmpty,
-          child: Container(
-            margin: const EdgeInsets.only(
-              right: 15,
-              top: 20,
-              bottom: 20,
-              left: 15,
-            ),
-            child: Column(
-              children: [
-                _buildDeleteCart(context),
-                Visibility(
-                  visible: isWeb,
-                  child: const SizedBox(
-                    height: 15,
-                  ),
-                ),
-                Text(
-                  "Thanh Toán:",
-                  style: TextStyleResource.textStyleBlack(context)
-                      .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                _buildRowPrice(
-                  context,
-                  title: "Tạm tính",
-                  price: 0,
-                  isWeb: isWeb,
-                  width: width,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                _buildRowPrice(
-                  context,
-                  title: "Giảm giá",
-                  price: 0,
-                  isWeb: isWeb,
-                  width: width,
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Obx(() => _buildRowPrice(
-                      context,
-                      title: "Tổng tiền",
-                      price: controller.finalPrice.value,
-                      isWeb: isWeb,
-                      width: width,
-                    )),
-                const SizedBox(
-                  height: 25,
-                ),
-                _buildNote(context)
-              ],
+  Widget _buildNote(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF8E25).withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: TextFormField(
+        minLines: 6,
+        maxLines: null,
+        controller: controller.textNoteController,
+        keyboardType: TextInputType.multiline,
+        style: TextStyleResource.textStyleGrey(context).copyWith(
+          fontSize: 16,
+        ),
+        decoration: InputDecoration(
+          alignLabelWithHint: true,
+          labelText: 'Ghi chú',
+          labelStyle: TextStyle(
+            color: const Color(0xFFFF8E25).withOpacity(0.8),
+            fontSize: 16,
+          ),
+          contentPadding: const EdgeInsets.all(20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(
+              color: const Color(0xFFFF8E25).withOpacity(0.2),
             ),
           ),
-        ));
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(
+              color: const Color(0xFFFF8E25).withOpacity(0.2),
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(
+              color: Color(0xFFFF8E25),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildListProduct(BuildContext context, {required bool isScroll}) {
@@ -310,21 +350,6 @@ class CartPage extends GetView<CartController> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildNote(BuildContext context) {
-    return TextFormField(
-      minLines: 6,
-      maxLines: null,
-      controller: controller.textNoteController,
-      keyboardType: TextInputType.multiline,
-      style: TextStyleResource.textStyleGrey(context),
-      decoration: const InputDecoration(
-        alignLabelWithHint: true,
-        border: OutlineInputBorder(),
-        labelText: 'Ghi chú',
-      ),
     );
   }
 }

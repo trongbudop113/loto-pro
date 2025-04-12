@@ -21,174 +21,260 @@ class ItemProductNoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF8E25).withOpacity(0.15),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(1), // Border effect
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          children: [
+            _buildProductContent(context),
+            if (itemMode == ItemMode.cart)
+              _buildActionButtons(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductContent(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildHeader(context),
+          const SizedBox(height: 16),
+          _buildProductDetails(context),
+          const SizedBox(height: 16),
+          _buildPrice(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
       children: [
+        Expanded(
+          child: Text(
+            productItem.boxCake?.productName ?? '',
+            style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(width: 12),
         Container(
-          padding: const EdgeInsets.all(10),
-          decoration: const BoxDecoration(
-            color: ColorResource.color_main_light,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(5),
-              topRight: Radius.circular(5),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFF8E25),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Obx(() => Text(
+            "x${productItem.quantity.value}",
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
             ),
-          ),
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        productItem.boxCake!.productName ?? '',
-                        style:
-                            TextStyleResource.textStyleBlack(context).copyWith(
-                          fontSize: 22,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Obx(() => Text(
-                        "x${productItem.quantity.value}",
-                        style:
-                            TextStyleResource.textStyleBlack(context).copyWith(
-                          fontSize: 20,
-                        ),
-                      )),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: getBackgroundColor(
-                          productItem.boxCake!.productColor, context),
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Image.network(
-                      productItem.boxCake!.productImageMain ?? '',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Visibility(
-                      visible: productItem.boxCake?.productCategory == 4,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Loại:",
-                            style: TextStyleResource.textStyleBlack(context),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "${productItem.boxCake!.numberEggs} Trứng - ${productItem.boxCake!.productType}g",
-                            style: TextStyleResource.textStyleBlack(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "Giá: $countPrice",
-                  style: TextStyleResource.textStyleBlack(context),
-                ),
-              ),
-              const SizedBox(height: 10),
-            ],
-          ),
+          )),
         ),
-        const SizedBox(
-          height: 2,
-        ),
-        Visibility(
-          visible: itemMode == ItemMode.cart,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(5),
-              bottomRight: Radius.circular(5),
-            ),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    productItem.onTapRemoveProduct?.call();
-                  },
-                  child: Container(
-                    height: 35,
-                    width: 80,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(
-                      color: ColorResource.color_main_light,
-                    ),
-                    child: const Icon(Icons.delete),
-                  ),
-                ),
-                const SizedBox(
-                  height: 35,
-                  width: 2,
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      productItem.onTapSubtract?.call();
-                    },
-                    child: Container(
-                      height: 35,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: ColorResource.color_main_light,
-                      ),
-                      child: const Icon(Icons.remove),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 35,
-                  width: 2,
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      productItem.onTapPlus?.call();
-                    },
-                    child: Container(
-                      height: 35,
-                      decoration: const BoxDecoration(
-                        color: ColorResource.color_main_light,
-                      ),
-                      child: const Icon(Icons.add),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
       ],
+    );
+  }
+
+  Widget _buildProductDetails(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildProductImage(context),
+        const SizedBox(width: 16),
+        if (productItem.boxCake?.productCategory == 4)
+          Expanded(child: _buildProductSpecs(context)),
+      ],
+    );
+  }
+
+  Widget _buildProductImage(BuildContext context) {
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF8E25).withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          gradient: LinearGradient(
+            colors: [
+              const Color(0xFFFF8E25).withOpacity(0.5),
+              const Color(0xFFFFB067).withOpacity(0.5),
+            ],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Image.network(
+            productItem.boxCake?.productImageMain ?? '',
+            fit: BoxFit.contain,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Center(
+                child: CircularProgressIndicator(
+                  value: loadingProgress.expectedTotalBytes != null
+                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                      : null,
+                  valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFF8E25)),
+                ),
+              );
+            },
+            errorBuilder: (context, error, stackTrace) {
+              return const Center(
+                child: Icon(
+                  Icons.image_not_supported_outlined,
+                  color: Color(0xFFFF8E25),
+                  size: 32,
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductSpecs(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Loại:",
+          style: TextStyleResource.textStyleBlack(context).copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "${productItem.boxCake!.numberEggs} Trứng - ${productItem.boxCake!.productType}g",
+          style: TextStyleResource.textStyleBlack(context).copyWith(
+            fontSize: 16,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPrice(BuildContext context) {
+    return Container(
+      alignment: Alignment.centerRight,
+      child: Text(
+        "Giá: $countPrice",
+        style: TextStyleResource.textStyleBlack(context).copyWith(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: const Color(0xFFFF8E25),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: ColorResource.color_main_light,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ),
+      child: Row(
+        children: [
+          _buildActionButton(
+            onTap: productItem.onTapRemoveProduct,
+            icon: Icons.delete_outline,
+            isDelete: true,
+          ),
+          _buildDivider(),
+          _buildActionButton(
+            onTap: productItem.onTapSubtract,
+            icon: Icons.remove,
+          ),
+          _buildDivider(),
+          _buildActionButton(
+            onTap: productItem.onTapPlus,
+            icon: Icons.add,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    Function? onTap,
+    required IconData icon,
+    bool isDelete = false,
+  }) {
+    return Expanded(
+      flex: isDelete ? 1 : 2,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: (){
+            onTap?.call();
+          },
+          child: Container(
+            height: 45,
+            alignment: Alignment.center,
+            child: Icon(
+              icon,
+              color: isDelete ? Colors.red : Colors.black87,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      height: 45,
+      width: 1,
+      color: Colors.black12,
     );
   }
 
@@ -198,8 +284,7 @@ class ItemProductNoBox extends StatelessWidget {
   }
 
   String get countPrice {
-    double total = 0.0;
-    total = (productItem.boxCake!.productPrice ?? 0).toDouble();
+    double total = (productItem.boxCake?.productPrice ?? 0).toDouble();
     return "${FormatUtils.oCcy.format(total)}đ";
   }
 }

@@ -13,120 +13,130 @@ class InboxViewMobile extends StatelessWidget {
   }
 
   Widget buildInbox(double width) {
-    const double paddingItem = 15;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: paddingItem),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
-          const SizedBox(
-            height: 20,
-          ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Container(
-              //height: width * 0.35,
-              width: double.maxFinite,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fcategories%2Fregister.webp?alt=media&token=8fed6fb2-272d-4517-86e2-8950ad09ef87"),
-                  fit: BoxFit.cover,
+          const SizedBox(height: 30),
+          Container(
+            width: double.maxFinite,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              image: const DecorationImage(
+                image: NetworkImage(
+                  "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fcategories%2Fregister.webp?alt=media&token=8fed6fb2-272d-4517-86e2-8950ad09ef87",
+                ),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                  Color(0xFF333333),
+                  BlendMode.overlay,
                 ),
               ),
-              child: Column(
-                children: [
-                  SizedBox(height: width * 0.05,),
-                  const Text(
-                    "Deliciousness to your inbox",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontWeight: FontWeight.w900,
-                    ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.08),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
+                const Text(
+                  "Đăng ký nhận thông tin",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Color(0xFFFF8E25),
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
                   ),
-                  SizedBox(height: width * 0.017),
-                  Text(
-                    "Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor\nincididunt ut labore et dolore magna aliqut enim ad minim ",
+                ),
+                const SizedBox(height: 12),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Đăng ký để nhận thông tin mới nhất về sản phẩm và khuyến mãi",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w400,
-                      height: 16 / 12,
-                      color: Colors.black.withOpacity(0.6),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      height: 1.5,
+                      color: const Color(0xFF333333).withOpacity(0.8),
                     ),
                   ),
-                  SizedBox(height: width * 0.0444),
-                  Container(
-                    width: width * 0.6,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                    ),
-                    padding: const EdgeInsets.all(5),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: model.emailController,
-                            cursorRadius: const Radius.circular(10),
-                            style: const TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                              height: 1,
+                ),
+                const SizedBox(height: 30),
+                Container(
+                  width: width * 0.8,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(6),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: model.emailController,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF333333),
+                          ),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+                            border: InputBorder.none,
+                            hintText: 'Nhập email của bạn...',
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF333333).withOpacity(0.4),
                             ),
-                            onChanged: (value) {
-
-                            },
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.only(left: 15),
-                              border: InputBorder.none, // Loại bỏ viền
-                              hintMaxLines: 1,
-                              hintText: 'Your email address...',
-                              labelStyle: const TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                                height: 1,
+                          ),
+                        ),
+                      ),
+                      Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => model.onSubscribe(),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            width: 110,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
                               ),
-                              hintStyle: TextStyle(
-                                fontSize: 12,
+                            ),
+                            alignment: Alignment.center,
+                            child: const Text(
+                              "Đăng ký",
+                              style: TextStyle(
+                                fontSize: 15,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black.withOpacity(0.4),
-                                height: 1,
+                                color: Colors.white,
                               ),
                             ),
                           ),
                         ),
-                        Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.black,
-                          ),
-                          alignment: Alignment.center,
-                          child: const Text(
-                            "Subscribe",
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  SizedBox(height: width * 0.04,),
-                ],
-              ),
+                ),
+                const SizedBox(height: 40),
+              ],
             ),
           ),
-          const SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30),
         ],
       ),
     );

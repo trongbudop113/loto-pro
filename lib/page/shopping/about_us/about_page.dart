@@ -69,8 +69,4 @@ class AboutPage extends GetView<AboutController> {
       },
     );
   }
-
-  Widget buildSocial() {
-    return Container();
-  }
 }

@@ -43,4 +43,16 @@ class BlogEventModel extends BaseModel{
       print(e);
     }
   }
+
+  onTapEvent(TestimonialProductRes event) {
+    Get.toNamed(
+      '/blog-detail',
+      arguments: {
+        'id': event.userName,
+        'title': event.userContent,
+        'image': event.userAvatar,
+        'date': event.createDate,
+      },
+    );
+  }
 }

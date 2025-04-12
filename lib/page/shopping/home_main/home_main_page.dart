@@ -76,127 +76,242 @@ class HomeMainPage extends GetView<HomeMainController> {
                 maxWidth: 1440,
                 minWidth: 600,
               ),
-              child: buildAppBarWeb(context),
+              child: _buildAppBarWeb(context),
             )
-          : buildAppBarMobile(context),
+          : _buildAppBarMobile(context),
     );
   }
 
-  Widget buildAppBarWeb(BuildContext context) {
+  Widget _buildAppBarWeb(BuildContext context) {
     return Container(
       height: 97,
-      color: const Color(0xFFFF7A00),
-      padding: const EdgeInsets.only(right: 64, left: 44),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFFF7A00), Color(0xFFFF8E25)],
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 44),
       child: Row(
         children: [
-          Image.memory(
-            base64Decode(logoAppBase64),
-            width: 60,
-            height: 60,
-          ),
+          _buildLogo(),
           const SizedBox(width: 30),
-          Container(
-            width: 5,
-            height: 32,
-            color: Colors.white,
-          ),
+          _buildDivider(),
           const SizedBox(width: 20),
           listHeaderWidget(),
-          buildCart(),
+          _buildCart(),
         ],
       ),
     );
   }
 
-  Widget buildCart() {
-    return GestureDetector(
-      onTap: () {
-        controller.onChangeTap(5);
-      },
-      child: Obx(() {
-        if (controller.currentIndexPage.value == 5) {
-          return const SizedBox();
-        }
-        return Container(
-          width: 163,
-          height: 44,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: const Color(0xFFFF8E25),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Obx(
-                () => Container(
-                  padding: const EdgeInsets.all(3),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Giỏ hàng(${AppCommon.singleton.countCart.value.toString()})",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 15),
-              const Icon(
-                Icons.shopping_cart_rounded,
-                color: Colors.white,
-                size: 24,
-              )
-            ],
-          ),
-        );
-      }),
+  Widget _buildLogo({double size = 60}) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.white.withOpacity(0.2),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.3),
+          width: 1,
+        ),
+      ),
+      child: Image.memory(
+        base64Decode(logoAppBase64),
+        width: size,
+        height: size,
+      ),
     );
   }
 
-  Widget buildCartMobile() {
-    return GestureDetector(
-      onTap: () {
-        controller.onChangeTap(5);
-      },
-      child: Obx(() {
-        if (controller.currentIndexPage.value == 5) {
-          return const SizedBox(
-            width: 70,
+  Widget _buildDivider() {
+    return Container(
+      width: 3,
+      height: 32,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(1.5),
+      ),
+    );
+  }
+
+  Widget _buildAppBarMobile(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      ),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFFF7A00), Color(0xFFFF8E25)],
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        height: 97,
+        child: Obx(() {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildMenuButton(),
+              _buildTitle(),
+              _buildCartMobile(),
+            ],
           );
-        }
-        return Container(
+        }),
+      ),
+    );
+  }
+
+  Text _buildTitle() {
+    return Text(
+      controller.currentIndexPage.value == 5 ? "Giỏ Hàng" : "Bug Cake",
+      style: const TextStyle(
+        fontSize: 22,
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.5,
+      ),
+    );
+  }
+
+  Widget _buildMenuButton() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if (controller.currentIndexPage.value == 5) {
+            controller.onBackCart();
+            return;
+          }
+          controller.scaffoldKey.currentState?.openDrawer();
+        },
+        borderRadius: BorderRadius.circular(30),
+        child: Container(
           width: 70,
           height: 44,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            color: const Color(0xFFFF8E25),
+            color: Colors.white.withOpacity(0.2),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1,
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Obx(() {
-                return Text(
-                  "(${AppCommon.singleton.countCart.value.toString()})",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Colors.white,
+          child: Icon(
+            controller.currentIndexPage.value == 5
+                ? Icons.arrow_back_ios_new
+                : Icons.menu,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCart() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => controller.onChangeTap(5),
+        borderRadius: BorderRadius.circular(30),
+        child: Obx(() {
+          if (controller.currentIndexPage.value == 5) {
+            return const SizedBox();
+          }
+          return Container(
+            width: 163,
+            height: 44,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.white.withOpacity(0.2),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(() => Text(
+                      "Giỏ hàng(${AppCommon.singleton.countCart.value})",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: Colors.white,
+                        letterSpacing: 0.3,
+                      ),
+                    )),
+                const SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    shape: BoxShape.circle,
                   ),
-                );
-              }),
-              const SizedBox(width: 5),
-              const Icon(
-                Icons.shopping_cart_rounded,
-                color: Colors.white,
-                size: 20,
-              )
-            ],
-          ),
-        );
-      }),
+                  child: const Icon(
+                    Icons.shopping_cart_rounded,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                )
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+
+  Widget _buildCartMobile() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => controller.onChangeTap(5),
+        borderRadius: BorderRadius.circular(30),
+        child: controller.currentIndexPage.value == 5
+            ? const SizedBox(width: 70)
+            : Container(
+                width: 70,
+                height: 44,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white.withOpacity(0.2),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.3),
+                    width: 1,
+                  ),
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Icon(
+                      Icons.shopping_cart_rounded,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    Positioned(
+                      top: 6,
+                      right: 12,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Obx(() => Text(
+                              AppCommon.singleton.countCart.value.toString(),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFFFF8E25),
+                                height: 1,
+                              ),
+                            )),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      ),
     );
   }
 
@@ -247,99 +362,50 @@ class HomeMainPage extends GetView<HomeMainController> {
     );
   }
 
-  Widget buildAppBarMobile(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top,
-      ),
-      child: Container(
-        color: const Color(0xFFFF7A00),
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        height: 97,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            GestureDetector(
-              onTap: () {
-                if(controller.currentIndexPage.value == 5){
-                  controller.onBackCart();
-                  return;
-                }
-                controller.scaffoldKey.currentState?.openDrawer();
-              },
-              child: Container(
-                width: 70,
-                height: 44,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: const Color(0xFFFF8E25),
-                ),
-                child: Obx((){
-                  if (controller.currentIndexPage.value == 5) {
-                    return const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    );
-                  }
-                  return const Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  );
-                }),
-              ),
-            ),
-            const Text(
-              "Bug Cake",
-              style: TextStyle(fontSize: 22, color: Colors.white),
-            ),
-            buildCartMobile()
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildDrawer() {
     return Drawer(
       child: Padding(
         padding: const EdgeInsets.only(top: 50),
         child: Column(
-          children: controller.headerMenu.asMap().entries.map((e) {
-            return GestureDetector(
-              onTap: () {
-                controller.onChangeTap(e.key);
-                controller.scaffoldKey.currentState?.closeDrawer();
-              },
-              child: Obx(() => Container(
-                    height: 43,
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    color: Colors.transparent,
-                    alignment: Alignment.center,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        border: Border(
-                          bottom: BorderSide(
-                            color: controller.currentIndexPage.value == e.key
-                                ? const Color(0xFFFF7A00)
-                                : Colors.transparent,
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                      child: Text(
-                        e.value,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFFF7A00),
-                          height: 1.2,
-                        ),
-                      ),
+          children: [
+            _buildLogo(size: 100),
+            ...controller.headerMenu.asMap().entries.map((e) {
+          return GestureDetector(
+            onTap: () {
+              controller.onChangeTap(e.key);
+              controller.scaffoldKey.currentState?.closeDrawer();
+            },
+            child: Obx(() => Container(
+              height: 43,
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              color: Colors.transparent,
+              alignment: Alignment.center,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.transparent,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: controller.currentIndexPage.value == e.key
+                          ? const Color(0xFFFF7A00)
+                          : Colors.transparent,
+                      width: 1.5,
                     ),
-                  )),
-            );
-          }).toList(),
+                  ),
+                ),
+                child: Text(
+                  e.value,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFFF7A00),
+                    height: 1.2,
+                  ),
+                ),
+              ),
+            )),
+          );
+        }).toList()
+          ],
         ),
       ),
     );

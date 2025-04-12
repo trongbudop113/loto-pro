@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loto/base/base_model.dart';
+import 'package:loto/page/shopping/blog/layout/add_review_layout.dart';
 
 class AddReviewModel extends BaseModel{
+
   @override
   void onFinish() {
     // TODO: implement onFinish
@@ -11,8 +15,40 @@ class AddReviewModel extends BaseModel{
     // TODO: implement onStart
   }
 
-  void onTapAddReview(){
+  void onTapAddReview() {
+    submitCallBack = _submitReview;
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: AddReviewLayout(model: this),
+      ),
+    );
+  }
 
+  Future<void> _submitReview() async {
+    try {
+      isLoading.value = true;
+      // TODO: Implement your API call here
+      await Future.delayed(const Duration(seconds: 2)); // Simulated API call
+      Get.back();
+      Get.snackbar(
+        'Thành công',
+        'Cảm ơn bạn đã chia sẻ đánh giá!',
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Lỗi',
+        'Có lỗi xảy ra, vui lòng thử lại sau.',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
 }

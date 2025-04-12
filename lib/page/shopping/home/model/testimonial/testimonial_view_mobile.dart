@@ -12,7 +12,7 @@ class TestimonialViewMobile extends StatelessWidget {
   }
 
   Widget buildDelicious() {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
         children: [
@@ -20,95 +20,132 @@ class TestimonialViewMobile extends StatelessWidget {
           const Text(
             "Đánh giá",
             style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w600,
-                color: Color(0xFFF4952C)
+              fontSize: 24,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFFF8E25),
+              letterSpacing: 0.5,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 12),
           const Text(
             "Tôi cũng rất quan tâm về trải nghiệm của bạn",
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-                color: Colors.black
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF333333),
+              height: 1.3,
             ),
           ),
           const SizedBox(height: 30),
-          Container(
-            height: 250,
-            alignment: Alignment.centerLeft,
+          SizedBox(
+            height: 320,
             child: Obx(() {
               if (model.listData.isEmpty) {
                 return const SizedBox();
               }
               return ListView.separated(
                 scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 itemCount: model.listData.length,
+                padding: const EdgeInsets.symmetric(horizontal: 5),
                 itemBuilder: (c, i) {
                   return Container(
-                    color: Colors.transparent,
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    width: 150,
+                    width: 280,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFFF8E25).withOpacity(0.08),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(360),
-                          child: Container(
-                            color: Colors.red,
-                            width: 70,
-                            height: 70,
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                const Color(0xFFFF8E25).withOpacity(0.15),
+                                const Color(0xFFFF8E25).withOpacity(0.05),
+                              ],
+                            ),
+                            border: Border.all(
+                              color: const Color(0xFFFF8E25).withOpacity(0.1),
+                              width: 1,
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: Image.network(
+                              model.listData[i].userAvatar ?? '',
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return const Icon(
+                                  Icons.person,
+                                  size: 40,
+                                  color: Color(0xFFFF8E25),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 16),
                         Text(
                           model.listData[i].userName ?? '',
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 20,
-                            color: Colors.black,
+                            fontSize: 18,
+                            color: Color(0xFF333333),
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Text(
-                          model.listData[i].userContent ?? '',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                            color: Colors.black,
-                            height: 1.2,
-                          ),
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 10,
-                        ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 12),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(
                             model.listData[i].rating ?? 0,
-                                (e) {
-                              return const Icon(
-                                Icons.star,
-                                color: Color(0xFFDBFF01),
-                              );
-                            },
-                          ).toList(),
+                            (e) => const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 2),
+                              child: Icon(
+                                Icons.star_rounded,
+                                color: Color(0xFFFF8E25),
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Expanded(
+                          child: Text(
+                            model.listData[i].userContent ?? '',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                              color: Color(0xFF666666),
+                              height: 1.5,
+                            ),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 4,
+                          ),
                         ),
                       ],
                     ),
                   );
                 },
-                separatorBuilder: (c, i) {
-                  return const SizedBox(width: 15);
-                },
+                separatorBuilder: (c, i) => const SizedBox(width: 15),
               );
             }),
-          )
+          ),
         ],
       ),
     );

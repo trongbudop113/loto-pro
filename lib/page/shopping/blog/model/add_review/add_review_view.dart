@@ -15,27 +15,58 @@ class AddReviewView extends StatelessWidget {
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 15),
-                height: 4,
-                color: const Color(0xFFF4952C)
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    const Color(0xFFFF8E25),
+                    const Color(0xFFFF8E25).withOpacity(0.3),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
-          GestureDetector(
-            onTap: (){
-              model.onTapAddReview();
-            },
-            child: Container(
-              margin: const EdgeInsets.only(right: 20),
-              decoration: BoxDecoration(
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => model.onTapAddReview(),
+              borderRadius: BorderRadius.circular(60),
+              child: Container(
+                margin: const EdgeInsets.only(right: 20),
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(60),
-                  color: const Color(0xFFF4952C)
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-              child: const Text(
-                "Viết đánh giá",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  height: 1,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF8E25).withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.edit_outlined,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      "Viết đánh giá",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        height: 1,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
