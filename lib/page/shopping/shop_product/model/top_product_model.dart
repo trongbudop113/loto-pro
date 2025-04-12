@@ -23,6 +23,7 @@ class TopProductModel extends BaseModel {
   }
 
   final RxBool isLoadingData = true.obs;
+  final currentPage = 0.obs;
 
   final RxList<CakeProductModel> listCake = <CakeProductModel>[].obs;
   List<CakeProductModel> listCakeTemp = <CakeProductModel>[];

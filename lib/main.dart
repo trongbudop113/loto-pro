@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget  {
       ],
       child: Consumer<ThemeProvider>(
           builder: (ctx, themeObject, _) => GetMaterialApp(
-            title: 'Pixel Baker',
+            title: 'Bug Cake',
             themeMode: themeObject.mode,
             debugShowCheckedModeBanner: false,
             theme: ThemeResource.lightTheme(),

@@ -15,33 +15,161 @@ class TopProductViewMobile extends StatelessWidget {
   }
 
   Widget buildCategory(BuildContext context, double width) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(
-        top: 20,
-      ),
-      child: Column(
-        children: [
-          _buildCategories(),
-          _buyWithBox(context),
-          _buildListProduct(width),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        margin: const EdgeInsets.only(top: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildTopTitle(),
+            const SizedBox(height: 24),
+            _buildCategories(),
+            const SizedBox(height: 24),
+            _buyWithBox(context),
+            const SizedBox(height: 24),
+            _buildListProduct(width),
+            const SizedBox(height: 32),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buyWithBox(BuildContext context){
-    return Obx((){
-      if(model.isShowBuyBox.value && !model.isStatusBuyBox.value){
-        return GestureDetector(
-          onTap: (){
-            model.onShowOrCompleteBuyBox(context);
-          },
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.black38,
-            height: 80,
-            margin: const EdgeInsets.only(bottom: 15),
-            child: const Text("Mua theo hôp"),
+  Widget _buildTopTitle() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text(
+              "Featured Products",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF333333),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFF8E25),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFFFF8E25).withOpacity(0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.filter_list,
+                    color: Colors.white,
+                    size: 18,
+                  ),
+                  SizedBox(width: 6),
+                  Text(
+                    "Filter",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        const Text(
+          "Discover our special products",
+          style: TextStyle(
+            fontSize: 14,
+            color: Color(0xFF666666),
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buyWithBox(BuildContext context) {
+    return Obx(() {
+      if (model.isShowBuyBox.value && !model.isStatusBuyBox.value) {
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 15),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => model.onShowOrCompleteBuyBox(context),
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFFFF8E25).withOpacity(0.9),
+                      const Color(0xFFFFB067),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF8E25).withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.shopping_bag_outlined,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 15),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "Mua theo hộp",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          "Tiết kiệm hơn khi mua theo bộ",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         );
       }
@@ -197,76 +325,84 @@ class TopProductViewMobile extends StatelessWidget {
 
   Widget _buildCategories() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "Danh mục",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              height: 2,
-              color: Colors.black,
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Danh mục",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF333333),
+              ),
             ),
-          ),
+          ],
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 16),
         SizedBox(
           width: double.infinity,
           child: Obx(() {
             if (model.listCategories.isEmpty) {
-              return const SizedBox(
-                height: 50,
-              );
+              return const SizedBox(height: 50);
             }
             return Wrap(
               direction: Axis.horizontal,
               alignment: WrapAlignment.start,
-              runSpacing: 15,
-              spacing: 20,
+              runSpacing: 12,
+              spacing: 12,
               children: model.listCategories.asMap().entries.map((e) {
-                return GestureDetector(
-                  onTap: () {
-                    model.onSelectCategory(e.key);
-                  },
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: const Color(0xFFFF8E25).withOpacity(0.3),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Obx(() {
-                          return Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              color: const Color(0xFFCACACA),
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => model.onSelectCategory(e.key),
+                    borderRadius: BorderRadius.circular(30),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        color: e.value.isSelected.value
+                            ? const Color(0xFFFF8E25)
+                            : const Color(0xFFFF8E25).withOpacity(0.1),
+                        boxShadow: e.value.isSelected.value
+                            ? [
+                                BoxShadow(
+                                  color: const Color(0xFFFF8E25).withOpacity(0.2),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ]
+                            : null,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (e.value.isSelected.value) ...[
+                            const Icon(
+                              Icons.check_circle,
+                              color: Colors.white,
+                              size: 20,
                             ),
-                            child: Visibility(
-                              visible: e.value.isSelected.value,
-                              child: const Icon(
-                                Icons.circle,
-                                color: Color(0xFFFF8E25),
-                                size: 20,
-                              ),
+                            const SizedBox(width: 8),
+                          ],
+                          Text(
+                            e.value.categoryName ?? '',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: e.value.isSelected.value
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                              color: e.value.isSelected.value
+                                  ? Colors.white
+                                  : const Color(0xFF333333),
                             ),
-                          );
-                        }),
-                        const SizedBox(width: 6),
-                        Text(
-                          e.value.categoryName ?? '',
-                          style: const TextStyle(height: 1),
-                        )
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -274,44 +410,128 @@ class TopProductViewMobile extends StatelessWidget {
             );
           }),
         ),
-        const SizedBox(
-          height: 20,
-        ),
       ],
     );
   }
 
   Widget _buildListProduct(double width) {
     final itemCount = width <= 750 ? 2 : 3;
-    return SizedBox(
-      height: (307 * 3),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(15),
       child: Obx(() {
         if (model.listCake.isEmpty) {
           return _emptyProduct();
         }
-        return GridView.builder(
-          itemCount: model.listCake.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: itemCount,
-            crossAxisSpacing: 20,
-            mainAxisSpacing: 20,
-            childAspectRatio: 303 / 307,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return ProductViewItem(
-              cakeProductModel: model.listCake[index],
-              onAddToCart: () {
-                model.listCake[index].cakeProduct.productPrice =
-                    model.listCake[index].productPrice.value;
-                model.listClick(model.listCake[index].cakeProduct);
+
+        final int totalItems = model.listCake.length;
+        const int itemsPerPage = 6;
+        final int totalPages = (totalItems / itemsPerPage).ceil();
+        final int startIndex = model.currentPage.value * itemsPerPage;
+        final int endIndex = (startIndex + itemsPerPage) > totalItems 
+            ? totalItems 
+            : startIndex + itemsPerPage;
+
+        return Column(
+          children: [
+            GridView.builder(
+              itemCount: endIndex - startIndex,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: itemCount,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+                childAspectRatio: 303 / 307,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                final itemIndex = startIndex + index;
+                return AnimatedOpacity(
+                  duration: Duration(milliseconds: 300 + (index * 100)),
+                  opacity: 1,
+                  child: ProductViewItem(
+                    cakeProductModel: model.listCake[itemIndex],
+                    onAddToCart: () {
+                      model.listCake[itemIndex].cakeProduct.productPrice =
+                          model.listCake[itemIndex].productPrice.value;
+                      model.listClick(model.listCake[itemIndex].cakeProduct);
+                    },
+                    onTapItem: () {
+                      model.onTapDetail(model.listCake[itemIndex].cakeProduct);
+                    },
+                  ),
+                );
               },
-              onTapItem: () {
-                model.onTapDetail(model.listCake[index].cakeProduct);
-              },
-            );
-          },
+            ),
+            if (totalPages > 1) ...[
+              const SizedBox(height: 30),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: model.currentPage.value > 0
+                          ? () => model.currentPage.value--
+                          : null,
+                      icon: const Icon(Icons.arrow_back_ios),
+                      color: const Color(0xFFFF8E25),
+                    ),
+                    ...List.generate(totalPages, (index) => 
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: InkWell(
+                          onTap: () => model.currentPage.value = index,
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: model.currentPage.value == index
+                                  ? const Color(0xFFFF8E25)
+                                  : Colors.transparent,
+                              border: Border.all(
+                                color: const Color(0xFFFF8E25),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${index + 1}',
+                                style: TextStyle(
+                                  color: model.currentPage.value == index
+                                      ? Colors.white
+                                      : const Color(0xFFFF8E25),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: model.currentPage.value < totalPages - 1
+                          ? () => model.currentPage.value++
+                          : null,
+                      icon: const Icon(Icons.arrow_forward_ios),
+                      color: const Color(0xFFFF8E25),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
         );
       }),
     );
@@ -319,24 +539,90 @@ class TopProductViewMobile extends StatelessWidget {
 
   Widget _emptyProduct() {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 40),
       alignment: Alignment.center,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fshops%2Fbaker.png?alt=media&token=813947d9-ba2e-465c-8498-e973f5972a8f",
+          Container(
             width: 200,
             height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFFF8E25).withOpacity(0.1),
+            ),
+            child: Center(
+              child: Image.network(
+                "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fshops%2Fbaker.png?alt=media&token=813947d9-ba2e-465c-8498-e973f5972a8f",
+                width: 150,
+                height: 150,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            "Chưa có sản phẩm nào",
+            style: TextStyle(
+              color: Color(0xFF333333),
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            "Sản phẩm đang được cập nhật, vui lòng quay lại sau",
+            style: TextStyle(
+              color: Color(0xFF666666),
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 20),
-          const Text(
-            "Sản phẩm đang được cập nhật nha",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 25,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                // Add refresh functionality here
+              },
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF8E25),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFFF8E25).withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.refresh_rounded,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      "Làm mới",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

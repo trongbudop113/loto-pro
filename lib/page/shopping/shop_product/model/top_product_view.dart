@@ -42,55 +42,159 @@ class TopProductView extends StatelessWidget {
     );
   }
 
-  Widget _topTitle(){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Text(
-          "Featured products",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-            height: 2,
-            color: Colors.black,
+  Widget _topTitle() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Featured products",
+                style: TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.w800,
+                  color: Color(0xFF333333),
+                  height: 1.2,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                "Discover our special products",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF666666),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
           ),
-        ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          decoration: BoxDecoration(
-            color: const Color(0xFFFF8E25),
-            borderRadius: BorderRadius.circular(60),
-          ),
-          child: const Text(
-            "Lọc theo:",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF8E25),
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Row(
+              children: [
+                Text(
+                  "Lọc theo:",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(width: 8),
+                Icon(
+                  Icons.filter_list,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ],
             ),
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _buyWithBox(BuildContext context){
-    return Obx((){
-      if(model.isShowBuyBox.value && !model.isStatusBuyBox.value){
-        return GestureDetector(
-          onTap: (){
-            model.onShowOrCompleteBuyBox(context);
-          },
-          child: Container(
-            alignment: Alignment.center,
-            color: Colors.black38,
-            height: 80,
+  Widget _buyWithBox(BuildContext context) {
+      return Obx(() {
+        if (model.isShowBuyBox.value && !model.isStatusBuyBox.value) {
+          return Container(
             margin: const EdgeInsets.only(bottom: 15),
-            child: const Text("Mua theo hôp"),
-          ),
-        );
-      }
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => model.onShowOrCompleteBuyBox(context),
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFFFF8E25).withOpacity(0.9),
+                        const Color(0xFFFFB067),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xFFFF8E25).withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.shopping_bag_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      ),
+                      const SizedBox(width: 15),
+                      const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Mua theo hộp",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            "Tiết kiệm hơn khi mua theo bộ",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 15),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
       return Obx(
             () => Visibility(
           visible: model.isStatusBuyBox.value,
@@ -242,139 +346,307 @@ class TopProductView extends StatelessWidget {
   }
 
   Widget _buildListProduct() {
-    return SizedBox(
-      height: (307 * 3) + 165,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20),
       child: Obx(() {
         if (model.listCake.isEmpty) {
           return _emptyProduct();
         }
-        return GridView.builder(
-          itemCount: model.listCake.length,
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 55,
-            mainAxisSpacing: 60,
-            childAspectRatio: 303 / 307,
-          ),
-          itemBuilder: (BuildContext context, int index) {
-            return ProductViewItem(
-              cakeProductModel: model.listCake[index],
-              onAddToCart: () {
-                model.listCake[index].cakeProduct.productPrice =
-                    model.listCake[index].productPrice.value;
-                model.listClick(model.listCake[index].cakeProduct);
+
+        final int totalItems = model.listCake.length;
+        const int itemsPerPage = 6;
+        final int totalPages = (totalItems / itemsPerPage).ceil();
+        final int startIndex = model.currentPage.value * itemsPerPage;
+        final int endIndex = (startIndex + itemsPerPage) > totalItems 
+            ? totalItems 
+            : startIndex + itemsPerPage;
+
+        return Column(
+          children: [
+            GridView.builder(
+              itemCount: endIndex - startIndex,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 30,
+                mainAxisSpacing: 30,
+                childAspectRatio: 1,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                final itemIndex = startIndex + index;
+                return AnimatedOpacity(
+                  duration: Duration(milliseconds: 300 + (index * 100)),
+                  opacity: 1,
+                  child: ProductViewItem(
+                    cakeProductModel: model.listCake[itemIndex],
+                    onAddToCart: () {
+                      model.listCake[itemIndex].cakeProduct.productPrice =
+                          model.listCake[itemIndex].productPrice.value;
+                      model.listClick(model.listCake[itemIndex].cakeProduct);
+                    },
+                    onTapItem: () {
+                      model.onTapDetail(model.listCake[itemIndex].cakeProduct);
+                    },
+                  ),
+                );
               },
-              onTapItem: () {
-                model.onTapDetail(model.listCake[index].cakeProduct);
-              },
-            );
-          },
+            ),
+            if (totalPages > 1) ...[
+              const SizedBox(height: 40),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: model.currentPage.value > 0
+                        ? () => model.currentPage.value--
+                        : null,
+                    icon: const Icon(Icons.arrow_back_ios),
+                    color: const Color(0xFFFF8E25),
+                  ),
+                  const SizedBox(width: 20),
+                  ...List.generate(totalPages, (index) => 
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: InkWell(
+                        onTap: () => model.currentPage.value = index,
+                        child: Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: model.currentPage.value == index
+                                ? const Color(0xFFFF8E25)
+                                : Colors.transparent,
+                            border: Border.all(
+                              color: const Color(0xFFFF8E25),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              '${index + 1}',
+                              style: TextStyle(
+                                color: model.currentPage.value == index
+                                    ? Colors.white
+                                    : const Color(0xFFFF8E25),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  IconButton(
+                    onPressed: model.currentPage.value < totalPages - 1
+                        ? () => model.currentPage.value++
+                        : null,
+                    icon: const Icon(Icons.arrow_forward_ios),
+                    color: const Color(0xFFFF8E25),
+                  ),
+                ],
+              ),
+            ],
+          ],
         );
       }),
     );
   }
 
-  Widget _emptyProduct(){
+  Widget _emptyProduct() {
     return Container(
-      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(vertical: 60),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network(
-            "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fshops%2Fbaker.png?alt=media&token=813947d9-ba2e-465c-8498-e973f5972a8f",
-            width: 300,
-            height: 300,
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            "Sản phẩm đang được cập nhật nha",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 25,
+          Container(
+            width: 240,
+            height: 240,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: const Color(0xFFFF8E25).withOpacity(0.1),
             ),
-          )
+            child: Center(
+              child: Image.network(
+                "https://firebasestorage.googleapis.com/v0/b/loto-fb7ac.appspot.com/o/home%2Fshops%2Fbaker.png?alt=media&token=813947d9-ba2e-465c-8498-e973f5972a8f",
+                width: 180,
+                height: 180,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          const SizedBox(height: 32),
+          const Text(
+            "Chưa có sản phẩm nào",
+            style: TextStyle(
+              color: Color(0xFF333333),
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            "Sản phẩm đang được cập nhật, vui lòng quay lại sau",
+            style: TextStyle(
+              color: Color(0xFF666666),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 24),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF8E25),
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.2),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.refresh_rounded,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                SizedBox(width: 8),
+                Text(
+                  "Làm mới",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
   Widget _buildCategories() {
-    return SizedBox(
-      width: 212,
+    return Container(
+      width: 250,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 80),
           const Text(
             "Danh mục",
-            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              height: 2,
-              color: Colors.black,
+              fontSize: 28,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF333333),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Obx(() {
             if (model.listCategories.isEmpty) {
-              return const SizedBox();
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFF8E25),
+                ),
+              );
             }
             return ListView.separated(
               itemCount: model.listCategories.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              separatorBuilder: (c, i) => const SizedBox(height: 8),
               itemBuilder: (c, i) {
-                return GestureDetector(
-                  onTap: () {
-                    model.onSelectCategory(i);
-                  },
-                  child: Container(
-                    color: Colors.transparent,
-                    height: 48,
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          color: Colors.transparent,
-                          alignment: Alignment.center,
-                          child: Obx(() {
-                            return Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(3),
-                                color: const Color(0xFFCACACA),
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => model.onSelectCategory(i),
+                    borderRadius: BorderRadius.circular(10),
+                    child: Obx(() => Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: model.listCategories[i].isSelected.value
+                            ? const Color(0xFFFF8E25).withOpacity(0.1)
+                            : Colors.transparent,
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 20,
+                            height: 20,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              border: Border.all(
+                                color: const Color(0xFFFF8E25),
+                                width: 2,
                               ),
-                              child: Visibility(
-                                visible:
-                                    model.listCategories[i].isSelected.value,
-                                child: const Icon(
-                                  Icons.circle,
-                                  color: Color(0xFFFF8E25),
-                                ),
+                              color: model.listCategories[i].isSelected.value
+                                  ? const Color(0xFFFF8E25)
+                                  : Colors.white,
+                            ),
+                            child: model.listCategories[i].isSelected.value
+                                ? const Icon(
+                                    Icons.check,
+                                    size: 14,
+                                    color: Colors.white,
+                                  )
+                                : null,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              model.listCategories[i].categoryName ?? '',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: model.listCategories[i].isSelected.value
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                                color: const Color(0xFF333333),
                               ),
-                            );
-                          }),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          model.listCategories[i].categoryName ?? '',
-                          style: const TextStyle(height: 1),
-                        )
-                      ],
-                    ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
                   ),
                 );
               },
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              separatorBuilder: (c, i) {
-                return const SizedBox(height: 10);
-              },
             );
-          })
+          }),
         ],
       ),
     );

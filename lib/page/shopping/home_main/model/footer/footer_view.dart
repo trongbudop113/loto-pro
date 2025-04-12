@@ -22,7 +22,7 @@ class FooterView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Pixel Baker",
+                    "Bug Cake",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,

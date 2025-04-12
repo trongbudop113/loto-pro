@@ -9,7 +9,20 @@ class RecipePage extends GetView<RecipeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          GestureDetector(
+            onTap: (){
+              controller.onAddRecipe();
+            },
+            child: Container(
+              color: Colors.transparent,
+              child: Icon(Icons.add),
+              width: 50,
+            ),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

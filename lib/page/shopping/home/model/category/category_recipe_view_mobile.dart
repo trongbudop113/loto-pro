@@ -80,16 +80,15 @@ class CategoryRecipeViewMobile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 20),
-                          //   child: Image.asset(
-                          //     model.listCategory[i].categoryImage ?? '',
-                          //     height: ((width - (paddingItem * 2) + 50) / 6) * 0.67,
-                          //     fit: BoxFit.fitWidth,
-                          //   ),
-                          // ),
+                          if(( model.listCategory[i].categoryImage ?? '').isNotEmpty)
+                            Image.network(
+                              model.listCategory[i].categoryImage ?? '',
+                              fit: BoxFit.fill,
+                              width: 80,
+                              height: 80,
+                            ),
                           const SizedBox(
-                            height: 30,
+                            height: 20,
                           ),
                           Text(
                             "${model.listCategory[i].categoryName}",

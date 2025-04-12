@@ -19,4 +19,8 @@ class FooterModel extends BaseModel{
   void onGotoRecipePage(){
     Get.toNamed(PageConfig.RECIPE);
   }
+
+  void onGoToPaymentInfo(){
+    Get.toNamed(PageConfig.PAYMENT_INFO);
+  }
 }

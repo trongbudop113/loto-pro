@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
@@ -24,25 +23,21 @@ class FooterViewMobile extends StatelessWidget {
           ),
           Column(
             children: [
-              Text("Pixel Baker"),
-              SizedBox(
-                height: 16,
-              ),
-              Text("Chào mừng bạn đến với tiệm bánh chui, bánh lậu"),
-              SizedBox(
-                height: 20,
-              ),
+              const Text("Bug Cake"),
+              const SizedBox(height: 16),
+              const Text("Chào mừng bạn đến với tiệm bánh chui, bánh lậu"),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       model.onGotoRecipePage();
                     },
                     child: Container(
                       color: Colors.transparent,
-                      child: Text(
-                      "Công Thức",
+                      child: const Text(
+                        "Công Thức",
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -51,10 +46,8 @@ class FooterViewMobile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
+                  const SizedBox(width: 15),
+                  const Text(
                     "Nguyên Liệu",
                     style: TextStyle(
                       fontSize: 14,
@@ -62,10 +55,8 @@ class FooterViewMobile extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
+                  const SizedBox(width: 15),
+                  const Text(
                     "Blog",
                     style: TextStyle(
                       fontSize: 14,
@@ -73,15 +64,18 @@ class FooterViewMobile extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Text(
-                    "Thanh Toán",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                  const SizedBox(width: 15),
+                  GestureDetector(
+                    onTap: (){
+                      model.onGoToPaymentInfo();
+                    },
+                    child: const Text(
+                      "Thanh Toán",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
                     ),
                   )
                 ],

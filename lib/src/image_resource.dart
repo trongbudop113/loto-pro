@@ -46,7 +46,6 @@ class ImageResource {
   static String bgInbox = getPngSourcePath('bg_inbox');
   static String avatar = getPngSourcePath('avatar');
   static String bgContactUs = getPngSourcePath('bg_contact_us');
-
 }
 
 String getPngSourcePath(String name) {

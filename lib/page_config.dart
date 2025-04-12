@@ -45,6 +45,8 @@ import 'package:loto/page/shopping/cart/cart_controller.dart';
 import 'package:loto/page/shopping/cart/cart_page.dart';
 import 'package:loto/page/shopping/moon_cake/controller/moon_cake_detail_controller.dart';
 import 'package:loto/page/shopping/moon_cake/page/moon_cake_detail_page.dart';
+import 'package:loto/page/shopping/payment_info/payment_info_controller.dart';
+import 'package:loto/page/shopping/payment_info/payment_info_page.dart';
 import 'package:loto/page/shopping/recipe/recipe_controller.dart';
 import 'package:loto/page/shopping/recipe/recipe_detail_controller.dart';
 import 'package:loto/page/shopping/recipe/recipe_detail_page.dart';
@@ -101,6 +103,7 @@ class PageConfig {
   static String CHOOSE_IMAGE = '/choose_image';
   static String RECIPE = '/recipe';
   static String RECIPE_DETAIL = '/recipe_detail';
+  static String PAYMENT_INFO = '/payment_info';
 
   static List<GetPage> listPage(){
     return [
@@ -273,6 +276,11 @@ class PageConfig {
         name: RECIPE_DETAIL,
         page: () => const RecipeDetailPage(),
         binding: RecipeDetailBinding(),
+      ),
+      GetPage(
+        name: PAYMENT_INFO,
+        page: () => const PaymentInfoPage(),
+        binding: PaymentInfoBinding(),
       ),
     ];
   }

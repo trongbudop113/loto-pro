@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
@@ -8,6 +10,7 @@ import 'package:loto/page/shopping/contact/contact_page.dart';
 import 'package:loto/page/shopping/home/home_page.dart';
 import 'package:loto/page/shopping/home_main/home_main_controller.dart';
 import 'package:loto/page/shopping/shop_product/shop_product_navigator.dart';
+import 'package:loto/src/logo_app_base_64.dart';
 
 class HomeMainPage extends GetView<HomeMainController> {
   const HomeMainPage({super.key});
@@ -83,14 +86,15 @@ class HomeMainPage extends GetView<HomeMainController> {
     return Container(
       height: 97,
       color: const Color(0xFFFF7A00),
-      padding: const EdgeInsets.symmetric(horizontal: 64),
+      padding: const EdgeInsets.only(right: 64, left: 44),
       child: Row(
         children: [
-          const Text(
-            "P",
-            style: TextStyle(fontSize: 30, color: Colors.white, height: 1),
+          Image.memory(
+            base64Decode(logoAppBase64),
+            width: 60,
+            height: 60,
           ),
-          const SizedBox(width: 50),
+          const SizedBox(width: 30),
           Container(
             width: 5,
             height: 32,
@@ -285,7 +289,7 @@ class HomeMainPage extends GetView<HomeMainController> {
               ),
             ),
             const Text(
-              "Pixel Baker",
+              "Bug Cake",
               style: TextStyle(fontSize: 22, color: Colors.white),
             ),
             buildCartMobile()

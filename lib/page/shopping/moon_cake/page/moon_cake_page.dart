@@ -68,7 +68,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
             Padding(
               padding: const EdgeInsets.only(top: 5),
               child: Text(
-                "Pixel Baker",
+                "Bug Cake",
                 style: TextStyleResource.textStyleBlack(context).copyWith(
                   color: const Color(0xFFFE8160),
                   fontSize: 20,
@@ -556,7 +556,7 @@ class MoonCakePage extends GetView<MoonCakeController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Pixel Baker",
+              "Bug Cake",
               style: TextStyleResource.textStyleBlack(context).copyWith(
                 fontWeight: FontWeight.w900,
                 fontSize: 30,

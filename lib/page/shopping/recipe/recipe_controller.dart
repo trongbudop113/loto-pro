@@ -110,4 +110,8 @@ class RecipeController extends GetxController {
       e.printInfo(info: " loi init master data ");
     }
   }
+
+  void onAddRecipe() {
+
+  }
 }

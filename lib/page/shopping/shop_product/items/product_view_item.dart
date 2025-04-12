@@ -28,6 +28,14 @@ class ProductViewItem extends StatelessWidget {
               alignment: Alignment.center,
               child: Image.network(
                 cakeProductModel.cakeProduct.productImageMain,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.error_outline, size: 40);
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
             ),
           ),
@@ -53,77 +61,9 @@ class ProductViewItem extends StatelessWidget {
     );
   }
 
-  Widget _buildItemEegYolk(BuildContext context){
-    if(cakeProductModel.cakeProduct.productCategory != 4){
-      return const SizedBox();
-    }
-    return Row(
-      children: [
-        const SizedBox(width: 10),
-        const Text(
-          "TM:",
-          style: TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-          ),
-        ),
-        const SizedBox(width: 5),
-        Container(
-          width: cakeProductModel.listEgg.length * 50,
-          height: 32,
-          padding: const EdgeInsets.all(3),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(60),
-            color: Colors.black54,
-          ),
-          child: Row(
-            children: cakeProductModel.listEgg.map((e) {
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    cakeProductModel.selectEgg(e);
-                  },
-                  child: Obx(() => Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      color: e.isSelect.value
-                          ? Colors.white54
-                          : Colors.transparent,
-                    ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "${e.value}",
-                          style: TextStyleResource.textStyleBlack(context)
-                              .copyWith(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFFFF8E25).withOpacity(0.7),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 2,
-                        ),
-                        Image.asset(
-                          ImageResource.ic_egg_yolk,
-                          height: 15,
-                        )
-                      ],
-                    ),
-                  )),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildNameAndAddCart(){
+  Widget _buildNameAndAddCart() {
     return Container(
+      height: 85, // Added fixed height
       decoration: const BoxDecoration(
         color: Color(0xFFFF8E25),
         borderRadius: BorderRadius.vertical(
@@ -132,47 +72,60 @@ class ProductViewItem extends StatelessWidget {
       ),
       alignment: Alignment.center,
       padding: const EdgeInsets.symmetric(
-        vertical: 18,
+        vertical: 12,
         horizontal: 15,
       ),
       child: Row(
         children: [
           Expanded(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center, // Added to center content vertically
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  cakeProductModel.cakeProduct.productName ?? '',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: Colors.white,
+                SizedBox(
+                  height: 40, // Fixed height for product name
+                  child: Text(
+                    cakeProductModel.cakeProduct.productName ?? '',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      height: 1.2,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 7),
-                Obx((){
+                const SizedBox(height: 4),
+                Obx(() {
                   return Text(
                     'Giá: ${cakeProductModel.formatCurrency.value}',
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 15,
                     ),
                   );
                 }),
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
           GestureDetector(
             onTap: onAddToCart,
             child: Container(
-              width: 40,
-              height: 40,
+              width: 36, // Slightly smaller
+              height: 36, // Slightly smaller
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(360),
+                borderRadius: BorderRadius.circular(18),
                 color: Colors.white,
+                boxShadow: [ // Added subtle shadow
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               alignment: Alignment.center,
               child: const Icon(
@@ -182,6 +135,71 @@ class ProductViewItem extends StatelessWidget {
               ),
             ),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItemEegYolk(BuildContext context) {
+    if (cakeProductModel.cakeProduct.productCategory != 4) {
+      return const SizedBox();
+    }
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          const Text(
+            "TM:",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Container(
+            height: 32,
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              color: Colors.black54,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: cakeProductModel.listEgg.map((e) {
+                return GestureDetector(
+                  onTap: () => cakeProductModel.selectEgg(e),
+                  child: Obx(() => Container(
+                    width: 40,
+                    margin: const EdgeInsets.symmetric(horizontal: 2),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: e.isSelect.value
+                          ? Colors.white.withOpacity(0.3)
+                          : Colors.transparent,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${e.value}",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFFFF8E25).withOpacity(0.9),
+                          ),
+                        ),
+                        Image.asset(
+                          ImageResource.ic_egg_yolk,
+                          height: 14,
+                        )
+                      ],
+                    ),
+                  )),
+                );
+              }).toList(),
+            ),
+          ),
         ],
       ),
     );
