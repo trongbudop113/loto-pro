@@ -20,11 +20,11 @@ class FooterView extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
+              const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "Bug Cake",
                     style: TextStyle(
                       fontSize: 32,
@@ -33,8 +33,8 @@ class FooterView extends StatelessWidget {
                       letterSpacing: 0.5,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
+                  SizedBox(height: 16),
+                  Text(
                     "Chào mừng bạn đến với tiệm bánh chui, bánh lậu",
                     style: TextStyle(
                       fontSize: 16,
@@ -50,7 +50,7 @@ class FooterView extends StatelessWidget {
                 children: [
                   _buildFooterButton("Công Thức", onTap: () => model.onGotoRecipePage()),
                   const SizedBox(width: 24),
-                  _buildFooterButton("Nguyên Liệu"),
+                  _buildFooterButton("Đơn Hàng", onTap: () => model.onGoToViewOrder()),
                   const SizedBox(width: 24),
                   _buildFooterButton("Blog"),
                   const SizedBox(width: 24),

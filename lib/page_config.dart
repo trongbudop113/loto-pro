@@ -52,6 +52,8 @@ import 'package:loto/page/shopping/recipe/recipe_controller.dart';
 import 'package:loto/page/shopping/recipe/recipe_detail_controller.dart';
 import 'package:loto/page/shopping/recipe/recipe_detail_page.dart';
 import 'package:loto/page/shopping/recipe/recipe_page.dart';
+import 'package:loto/page/shopping/view_order/view_order_controller.dart';
+import 'package:loto/page/shopping/view_order/view_order_page.dart';
 import 'package:loto/page/statistic/statistic_controller.dart';
 import 'package:loto/page/statistic/statistic_page.dart';
 import 'package:loto/page/stories/stories_controller.dart';
@@ -105,6 +107,7 @@ class PageConfig {
   static String RECIPE = '/recipe';
   static String RECIPE_DETAIL = '/recipe_detail';
   static String PAYMENT_INFO = '/payment_info';
+  static String VIEW_ORDER = '/view_order';
 
   static List<GetPage> listPage(){
     return [
@@ -285,6 +288,11 @@ class PageConfig {
         name: PAYMENT_INFO,
         page: () => const PaymentInfoPage(),
         binding: PaymentInfoBinding(),
+      ),
+      GetPage(
+        name: VIEW_ORDER,
+        page: () => const ViewOrderPage(),
+        binding: ViewOrderBinding(),
       ),
     ];
   }

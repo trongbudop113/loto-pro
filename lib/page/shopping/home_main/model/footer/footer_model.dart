@@ -23,4 +23,8 @@ class FooterModel extends BaseModel{
   void onGoToPaymentInfo(){
     Get.toNamed(PageConfig.PAYMENT_INFO);
   }
+
+  void onGoToViewOrder() {
+    Get.toNamed(PageConfig.VIEW_ORDER);
+  }
 }
