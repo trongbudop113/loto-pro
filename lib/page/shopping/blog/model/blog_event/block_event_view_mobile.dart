@@ -10,31 +10,117 @@ class BlockEventViewMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.sizeOf(context).width;
-    return _buildListProduct(width);
+    return Column(
+      children: [
+        _buildListProduct(width),
+        const SizedBox(height: 20),
+        _buildPagination(),
+      ],
+    );
   }
 
   Widget _buildListProduct(double width) {
     final itemCount = width <= 600 ? 2 : 3;
+    final itemsPerPage = itemCount * 2;
+    
     return Obx(() {
       if (model.listTestimonial.isEmpty) {
         return const SizedBox();
       }
+
+      final int startIndex = model.currentPage.value * itemsPerPage;
+      final int endIndex = (startIndex + itemsPerPage) > model.listTestimonial.length 
+          ? model.listTestimonial.length 
+          : startIndex + itemsPerPage;
+      
       return GridView.builder(
-        itemCount: model.listTestimonial.length,
+        itemCount: endIndex - startIndex,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 30, bottom: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 30, bottom: 20),
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: itemCount,
           crossAxisSpacing: 15,
           mainAxisSpacing: 15,
           childAspectRatio: 1,
         ),
-        itemBuilder: (context, index) => _buildEventCard(index),
+        itemBuilder: (context, index) => _buildEventCard(index + startIndex),
       );
     });
   }
 
+  Widget _buildPagination() {
+    return Obx(() {
+      final itemCount = MediaQuery.of(Get.context!).size.width <= 600 ? 4 : 6;
+      final int totalPages = (model.listTestimonial.length / itemCount).ceil();
+      if (totalPages <= 1) return const SizedBox();
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: model.currentPage.value > 0 
+                ? () => model.currentPage.value-- 
+                : null,
+            icon: Icon(
+              Icons.arrow_back_ios,
+              size: 20,
+              color: model.currentPage.value > 0 
+                  ? const Color(0xFFFF8E25) 
+                  : Colors.grey,
+            ),
+          ),
+          ...List.generate(totalPages, (index) => 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: InkWell(
+                onTap: () => model.currentPage.value = index,
+                child: Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: model.currentPage.value == index
+                        ? const LinearGradient(
+                            colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+                          )
+                        : null,
+                    border: model.currentPage.value != index
+                        ? Border.all(color: const Color(0xFFFF8E25))
+                        : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${index + 1}",
+                      style: TextStyle(
+                        color: model.currentPage.value == index
+                            ? Colors.white
+                            : const Color(0xFFFF8E25),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: model.currentPage.value < totalPages - 1 
+                ? () => model.currentPage.value++ 
+                : null,
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              size: 20,
+              color: model.currentPage.value < totalPages - 1 
+                  ? const Color(0xFFFF8E25) 
+                  : Colors.grey,
+            ),
+          ),
+        ],
+      );
+    });
+  }
   Widget _buildEventCard(int index) {
     final event = model.listTestimonial[index];
     final List<List<Color>> gradientColors = [

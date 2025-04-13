@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
@@ -22,6 +25,8 @@ class AppCommon {
 
   final RxList<ProductOrder> currentProductInCart = <ProductOrder>[].obs;
 
+  final box = GetStorage();
+
   RxInt get countCart {
     if (currentProductInCart.isEmpty) return 0.obs;
     int i = 0;
@@ -33,8 +38,26 @@ class AppCommon {
 
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
+  UserLogin _userLogin = UserLogin();
+
   UserLogin userLogin(Object? data) {
     return UserLogin.fromJson(data as Map<String, dynamic>);
+  }
+
+  UserLogin get userLoginData{
+    if(_userLogin.lastSignInTime != null){
+      return _userLogin;
+    }
+    final String userJson = box.read("user");
+    var userDecode = jsonDecode(userJson);
+    _userLogin = userLogin(userDecode);
+    return _userLogin;
+  }
+
+  set userLoginData(UserLogin data){
+    var encodeUser = jsonEncode(data.toJson());
+    box.write("user", encodeUser);
+    _userLogin = data;
   }
 
   Future<UserLogin> getCurrentUserLogin() async {

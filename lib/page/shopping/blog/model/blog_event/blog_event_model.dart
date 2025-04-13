@@ -10,6 +10,7 @@ class BlogEventModel extends BaseModel{
 
   final RxList<TestimonialProductRes> listTestimonial = <TestimonialProductRes>[].obs;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final RxInt currentPage = 0.obs;
 
   BlogEventModel(){
     onStart();

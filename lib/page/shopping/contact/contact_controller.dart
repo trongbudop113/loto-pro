@@ -5,6 +5,7 @@ import 'package:loto/page/shopping/about_us/model/inbox/inbox_view.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view_mobile.dart';
 import 'package:loto/page/shopping/contact/model/contact_box/contact_box_model.dart';
 import 'package:loto/page/shopping/contact/model/contact_box/contact_box_view.dart';
+import 'package:loto/page/shopping/contact/model/contact_box/contact_box_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view_mobile.dart';
@@ -31,8 +32,8 @@ class ContactController extends GetxController{
 
   initData(){
     TopTitleModel topTitleModel = TopTitleModel(
-      title1: "contact us",
-      title2: "don’t google\ndesign question’s"
+      title1: "Liên Hệ",
+      title2: "Thông Tin Tại Đây"
     );
     ContactBoxModel contactBoxModel = ContactBoxModel();
     InboxModel inboxModel = InboxModel();
@@ -46,6 +47,7 @@ class ContactController extends GetxController{
     );
     listModelViewMobile.addAll([
       TopTitleView(model: topTitleModel,),
+      ContactBoxViewMobile(model: contactBoxModel,),
       InboxViewMobile(model: inboxModel,),
       FooterViewMobile(model: footerModel,),
     ]);

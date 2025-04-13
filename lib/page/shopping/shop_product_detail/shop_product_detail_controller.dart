@@ -1,14 +1,18 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:loto/models/user_login.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_model.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view.dart';
 import 'package:loto/page/shopping/about_us/model/inbox/inbox_view_mobile.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_model.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view.dart';
 import 'package:loto/page/shopping/home_main/model/footer/footer_view_mobile.dart';
+import 'package:loto/page/shopping/shop_product_detail/model/top_description/back_view.dart';
 import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_model.dart';
 import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_view.dart';
 import 'package:loto/page/shopping/shop_product_detail/model/top_description/top_description_view_mobile.dart';
@@ -62,31 +66,7 @@ class BlogDetailController extends GetxController {
 
     listModelView.addAll(
       [
-        SizedBox(
-          height: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(width: 20),
-              GestureDetector(
-                onTap: () {
-                  Get.nestedKey(1)?.currentState?.pop();
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.transparent,
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.black,
-                    size: 30,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+        const BackView(),
         TopDescriptionView(
           model: topDescriptionModel,
         ),

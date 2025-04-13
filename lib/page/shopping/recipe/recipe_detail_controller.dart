@@ -1,14 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
-import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/recipe/model/ingredient.dart';
 import 'package:loto/page/shopping/recipe/model/recipe.dart';
+import 'package:loto/page/shopping/recipe/recipe_controller.dart';
 
 class RecipeDetailBinding extends Bindings{
   @override
   void dependencies() {
     Get.lazyPut(() => RecipeDetailController());
+    if (!Get.isRegistered<RecipeController>()) {
+      Get.lazyPut<RecipeController>(() => RecipeController(), fenix: true);
+    }
   }
 }
 

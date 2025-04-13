@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/database/data_name.dart';
+import 'package:loto/page/shopping/recipe/layout/edit_recipe_layout.dart';
 import 'package:loto/page/shopping/recipe/model/ingredient.dart';
 import 'package:loto/page/shopping/recipe/model/recipe.dart';
 import 'package:loto/page_config.dart';
@@ -9,18 +11,19 @@ import 'package:loto/page_config.dart';
 class RecipeBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => RecipeController());
+    Get.lazyPut(() => RecipeController(), fenix: true);
   }
 }
 
 class RecipeController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-
   final RxList<RecipeModel> listMain = <RecipeModel>[].obs;
   final RxList<RecipeModel> listSub = <RecipeModel>[].obs;
+  final TextEditingController recipeNameController = TextEditingController();
 
   final RxInt indexSelect = (-1).obs;
+  final RxBool isEmptyPage = false.obs;
 
   Future<void> streamGetRecipe() async {
     CollectionReference roomRef = firestore
@@ -84,10 +87,40 @@ class RecipeController extends GetxController {
 
   @override
   void onInit() {
-    initMasterData();
-    streamGetRecipe();
-    streamGetRecipe2();
+    initFirst();
     super.onInit();
+  }
+
+  Future<void> initFirst() async {
+    var isPass = await checkPermissionAccess();
+    isEmptyPage.value = isPass;
+    if(isPass){
+      await initMasterData();
+      await streamGetRecipe();
+      await streamGetRecipe2();
+    }
+  }
+
+  Future<bool> checkPermissionAccess() async {
+    final bool isAuthenticated = AppCommon.singleton.isLogin;
+
+    if (!isAuthenticated) {
+      await 0.5.delay();
+      await Get.toNamed(PageConfig.LOGIN);
+    }
+    final currentUser = AppCommon.singleton.userLoginData;
+
+    if (!(currentUser.isAdmin ?? false)) {
+      Get.snackbar(
+        'Thông báo',
+        'Bạn không có quyền truy cập trang này',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      return false;
+    }
+    return currentUser.isAdmin ?? false;
   }
 
   Future<void> initMasterData() async {
@@ -111,7 +144,18 @@ class RecipeController extends GetxController {
     }
   }
 
-  void onAddRecipe() {
+  void showAddRecipeDialog(BuildContext context) {
+    Get.dialog(
+        Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: EditRecipeLayout(controller: this),
+        )
+    );
+  }
 
+  void addNewRecipe() {
+    Get.back();
   }
 }

@@ -9,7 +9,13 @@ class BlockEventView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return _buildListProduct();
+    return Column(
+      children: [
+        _buildListProduct(),
+        const SizedBox(height: 24),
+        _buildPagination(),
+      ],
+    );
   }
 
   Widget _buildListProduct() {
@@ -17,18 +23,93 @@ class BlockEventView extends StatelessWidget {
       if (model.listTestimonial.isEmpty) {
         return const SizedBox();
       }
+      
+      final int startIndex = model.currentPage.value * 6;
+      final int endIndex = (startIndex + 6) > model.listTestimonial.length 
+          ? model.listTestimonial.length 
+          : startIndex + 6;
+      
       return GridView.builder(
-        itemCount: model.listTestimonial.length,
+        itemCount: endIndex - startIndex,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 66).copyWith(top: 60),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           crossAxisSpacing: 54,
-          mainAxisSpacing: 64,
+          mainAxisSpacing: 32,
           childAspectRatio: 1,
         ),
-        itemBuilder: (context, index) => _buildEventCard(index),
+        itemBuilder: (context, index) => _buildEventCard(index + startIndex),
+      );
+    });
+  }
+
+  Widget _buildPagination() {
+    return Obx(() {
+      final int totalPages = (model.listTestimonial.length / 6).ceil();
+      if (totalPages <= 1) return const SizedBox();
+
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: model.currentPage.value > 0 
+                ? () => model.currentPage.value-- 
+                : null,
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: model.currentPage.value > 0 
+                  ? const Color(0xFFFF8E25) 
+                  : Colors.grey,
+            ),
+          ),
+          ...List.generate(totalPages, (index) => 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: InkWell(
+                onTap: () => model.currentPage.value = index,
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: model.currentPage.value == index
+                        ? const LinearGradient(
+                            colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
+                          )
+                        : null,
+                    border: model.currentPage.value != index
+                        ? Border.all(color: const Color(0xFFFF8E25))
+                        : null,
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${index + 1}",
+                      style: TextStyle(
+                        color: model.currentPage.value == index
+                            ? Colors.white
+                            : const Color(0xFFFF8E25),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: model.currentPage.value < totalPages - 1 
+                ? () => model.currentPage.value++ 
+                : null,
+            icon: Icon(
+              Icons.arrow_forward_ios,
+              color: model.currentPage.value < totalPages - 1 
+                  ? const Color(0xFFFF8E25) 
+                  : Colors.grey,
+            ),
+          ),
+        ],
       );
     });
   }

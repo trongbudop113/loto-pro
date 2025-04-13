@@ -22,35 +22,7 @@ class CartPage extends GetView<CartController> {
             visible: controller.currentProductInCart.isNotEmpty,
             replacement: SizedBox(
               width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  SizedBox(
-                    width: 250,
-                    height: 250,
-                    child: Lottie.asset(
-                      'assets/cart_empty.json',
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Chưa có sản phẩm trong giỏ hàng",
-                    style: TextStyleResource.textStyleBlack(context).copyWith(
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                ],
-              ),
+              child: _buildEmptyCart(context),
             ),
             child: width > 1000
                 ? Row(
@@ -83,6 +55,69 @@ class CartPage extends GetView<CartController> {
                   ),
           )),
       bottomNavigationBar: _buildBottomBar(context),
+    );
+  }
+
+  Widget _buildEmptyCart(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            const Color(0xFFFF8E25).withOpacity(0.05),
+            const Color(0xFFFFB067).withOpacity(0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 300,
+            height: 300,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(150),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.1),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Lottie.asset(
+              'assets/cart_empty.json',
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 32),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFFF8E25).withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Text(
+              "Chưa có sản phẩm trong giỏ hàng",
+              style: TextStyleResource.textStyleBlack(context).copyWith(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFFFF8E25),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -300,13 +335,18 @@ class CartPage extends GetView<CartController> {
           controller.onTapRemoveProductItem(controller.currentProductInCart[i]);
         };
 
-        return Visibility(
-          visible: controller.currentProductInCart[i].productType == 1,
-          replacement: ItemProductNoBox(
-            productItem: controller.currentProductInCart[i],
-          ),
-          child: ItemProductWithBox(
-            productItem: controller.currentProductInCart[i],
+        return AnimatedOpacity(
+          duration: Duration(milliseconds: 500 + (i * 100)),
+          opacity: 1.0,
+          curve: Curves.easeInOut,
+          child: Visibility(
+            visible: controller.currentProductInCart[i].productType == 1,
+            replacement: ItemProductNoBox(
+              productItem: controller.currentProductInCart[i],
+            ),
+            child: ItemProductWithBox(
+              productItem: controller.currentProductInCart[i],
+            ),
           ),
         );
       },

@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:loto/middleware/recipe_middleware.dart';
 import 'package:loto/page/call_number/call_number_controller.dart';
 import 'package:loto/page/call_number/call_number_page.dart';
 import 'package:loto/page/caro_chess/caro_chess_controller.dart';
@@ -119,7 +120,7 @@ class PageConfig {
       ),
       GetPage(
         name: LOGIN,
-        page: () => LoginPage(),
+        page: () => const LoginPage(),
         binding: LoginBinding(),
       ),
       GetPage(
@@ -271,6 +272,9 @@ class PageConfig {
         name: RECIPE,
         page: () => const RecipePage(),
         binding: RecipeBinding(),
+        middlewares: [
+          RecipeMiddleware(),
+        ]
       ),
       GetPage(
         name: RECIPE_DETAIL,

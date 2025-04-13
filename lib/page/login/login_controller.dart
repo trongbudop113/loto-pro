@@ -6,7 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
-import 'package:loto/page_config.dart';
+import 'package:loto/widget/loading/loading_overlay.dart';
 
 class LoginBinding extends Bindings{
   @override
@@ -25,9 +25,11 @@ class LoginController extends GetxController {
 
   final RxBool isModePhone = false.obs;
 
-  Future<void> onClickLogin() async {
+  Future<void> onClickLogin(BuildContext context) async {
+    LoadingOverlay.instance().show(context: context);
     var user = await signInWithGoogle();
     await saveUserInfo(user);
+    LoadingOverlay.instance().hide();
     Get.back(result: true);
   }
 
@@ -66,12 +68,14 @@ class LoginController extends GetxController {
     return user;
   }
 
-  Future<void> onClickLoginEmail() async {
+  Future<void> onClickLoginEmail(BuildContext context) async {
+    LoadingOverlay.instance().show(context: context);
     if(isModePhone.value){
       if(otpController.text.isNotEmpty){
         var user = await onVerifyOTPCode();
         print(user.user.toString());
         await saveUserInfo(user);
+        LoadingOverlay.instance().hide();
         Get.back(result: true);
       }
       return;
@@ -81,6 +85,7 @@ class LoginController extends GetxController {
     }
     var user = await signInWithEmail();
     await saveUserInfo(user);
+    LoadingOverlay.instance().hide();
     Get.back(result: true);
   }
 
@@ -134,7 +139,9 @@ class LoginController extends GetxController {
         userLogin.isAdmin = false;
 
         await usersReference.doc(user.user?.uid ?? '').set(userLogin.toJson());
+        AppCommon.singleton.userLoginData = userLogin;
       }else{
+        AppCommon.singleton.userLoginData = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
         await usersReference.doc(user.user?.uid ?? '').update({
           "lastSignInTime":
           DateTime.now().millisecondsSinceEpoch,
