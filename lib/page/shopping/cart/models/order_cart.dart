@@ -99,6 +99,7 @@ class LsOrderTime{
 class OrderTime{
   String? orderDateID;
   String? orderDateTitle;
+  final List<OrderCart> lisOrderCart = [];
 
   OrderTime({this.orderDateID, this.orderDateTitle});
 

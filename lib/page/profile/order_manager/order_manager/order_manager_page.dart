@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/common/custom_icon_icons.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/page/profile/order_manager/order_manager/order_manager_controller.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';

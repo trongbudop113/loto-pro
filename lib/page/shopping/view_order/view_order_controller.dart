@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loto/common/common.dart';
+import 'package:loto/common/utils.dart';
+import 'package:loto/database/data_name.dart';
+import 'package:loto/page/shopping/cart/models/order_cart.dart';
+import 'package:loto/page_config.dart';
 
 class ViewOrderBinding extends Bindings {
   @override
@@ -10,89 +15,98 @@ class ViewOrderBinding extends Bindings {
 }
 
 class ViewOrderController extends GetxController {
-  final orders = <OrderModel>[].obs;
   final isLoading = true.obs;
+  final listOrderTime = <OrderTime>[].obs;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void onInit() {
+    getDateOrder();
     super.onInit();
-    fetchOrders();
   }
 
-  Future<void> fetchOrders() async {
+  Future<void> getDateOrder() async {
     try {
       isLoading.value = true;
-      final userId = FirebaseAuth.instance.currentUser?.uid;
-      if (userId == null) return;
-
-      final snapshot = await FirebaseFirestore.instance
-          .collection('orders')
-          .where('userId', isEqualTo: userId)
-          .orderBy('orderDate', descending: true)
+      listOrderTime.clear();
+      
+      // Get orders document
+      final ordersDoc = await firestore
+          .collection(DataRowName.Cakes.name)
+          .doc(DataCollection.Orders.name)
           .get();
 
-      orders.value = snapshot.docs
-          .map((doc) => OrderModel.fromFirestore(doc))
-          .toList();
+      if (!ordersDoc.exists) {
+        isLoading.value = false;
+        return;
+      }
+
+      // Parse orders data
+      final lsOrderTime = LsOrderTime.fromJson(ordersDoc.data() as Map<String, dynamic>);
+      
+      // Use Future.wait for parallel processing
+      final futures = lsOrderTime.lsOrderTime.map((orderTime) async {
+        final orders = await getDateOrderByDate(orderTime.orderDateID ?? '');
+        if (orders.isNotEmpty) {
+          var item = OrderTime(
+            orderDateID: orderTime.orderDateID,
+            orderDateTitle: orderTime.orderDateTitle,
+          );
+          item.lisOrderCart.addAll(orders);
+          return item;
+        }
+        return null;
+      });
+
+      // Wait for all futures to complete and filter out null values
+      final results = await Future.wait(futures);
+      listOrderTime.assignAll(
+        results.whereType<OrderTime>().toList()
+      );
+
     } catch (e) {
-      print('Error fetching orders: $e');
+      Get.snackbar(
+        'Lỗi',
+        'Không thể tải danh sách đơn hàng',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      print('Error in getDateOrder: $e');
     } finally {
       isLoading.value = false;
     }
   }
-}
 
-class OrderModel {
-  final String orderId;
-  final String status;
-  final String orderDate;
-  final String address;
-  final String phone;
-  final List<OrderItem> items;
-  final double total;
+  Future<List<OrderCart>> getDateOrderByDate(String orderDateID) async {
+    try {
+      final currentUser = AppCommon.singleton.userLoginData;
+      if (currentUser.uuid == null) return [];
 
-  OrderModel({
-    required this.orderId,
-    required this.status,
-    required this.orderDate,
-    required this.address,
-    required this.phone,
-    required this.items,
-    required this.total,
-  });
+      final querySnapshot = await firestore
+          .collection(DataRowName.Cakes.name)
+          .doc(DataCollection.Orders.name)
+          .collection(orderDateID)
+          .where("user_id", isEqualTo: currentUser.uuid)
+          .get();
 
-  factory OrderModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return OrderModel(
-      orderId: doc.id,
-      status: data['status'] ?? '',
-      orderDate: data['orderDate']?.toDate()?.toString() ?? '',
-      address: data['address'] ?? '',
-      phone: data['phone'] ?? '',
-      items: (data['items'] as List?)
-          ?.map((item) => OrderItem.fromMap(item))
-          .toList() ?? [],
-      total: (data['total'] ?? 0).toDouble(),
-    );
+      return querySnapshot.docs
+          .map((doc) => OrderCart.fromJson(doc.data()))
+          .toList();
+          
+    } catch (e) {
+      print('Error in getDateOrderByDate: $e');
+      return [];
+    }
   }
-}
 
-class OrderItem {
-  final String name;
-  final int quantity;
-  final double price;
+  String formatCurrency(double d) {
+    return "${FormatUtils.oCcy.format(d)}đ";
+  }
 
-  OrderItem({
-    required this.name,
-    required this.quantity,
-    required this.price,
-  });
-
-  factory OrderItem.fromMap(Map<String, dynamic> map) {
-    return OrderItem(
-      name: map['name'] ?? '',
-      quantity: map['quantity'] ?? 0,
-      price: (map['price'] ?? 0).toDouble(),
-    );
+  void goToOrderDetail(OrderCart orderCart, String orderDateID) {
+    Get.toNamed(PageConfig.ORDER_DETAIL_MANAGER, arguments: {
+      "order_cart" : orderCart,
+      "order_date" : orderDateID
+    });
   }
 }

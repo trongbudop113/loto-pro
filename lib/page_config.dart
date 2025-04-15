@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:loto/middleware/my_order_middleware.dart';
 import 'package:loto/middleware/recipe_middleware.dart';
 import 'package:loto/page/call_number/call_number_controller.dart';
 import 'package:loto/page/call_number/call_number_page.dart';
@@ -293,6 +294,9 @@ class PageConfig {
         name: VIEW_ORDER,
         page: () => const ViewOrderPage(),
         binding: ViewOrderBinding(),
+        middlewares: [
+          MyOrderMiddleware()
+        ]
       ),
     ];
   }
