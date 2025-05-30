@@ -75,6 +75,12 @@ class ThemeResource{
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: ColorResource.color_white_dark
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: Colors.black,
+          ),
+
+        ),
         textTheme: TextTheme(
             bodyMedium: GoogleFonts.pacifico(
                 fontSize: 16,
@@ -117,7 +123,7 @@ class ThemeResource{
                 color: ColorResource.color_white_dark,
                 fontWeight: FontWeight.bold
             ),
-            actionsIconTheme: IconThemeData(
+            actionsIconTheme: const IconThemeData(
                 color: ColorResource.color_white_dark
             )
         )

@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
+import 'package:loto/page/shopping/recipe/model/recipe_form.dart';
 
 class RecipeModel {
   int? cakeID;
   int? unit;
   List<CakeIngredient>? cakeIngredient;
   String? cakeName;
+  String? documentID;
   String? ext;
   int? type;
   List<int>? relate;
@@ -21,6 +23,7 @@ class RecipeModel {
     this.ext,
     this.type,
     this.relate,
+    this.documentID,
   });
 
   RecipeModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,20 @@ class RecipeModel {
       relate = json['relate'].cast<int>();
     }
     type = json['type'];
+    documentID = json['documentID'];
+  }
+
+  RecipeModel.fromJsonForm(RecipeForm form) {
+    cakeID = form.cakeID;
+    unit = int.tryParse(form.unit.text.trim());
+    cakeIngredient = form.cakeIngredient.map<CakeIngredient>((e){
+      return CakeIngredient(id: e.id, quantity: double.tryParse(e.quantity.text.trim()));
+    }).toList();
+    cakeName = form.cakeName.text.trim();
+    ext = form.ext.text.trim();
+    relate = form.relate;
+    type = form.recipeType.typeID;
+    documentID = form.documentID;
   }
 
   Map<String, dynamic> toJson() {

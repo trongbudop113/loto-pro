@@ -49,8 +49,10 @@ class AppCommon {
       return _userLogin;
     }
     final String userJson = box.read("user");
-    var userDecode = jsonDecode(userJson);
-    _userLogin = userLogin(userDecode);
+    if(userJson != ""){
+      var userDecode = jsonDecode(userJson);
+      _userLogin = userLogin(userDecode);
+    }
     return _userLogin;
   }
 

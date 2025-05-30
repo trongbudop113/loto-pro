@@ -41,6 +41,26 @@ class RecipePage extends GetView<RecipeController> {
             ),
           ),
           const SizedBox(width: 16),
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => controller.showAddIngredientDialog(context),
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                width: 45,
+                height: 45,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white70,
+                ),
+                child: const Icon(
+                  Icons.add,
+                  color: Color(0xFFFF8E25),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
         ],
       ),
       body: Obx((){
@@ -163,6 +183,16 @@ class RecipePage extends GetView<RecipeController> {
                               ),
                             ),
                           ),
+
+                          InkWell(
+                            onTap: (){
+                              controller.onRemoveRecipe(data);
+                            },
+                            child: const Icon(
+                              Icons.more_vert,
+                              color: Colors.grey,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -222,40 +252,48 @@ class RecipePage extends GetView<RecipeController> {
               var data = controller.listSub[i];
               return Material(
                 color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => data.isSelected.toggle(),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.grey.withOpacity(0.2),
-                      ),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.grey.withOpacity(0.2),
                     ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.cake_outlined, color: Colors.grey),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Text(
-                            data.cakeName ?? '',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF333333),
-                            ),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.cake_outlined, color: Colors.grey),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          data.cakeName ?? '',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Color(0xFF333333),
                           ),
                         ),
-                        Obx(() => Icon(
-                              data.isSelected.value
-                                  ? Icons.check_circle
-                                  : Icons.circle_outlined,
-                              color: const Color(0xFFFF8E25),
-                              size: 24,
-                            )),
-                      ],
-                    ),
+                      ),
+                      Obx(() => Icon(
+                        data.isSelected.value
+                            ? Icons.check_circle
+                            : Icons.circle_outlined,
+                        color: const Color(0xFFFF8E25),
+                        size: 24,
+                      )),
+
+                      const SizedBox(width: 10),
+                      InkWell(
+                        onTap: (){
+                          controller.onRemoveRecipe(data);
+                        },
+                        child: const Icon(
+                          Icons.more_vert,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               );

@@ -7,75 +7,51 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child:
-        width < 600 ?_buildMobile(context) : (width >= 600 && width < 900) ? _buildTablet(context) :  _buildWeb(context),
-      ),
-    );
-  }
-
-  Widget _buildWeb(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Container(
-        constraints: const BoxConstraints(
-          maxWidth: 1440,
-          minWidth: 600,
+      body: RefreshIndicator(
+        onRefresh: () => controller.initData(),
+        child: CustomScrollView(
+          controller: controller.scrollController,
+          physics: const AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return RepaintBoundary(
+                    child: KeepAliveWrapper(
+                      child: controller.getViewModel(
+                        index,
+                        controller.getDeviceType(MediaQuery.of(context).size.width),
+                      ),
+                    ),
+                  );
+                },
+                childCount: controller.listModels.length,
+              ),
+            ),
+          ],
         ),
-        child: buildWebUI(context),
       ),
     );
   }
+}
 
-  Widget _buildMobile(BuildContext context) {
-    return buildMobileUI(context);
+class KeepAliveWrapper extends StatefulWidget {
+  final Widget child;
+  const KeepAliveWrapper({Key? key, required this.child}) : super(key: key);
+
+  @override
+  State<KeepAliveWrapper> createState() => _KeepAliveWrapperState();
+}
+
+class _KeepAliveWrapperState extends State<KeepAliveWrapper> 
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return widget.child;
   }
 
-  Widget _buildTablet(BuildContext context) {
-    return buildTablet(context);
-  }
-
-  Widget buildTablet(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.listModelViewTablet.length,
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (c, i){
-        return controller.listModelViewTablet[i];
-      },
-    );
-  }
-
-  Widget buildMobileUI(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.listModelViewMobile.length,
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (c, i){
-        return controller.listModelViewMobile[i];
-      },
-    );
-  }
-
-  Widget buildWebUI(BuildContext context) {
-    return ListView.builder(
-      itemCount: controller.listModelView.length,
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (c, i){
-        return controller.listModelView[i];
-      },
-    );
-  }
-
-  Widget buildSocial() {
-    return Container();
-  }
-
+  @override
+  bool get wantKeepAlive => true;
 }

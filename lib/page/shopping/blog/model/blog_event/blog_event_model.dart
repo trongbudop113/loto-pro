@@ -5,6 +5,7 @@ import 'package:loto/base/base_model.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/blog/model_data/testimonial_product_res.dart';
 import 'package:loto/page/shopping/home/home_controller.dart';
+import 'package:loto/page/shopping/home/model/testimonial/testimonial_model.dart';
 
 class BlogEventModel extends BaseModel{
 
@@ -39,7 +40,7 @@ class BlogEventModel extends BaseModel{
 
       print(listTemp.length);
       listTestimonial.addAll(listTemp);
-      Get.find<HomeController>().testimonialModel.setListTestimonial(listTemp);
+      (Get.find<HomeController>().listModels[3] as TestimonialModel).setListTestimonial(listTemp);
     }catch(e){
       print(e);
     }

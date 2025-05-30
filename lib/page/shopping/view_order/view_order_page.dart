@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/view_order/view_order_controller.dart';
-import 'package:loto/src/style_resource.dart';
 
 class ViewOrderPage extends GetView<ViewOrderController> {
   const ViewOrderPage({super.key});
@@ -202,8 +201,6 @@ class ViewOrderPage extends GetView<ViewOrderController> {
       ),
     );
   }
-
-
 
   Widget _buildOrderCard(OrderCart order) {
     return Container(

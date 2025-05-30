@@ -49,7 +49,7 @@ class OrderDetailManagerController extends GetxController{
       barrierLabel: "Change Status",
       barrierDismissible: true,
       barrierColor: Colors.black.withOpacity(0.5),
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 500),
       pageBuilder: (_, __, ___) {
         return ChangeStatusLayout(controller: this,);
       },
@@ -57,12 +57,12 @@ class OrderDetailManagerController extends GetxController{
         Tween<Offset> tween;
         if (anim.status == AnimationStatus.reverse) {
           tween = Tween(
-            begin: Offset(-1, 0),
+            begin: const Offset(-1, 0),
             end: Offset.zero,
           );
         } else {
           tween = Tween(
-            begin: Offset(1, 0),
+            begin: const Offset(1, 0),
             end: Offset.zero,
           );
         }

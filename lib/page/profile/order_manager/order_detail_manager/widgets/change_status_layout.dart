@@ -11,93 +11,154 @@ class ChangeStatusLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            height: MediaQuery.of(context).size.height * 0.6,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 40,
-                  child: Text(
-                    "Chọn Trạng Thái",
-                    style: TextStyleResource.textStyleBlack(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                _listStatus(context),
-                GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.vertical(
-                        bottom: Radius.circular(12),
-                      ),
-                    ),
-                    height: 48,
-                    alignment: Alignment.center,
-                    child: Text("Đóng"),
-                  ),
-                )
-              ],
-            ),
+      backgroundColor: Colors.black.withOpacity(0.5),
+      body: Center(
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 24),
+          constraints: const BoxConstraints(maxWidth: 400),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+            ],
           ),
-        ],
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildHeader(),
+              _buildStatusList(),
+              _buildCloseButton(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _listStatus(BuildContext context) {
-    return Expanded(
+  Widget _buildHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFFEEEEEE),
+            width: 1,
+          ),
+        ),
+      ),
+      child: const Text(
+        "Chọn trạng thái đơn hàng",
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+          color: Color(0xFF333333),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusList() {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(
+        maxHeight: 400,
+        minHeight: 200,
+      ),
       child: ListView.separated(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
         itemCount: controller.listStatus.length,
+        separatorBuilder: (c, i) => const Divider(height: 1),
         itemBuilder: (c, i) {
-          return GestureDetector(
-            onTap: (){
-              controller.onSelectStatus(controller.listStatus[i]);
-            },
-            child: Container(
-              color: Colors.transparent,
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Text(
-                    controller.listStatus[i].statusName ?? '',
-                    style: TextStyleResource.textStyleBlack(context).copyWith(
-                      color: FormatUtils.orderStatusColor(controller.listStatus[i].statusID ?? 1),
+          final status = controller.listStatus[i];
+          return Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => controller.onSelectStatus(status),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 16,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: FormatUtils.orderStatusColor(status.statusID ?? 1),
+                        shape: BoxShape.circle,
+                      ),
                     ),
-                  ),
-                  const Spacer(flex: 1,),
-                  Obx((){
-                    return Visibility(
-                      visible: controller.listStatus[i].isSelected.value,
-                      child: const Icon(Icons.check, color: Colors.green,),
-                    );
-                  })
-                ],
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        status.statusName ?? '',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: FormatUtils.orderStatusColor(status.statusID ?? 1),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Obx(() {
+                      return AnimatedOpacity(
+                        duration: const Duration(milliseconds: 200),
+                        opacity: status.isSelected.value ? 1 : 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 20,
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
               ),
             ),
           );
         },
-        separatorBuilder: (c, i){
-          return Divider();
-        },
+      ),
+    );
+  }
+
+  Widget _buildCloseButton() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => Get.back(),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: const BoxDecoration(
+            border: Border(
+              top: BorderSide(
+                color: Color(0xFFEEEEEE),
+                width: 1,
+              ),
+            ),
+          ),
+          child: const Text(
+            "Đóng",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFFFF8E25),
+            ),
+          ),
+        ),
       ),
     );
   }

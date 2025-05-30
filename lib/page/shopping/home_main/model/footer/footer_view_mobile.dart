@@ -49,7 +49,7 @@ class FooterViewMobile extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   _buildFooterButton("Công Thức", onTap: () => model.onGotoRecipePage()),
-                  _buildFooterButton("Nguyên Liệu"),
+                  _buildFooterButton("Đơn Hàng", onTap: () => model.onGoToViewOrder()),
                   _buildFooterButton("Blog"),
                   _buildFooterButton("Thanh Toán", onTap: () => model.onGoToPaymentInfo()),
                 ],

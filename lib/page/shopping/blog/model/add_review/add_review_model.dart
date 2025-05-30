@@ -5,6 +5,15 @@ import 'package:loto/page/shopping/blog/layout/add_review_layout.dart';
 
 class AddReviewModel extends BaseModel{
 
+  final content = ''.obs;
+  final rating = 0.obs;
+  final showError = false.obs;
+
+  bool validate() {
+    showError.value = true;
+    return rating.value > 0 && content.value.isNotEmpty;
+  }
+
   @override
   void onFinish() {
     // TODO: implement onFinish
@@ -15,19 +24,32 @@ class AddReviewModel extends BaseModel{
     // TODO: implement onStart
   }
 
-  void onTapAddReview() {
+  Future<void> onTapAddReview() async {
     submitCallBack = _submitReview;
-    Get.dialog(
+    var res = await Get.dialog(
       Dialog(
         backgroundColor: Colors.transparent,
         child: AddReviewLayout(model: this),
       ),
     );
+    if(res == null){
+      onReset();
+    }
+  }
+
+  void onReset(){
+    rating.value = 0;
+    showError.value = false;
+    content.value = "";
   }
 
   Future<void> _submitReview() async {
     try {
       isLoading.value = true;
+      if(!validate()){
+        isLoading.value = false;
+        return;
+      }
       // TODO: Implement your API call here
       await Future.delayed(const Duration(seconds: 2)); // Simulated API call
       Get.back();

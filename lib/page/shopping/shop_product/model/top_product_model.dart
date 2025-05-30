@@ -8,6 +8,8 @@ import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/shopping/home/home_controller.dart';
+import 'package:loto/page/shopping/home/model/best_seller/best_seller_model.dart';
+import 'package:loto/page/shopping/home/model/category/category_recipe_model.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product.dart';
 import 'package:loto/page/shopping/moon_cake/models/cake_product_model.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
@@ -45,9 +47,7 @@ class TopProductModel extends BaseModel {
   Future<void> initData() async {
     streamGetListCategories();
     await streamGetListProduct(isFeature: true);
-    Get.find<HomeController>()
-        .tastyRecipeModel
-        .setListCateFeature(listCakeTemp);
+    (Get.find<HomeController>().listModels[2] as TastyRecipeModel).setListCateFeature(listCakeTemp);
   }
 
   Future<void> streamGetListCategories() async {
@@ -61,9 +61,7 @@ class TopProductModel extends BaseModel {
           TopCategoriesRes.fromJson(products.data() as Map<String, dynamic>);
       listCategories.addAll(data.lsCategory ?? []);
       listCategories[previousIndex].isSelected.value = true;
-      Get.find<HomeController>()
-          .categoryRecipeModel
-          .setListCategory(listCategories);
+      (Get.find<HomeController>().listModels[1] as CategoryRecipeModel).setListCategory(listCategories);
       isLoadingData.value = false;
     } catch (e) {
       print(e);

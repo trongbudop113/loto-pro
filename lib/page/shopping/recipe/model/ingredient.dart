@@ -1,3 +1,5 @@
+import 'package:loto/page/shopping/recipe/model/ingredient_form.dart';
+
 class IngredientModel {
   String? ext;
   int? id;
@@ -27,5 +29,14 @@ class IngredientModel {
     data['type'] = this.type;
     data['unit'] = this.unit;
     return data;
+  }
+
+  IngredientModel.fromOther(IngredientForm form) {
+    ext = form.ext.text;
+    id = form.id;
+    name = form.name.text;
+    price = int.parse(form.price.text.trim());
+    type = 2;
+    unit = int.parse(form.unit.text.trim());
   }
 }
