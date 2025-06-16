@@ -1,208 +1,351 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loto/common/common.dart';
 import 'package:loto/page/profile/profile_controller.dart';
+import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
-class ProfilePage extends GetView<ProfileController>{
+class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
-
-    final int crossAxisCount = MediaQuery.of(context).size.width > 1000 ? 3 : (MediaQuery.of(context).size.width <= 600 ? 1 : 2);
-    final double maxWidth = MediaQuery.of(context).size.width > 600 ? 600 : (MediaQuery.of(context).size.width - 20);
-    final double maxHeight = (maxWidth * 9) / 16;
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("setting".tr),
-        actions: [
-          Row(
-            children: [
-              Visibility(
-                visible: AppCommon.singleton.isLogin,
-                child: GestureDetector(
-                  onTap: (){
-                    controller.logOutApp();
-                  },
-                  child: Container(
-                    width: 35,
-                    height: 35,
-                    child: Icon(Icons.logout),
-                  ),
-                ),
-              )
-            ],
-          )
+      backgroundColor: const Color(0xFFE4E6F1),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1440, minWidth: 600),
+          child: LayoutBuilder(builder: (context, constraint) {
+            return _buildLoggedInView(context, constraint);
+          }),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoggedInView(BuildContext context, BoxConstraints constraint) {
+    return Column(
+      children: [
+        _buildAppBar(context, constraint),
+        Expanded(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildMemberCard(),
+                const SizedBox(height: 24),
+                _buildUserInfo(context),
+                const SizedBox(height: 24),
+                _buildMenu(context),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildMemberCard() {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Color(0xFFFF7A00), Color(0xFFFF8E25)],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFFFF8E25).withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10,),
-            Obx(() => Container(
-              width: maxWidth,
-              height: maxHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.amber,
-              ),
-              padding: EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(360),
-                          child: Container(
-                            width: 80,
-                            height: 80,
-                            color: Colors.black87,
-                            child: Visibility(
-                              visible: (controller.userLogin.value.avatar ?? '').isEmpty,
-                              replacement: Image.network(controller.userLogin.value.avatar ?? ''),
-                              child: const Icon(Icons.manage_accounts_sharp, size: 35, color: Colors.white,),
-                            ),
-                          ),
-                        ),
-                        onTap: (){
-                          controller.goToLoginApp();
-                        },
-                      ),
-                      SizedBox(width: 10),
-                      Column(
-                        children: [
-                          Text.rich(
-                            TextSpan(
-                              children: [
-                                TextSpan(text: 'Xin chào: '),
-                                TextSpan(
-                                  text: controller.userLogin.value.name ?? '',
-                                  style: TextStyleResource.textStyleWhite(context),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            controller.userLogin.value.email ?? '',
-                            style: TextStyleResource.textStyleWhite(context),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 25),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                            onTap: (){
-                              controller.showDialogSelectLanguage(context, "language");
-                            },
-                            child: Obx(() => Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              alignment: Alignment.center,
-                              child: Text(
-                                  controller.currentLanguage.value
-                              ),
-                            )),
-                          ),
-                          GestureDetector(
-                            child: Obx(() => Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              child: Icon(controller.isDarkMode.value ? Icons.dark_mode : Icons.light_mode, color: Colors.white,),
-                            )),
-                            onTap: (){
-                              controller.showDialogSelectThemeMode(context, "theme_mode");
-                            },
-                          ),
-                          Container(
-                            width: 55,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(360),
-                              color: Colors.black.withOpacity(0.8),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: (){
-                              controller.onEditProfile();
-                            },
-                            child: Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(360),
-                                color: Colors.black.withOpacity(0.8),
-                              ),
-                              child: Icon(Icons.edit, color: Colors.white,),
-                            ),
-                          )
-                        ]
+                  Text(
+                    'Thẻ Thành Viên',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14,
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 4),
+                  Obx(() => Text(
+                    controller.userLogin.value.name ?? '',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )),
                 ],
               ),
-            )),
-            Obx(() => GridView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(10),
-              itemCount: controller.listBlock.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 16 / 9,
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0
-              ),
-              itemBuilder: (BuildContext context, int index){
-                return GestureDetector(
-                  onTap: (){
-                    controller.onTapBlock(context, controller.listBlock[index]);
-                  },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      color: Colors.amber,
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Container(
-                            child: Text((controller.listBlock[index].blockName ?? '').tr),
-                            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15,),
-                            alignment: Alignment.centerLeft,
-                            color: Colors.black87,
-                          )
-                        ],
-                      )
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: Colors.amber[300],
+                      size: 16,
                     ),
-                  ),
-                );
-              },
-            ))
-          ],
+                    const SizedBox(width: 4),
+                    Text(
+                      'VIP',
+                      style: TextStyle(
+                        color: Colors.amber[300],
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildPointInfo('Điểm tích lũy', '2,500'),
+              _buildPointInfo('Hạng', 'Vàng'),
+              _buildPointInfo('Ưu đãi', '10%'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPointInfo(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: 12,
+          ),
         ),
-      )
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildUserInfo(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ColorResource.color_white_light,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Thông tin cá nhân',
+            style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          _buildTextField('Họ và tên', controller.nameController),
+          const SizedBox(height: 12),
+          _buildTextField('Số điện thoại', controller.phoneController),
+          const SizedBox(height: 12),
+          _buildTextField('Email', controller.emailController),
+          const SizedBox(height: 12),
+          _buildTextField('Địa chỉ', controller.addressController),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenu(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: ColorResource.color_white_light,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Menu',
+            style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 16),
+          ListTile(
+            leading: const Icon(
+              Icons.shopping_bag_outlined,
+              color: Color(0xFFFF8E25),
+            ),
+            title: Text(
+              'Đơn hàng của tôi',
+              style: TextStyleResource.textStyleBlack(context),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => controller.onMyOrdersTap(),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(
+              Icons.card_giftcard,
+              color: Color(0xFFFF8E25),
+            ),
+            title: Text(
+              'Voucher của tôi',
+              style: TextStyleResource.textStyleBlack(context),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => controller.showMyVoucher(),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
+            title: Text(
+              'Đăng xuất',
+              style: TextStyleResource.textStyleBlack(context).copyWith(
+                color: Colors.red,
+              ),
+            ),
+            onTap: () => controller.logOutApp(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(String label, TextEditingController textController) {
+    return TextField(
+      controller: textController,
+      style: const TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.black),
+        border: const OutlineInputBorder(),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context, BoxConstraints constraint) {
+    return Container(
+      constraints: const BoxConstraints(
+        maxWidth: 1440,
+        minWidth: 600,
+      ),
+      child: _buildAppBarWeb(context, constraint),
+    );
+  }
+
+  Widget _buildAppBarWeb(BuildContext context, BoxConstraints constraint) {
+    return Container(
+      height: 97,
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFFFF7A00), Color(0xFFFF8E25)],
+        ),
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: (constraint.maxWidth * 0.03).clamp(15, 44),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildMenuButton(),
+          _buildTitle(),
+          const SizedBox(width: 70)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMenuButton() {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          Get.back();
+        },
+        borderRadius: BorderRadius.circular(30),
+        child: Container(
+          width: 70,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.white.withOpacity(0.2),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.3),
+              width: 1,
+            ),
+          ),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Text _buildTitle() {
+    return const Text(
+      "Cá Nhân",
+      style: TextStyle(
+        fontSize: 22,
+        color: Colors.white,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.5,
+      ),
     );
   }
 }

@@ -52,7 +52,7 @@ class FooterView extends StatelessWidget {
                   const SizedBox(width: 24),
                   _buildFooterButton("Đơn Hàng", onTap: () => model.onGoToViewOrder()),
                   const SizedBox(width: 24),
-                  _buildFooterButton("Blog"),
+                  _buildFooterButton("Cá nhân", onTap: () => model.onGoToViewProfile()),
                   const SizedBox(width: 24),
                   _buildFooterButton("Thanh Toán", onTap: () => model.onGoToPaymentInfo()),
                 ],

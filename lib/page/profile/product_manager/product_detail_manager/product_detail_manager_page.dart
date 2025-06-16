@@ -13,30 +13,26 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: ColorResource.color_background_light,
         title: Obx(() => Text(
-          controller.appbarName.value
-        )),
-        leading: GestureDetector(
-          onTap: (){
-            Get.back();
-          },
-          child: Container(
-            color: Colors.transparent,
-            child: Icon(Icons.arrow_back),
+          controller.appbarName.value,
+          style: TextStyleResource.textStyleBlack(context).copyWith(
+              fontWeight: FontWeight.bold
           ),
+        )),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Get.back(),
         ),
         actions: [
           Obx(() => Visibility(
             visible: !controller.isModeAddNew.value,
-            child: GestureDetector(
-              onTap: (){
-                //controller.deleteDocument();
+            child: IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+
               },
-              child: Container(
-                width: 55,
-                color: Colors.transparent,
-                child: Icon(Icons.delete, color: Colors.red,),
-              ),
             ),
           ))
         ],
@@ -51,77 +47,18 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Obx(() => Column(
                   children: [
-                    SizedBox(height: 15,),
-                    Row(
-                      children: [
-                        Text(
-                          "Màu:",
-                          style: TextStyleResource.textStyleBlack(context),
-                        ),
-                        SizedBox(width: 15,),
-                        GestureDetector(
-                          onTap: (){
-                            controller.onPickerColor(context);
-                          },
-                          child: Obx(() => Container(
-                            width: 100,
-                            height: 35,
-                            color: Color(int.parse("0xFF${controller.mainColor.value}")),
-                          )),
-                        )
-                      ],
-                    ),
-                    SizedBox(height: 15,),
-                    Container(
-                      height: 50,
-                      child: TextField(
-                        controller: controller.productNameController,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            labelText: "Tên sản phẩm",
-                            labelStyle: TextStyle(
-                                height: 1.5
-                            ),
-                            contentPadding: EdgeInsets.only(top: 10)
-                        ),
-                        onChanged: (text) {
-
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    TextField(
-                      controller: controller.productPriceController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          labelText: "Giá sản phẩm",
-                          labelStyle: TextStyle(
-                              height: 1.5
-                          ),
-                          contentPadding: EdgeInsets.only(top: 10)
-                      ),
-                      onChanged: (text) {
-
-                      },
-                    ),
-                    SizedBox(height: 15,),
-                    TextField(
-                      controller: controller.productDiscountController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                          labelText: "Giảm giá",
-                          labelStyle: TextStyle(
-                              height: 1.5
-                          ),
-                          contentPadding: EdgeInsets.only(top: 10)
-                      ),
-                      onChanged: (text) {
-
-                      },
-                    ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15),
+                    _colorPart(context),
+                    const SizedBox(height: 15),
+                    _textFieldPart(controller.productNameController, "Tên sản phẩm", TextInputType.text),
+                    const SizedBox(height: 15),
+                    _textFieldPart(controller.productPriceController, "Giá sản phẩm", TextInputType.number),
+                    const SizedBox(height: 15,),
+                    _textFieldPart(controller.productDiscountController, "Giảm giá", TextInputType.number),
+                    const SizedBox(height: 15,),
                     _buildNote(context),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
+                    // _typePart(context),
                     Container(
                       height: 40,
                       child: Row(
@@ -166,14 +103,14 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     Row(
                       children: [
                         Text(
                           "Hiện trên danh sách:",
                           style: TextStyleResource.textStyleBlack(context),
                         ),
-                        SizedBox(width: 10,),
+                        const SizedBox(width: 10,),
                         Switch(
                           value: controller.cakeProduct.value.isShow ?? false,
                           onChanged: (value){
@@ -182,14 +119,15 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 15,),
+                    const SizedBox(height: 15,),
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Cập nhật gần nhất: ${controller.cakeProduct.value.updateDate}",
                         style: TextStyleResource.textStyleBlack(context),
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 15,),
                   ],
                 )),
               )
@@ -219,20 +157,151 @@ class ProductDetailManagerPage extends GetView<ProductDetailManagerController> {
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
-        child: GestureDetector(
-          onTap: (){
-            controller.onCreateOrUpdateProduct();
-          },
-          child: Container(
-            height: 55,
-            decoration: BoxDecoration(
-                color: Colors.amber,
-                borderRadius: BorderRadius.circular(60,)
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ElevatedButton(
+            onPressed: () => controller.onCreateOrUpdateProduct(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: ColorResource.color_main_light,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              elevation: 2,
+              padding: const EdgeInsets.symmetric(vertical: 12),
             ),
-            alignment: Alignment.center,
-            child: Obx(() => Text(controller.isModeAddNew.value ? "Tạo mới" : "Cập nhật")),
+            child: Obx(() => Text(
+              controller.isModeAddNew.value ? "Tạo mới" : "Cập nhật",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            )),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _colorPart(BuildContext context){
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      padding: EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Text(
+            "Màu:",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+          SizedBox(width: 15),
+          GestureDetector(
+            onTap: () => controller.onPickerColor(context),
+            child: Obx(() => Container(
+              width: 100,
+              height: 35,
+              decoration: BoxDecoration(
+                color: Color(int.parse("0xFF${controller.mainColor.value}")),
+                borderRadius: BorderRadius.circular(8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: Offset(0, 2),
+                  )
+                ],
+              ),
+            )),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _textFieldPart(TextEditingController textController, String label, TextInputType type){
+    return TextField(
+      controller: textController,
+      keyboardType: type,
+      style: const TextStyle(color: Colors.black),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(height: 1.5),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: ColorResource.color_main_light),
+        ),
+      ),
+    );
+  }
+
+  Widget _typePart(BuildContext context){
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Text(
+            "Loại:",
+            style: TextStyleResource.textStyleBlack(context),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: ListView.separated(
+              itemCount: controller.listType.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (c, i) => GestureDetector(
+                onTap: () => controller.onChangeTypeCake(controller.listType[i]),
+                child: Obx(() => Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: controller.listType[i] == controller.currentTypeCake.value
+                          ? ColorResource.color_main_light
+                          : Colors.transparent,
+                      width: 2,
+                    ),
+                    color: controller.listType[i] == controller.currentTypeCake.value
+                        ? ColorResource.color_main_light.withOpacity(0.1)
+                        : Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      )
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    "${controller.listType[i]}g",
+                    style: TextStyle(
+                      color: controller.listType[i] == controller.currentTypeCake.value
+                          ? ColorResource.color_main_light
+                          : Colors.black87,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                )),
+              ),
+              separatorBuilder: (c, i) => SizedBox(width: 10),
+            ),
+          )
+        ],
       ),
     );
   }

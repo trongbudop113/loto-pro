@@ -30,123 +30,85 @@ class HomeBinding extends Bindings{
   }
 }
 
-class HomeController extends GetxController with GetTickerProviderStateMixin {
-  final listModels = <BaseModel>[].obs;
-  final isLoading = true.obs;
-  late final ScrollController scrollController;
-  
+class HomeController extends GetxController{
+  List<Widget> listModelView = [];
+  List<Widget> listModelViewMobile = [];
+  List<Widget> listModelViewTablet = [];
+
+  BannerModel bannerModel = BannerModel();
+  CategoryRecipeModel categoryRecipeModel = CategoryRecipeModel();
+  TastyRecipeModel tastyRecipeModel = TastyRecipeModel();
+  ChefModel chefModel = ChefModel();
+  TestimonialModel testimonialModel = TestimonialModel();
+  InboxModel inboxModel = InboxModel();
+  FooterModel footerModel = FooterModel();
+
   @override
   void onInit() {
-    scrollController = ScrollController();
     initData();
     super.onInit();
   }
 
-  @override
-  void onClose() {
-    scrollController.dispose();
-    super.onClose();
+  initData(){
+    listModelView.addAll([
+      BannerView(model: bannerModel),
+      CategoryRecipeView(model: categoryRecipeModel),
+      BestSellerView(model: tastyRecipeModel),
+      ChefView(model: chefModel,),
+      TestimonialView(model: testimonialModel,),
+      InboxView(model: inboxModel,),
+      FooterView(model: footerModel,),
+    ]);
+    listModelViewTablet.addAll([
+      BannerViewMobile(model: bannerModel),
+      CategoryRecipeViewMobile(model: categoryRecipeModel,),
+      BestSellerViewMobile(model: tastyRecipeModel,),
+      TestimonialViewMobile(model: testimonialModel,),
+      InboxViewMobile(model: inboxModel,),
+      FooterViewMobile(model: footerModel,),
+    ]);
+    listModelViewMobile.addAll([
+      BannerViewMobile(model: bannerModel),
+      CategoryRecipeViewMobile(model: categoryRecipeModel,),
+      BestSellerViewMobile(model: tastyRecipeModel,),
+      TestimonialViewMobile(model: testimonialModel,),
+      InboxViewMobile(model: inboxModel,),
+      FooterViewMobile(model: footerModel,),
+    ]);
   }
 
-  Widget getViewModel(int index, DeviceType deviceType) {
-    if (index >= listModels.length) return const SizedBox();
+  Widget getViewModel(int index){
+    var data = listModelView[index];
 
-    final model = listModels[index];
-
-    switch (model.runtimeType) {
-      case BannerModel:
-        return deviceType == DeviceType.desktop
-            ? BannerView(model: model as BannerModel)
-            : BannerViewMobile(model: model as BannerModel);
-
-      case CategoryRecipeModel:
-        return deviceType == DeviceType.desktop
-            ? CategoryRecipeView(model: model as CategoryRecipeModel)
-            : CategoryRecipeViewMobile(model: model as CategoryRecipeModel);
-
-      case TastyRecipeModel:
-        return deviceType == DeviceType.desktop
-            ? BestSellerView(model: model as TastyRecipeModel)
-            : BestSellerViewMobile(model: model as TastyRecipeModel);
-
-      case ChefModel:
-        return deviceType == DeviceType.desktop
-            ? ChefView(model: model as ChefModel)
-            : const SizedBox();
-
-      case TestimonialModel:
-        return deviceType == DeviceType.desktop
-            ? TestimonialView(model: model as TestimonialModel)
-            : TestimonialViewMobile(model: model as TestimonialModel);
-
-      case InboxModel:
-        return deviceType == DeviceType.desktop
-            ? InboxView(model: model as InboxModel)
-            : InboxViewMobile(model: model as InboxModel);
-
-      case FooterModel:
-        return deviceType == DeviceType.desktop
-            ? FooterView(model: model as FooterModel)
-            : FooterViewMobile(model: model as FooterModel);
-
-      default:
-        return const SizedBox();
-    }
-  }
-
-  Future<void> initData() async {
-    isLoading.value = true;
-    
-    // Load primary content first
-    await _loadPrimaryContent();
-    
-    // Load secondary content after primary is rendered
-    _loadSecondaryContent();
-  }
-
-  Future<void> _loadPrimaryContent() async {
-    final primaryModels = [
-      BannerModel(),
-      CategoryRecipeModel(),
-    ];
-    
-    for (final model in primaryModels) {
-      listModels.add(model);
-    }
-    
-    isLoading.value = false;
-  }
-
-  void _loadSecondaryContent() {
-    Future.microtask(() async {
-      final secondaryModels = [
-        TastyRecipeModel(),
-        TestimonialModel(),
-        InboxModel(),
-        FooterModel(),
-      ];
-
-      for (final model in secondaryModels) {
-        listModels.add(model);
+    switch (data.runtimeType) {
+      case BannerModel : {
+        BannerModel model = data as BannerModel;
+        return BannerView(model: model);
       }
-    });
-  }
+      case CategoryRecipeModel : {
+        CategoryRecipeModel model = data as CategoryRecipeModel;
+        return CategoryRecipeView(model: model);
+      }
+      case TastyRecipeModel : {
+        TastyRecipeModel model = data as TastyRecipeModel;
+        return BestSellerView(model: model);
+      }
+      case ChefModel : {
+        ChefModel model = data as ChefModel;
+        return ChefView(model: model);
+      }
+      case TestimonialModel : {
+        TestimonialModel model = data as TestimonialModel;
+        return TestimonialView(model: model);
+      }
+      case InboxModel : {
+        InboxModel model = data as InboxModel;
+        return InboxView(model: model);
+      }
+      default : {
+        return const SizedBox();
+      }
+    }
 
-  DeviceType getDeviceType(double width) {
-    if (width < 600) return DeviceType.mobile;
-    if (width < 900) return DeviceType.tablet;
-    return DeviceType.desktop;
   }
 }
-
-
-
-// Add this method to BaseModel
-extension BaseModelExtension on BaseModel {
-  Future<void> initializeForMobile() async {
-    // Optimize images and data for mobile
-    // Implement in each model class
-  }
-}
-
-enum DeviceType { mobile, tablet, desktop }

@@ -50,7 +50,7 @@ class FooterViewMobile extends StatelessWidget {
                 children: [
                   _buildFooterButton("Công Thức", onTap: () => model.onGotoRecipePage()),
                   _buildFooterButton("Đơn Hàng", onTap: () => model.onGoToViewOrder()),
-                  _buildFooterButton("Blog"),
+                  _buildFooterButton("Cá Nhân", onTap: () => model.onGoToViewProfile()),
                   _buildFooterButton("Thanh Toán", onTap: () => model.onGoToPaymentInfo()),
                 ],
               ),

@@ -16,7 +16,7 @@ class MyOrderMiddleware extends GetMiddleware {
     if (!(currentUser.isAdmin ?? false)) {
       Get.snackbar(
         'Thông báo',
-        'Vui lòng đăng nhập để xem đơn hàng',
+        'Vui lòng đăng nhập để xem ${(route ?? '').contains("profile") ? "trang cá nhân" : "đơn hàng"}',
         backgroundColor: Colors.red,
         colorText: Colors.white,
         snackPosition: SnackPosition.BOTTOM,

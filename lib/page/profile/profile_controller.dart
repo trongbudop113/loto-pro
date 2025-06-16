@@ -3,13 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/language/localization_service.dart';
 import 'package:loto/models/user_login.dart';
 import 'package:loto/page/profile/dialog/select_option_layout.dart';
 import 'package:loto/page/profile/model/option_data.dart';
 import 'package:loto/page/profile/model/profile_block.dart';
+import 'package:loto/page/profile/models/voucher_model.dart';
+import 'package:loto/page/profile/widgets/voucher_layout.dart';
 import 'package:loto/page_config.dart';
 import 'package:loto/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,11 @@ class ProfileController extends GetxController {
 
   final Rx<UserLogin> userLogin = UserLogin().obs;
 
+  final nameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final emailController = TextEditingController();
+  final addressController = TextEditingController();
+
   RxList<ProfileBlock> listBlock = <ProfileBlock>[].obs;
 
   List<OptionData> listLanguage = [
@@ -34,6 +40,10 @@ class ProfileController extends GetxController {
     OptionData(value: "en"),
     OptionData(value: "ja"),
   ];
+
+  // Thêm các biến và phương thức hỗ trợ
+  final RxList<VoucherModel> listVouchers = <VoucherModel>[].obs;
+
 
   List<OptionData> listThemeMode = [
     OptionData(value: "light_mode"),
@@ -150,24 +160,18 @@ class ProfileController extends GetxController {
       final getUSer = await usersReference.doc(FirebaseAuth.instance.currentUser?.uid ?? '').get();
       if(getUSer.data() == null) return;
       userLogin.value = UserLogin.fromJson(getUSer.data() as Map<String, dynamic>);
-      if(userLogin.value.isAdmin ?? false){
-        listBlock.addAll([
-          ProfileBlock(blockName: "products", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.Products),
-          ProfileBlock(blockName: "contact_manager", page: PageConfig.CONTACT_MANAGER, icon: "", type: ProfileType.Contacts),
-          ProfileBlock(blockName: "footer_manager", page: PageConfig.FOOTER_MANAGER, icon: "", type: ProfileType.Footer),
-          ProfileBlock(blockName: "page_manager", page: PageConfig.PAGE_MANAGER, icon: "", type: ProfileType.Page),
-          ProfileBlock(blockName: "order_management", page: PageConfig.ORDER_MANAGER, icon: "", type: ProfileType.Order),
-          ProfileBlock(blockName: "product_management", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.Products),
-          ProfileBlock(blockName: "user_management", page: PageConfig.USER_MANAGER, icon: "", type: ProfileType.User),
-        ]);
-      }else{
-        listBlock.addAll([
-          ProfileBlock(blockName: "order_history", page: PageConfig.PRODUCT_MANAGER, icon: "", type: ProfileType.OrderHistory),
-        ]);
-      }
+      initUserInfo(userInfo: userLogin.value);
     }catch(e){
 
     }
+  }
+
+  void initUserInfo({UserLogin? userInfo}){
+    if(userInfo == null) return;
+    nameController.text = userInfo.name ?? '';
+    phoneController.text = userInfo.phoneNumber ?? '';
+    emailController.text = userInfo.email ?? '';
+    addressController.text = userInfo.address ?? '';
   }
 
   Future<void> goToLoginApp() async {
@@ -185,5 +189,38 @@ class ProfileController extends GetxController {
   void onEditProfile() {
     if(userLogin.value.name == null) return;
     Get.toNamed(PageConfig.PROFILE_MANAGER, arguments: userLogin.value);
+  }
+
+  void onMyOrdersTap() {
+    Get.toNamed(PageConfig.PRODUCT_MANAGER);
+  }
+
+  void showMyVoucher() {
+    Get.bottomSheet(
+      VoucherLayout(controller: this),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+
+  void copyVoucherCode(String code) {
+    Clipboard.setData(ClipboardData(text: code));
+    Get.snackbar(
+      'Thành công',
+      'Đã sao chép mã voucher',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      margin: const EdgeInsets.all(16),
+    );
+  }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    addressController.dispose();
+    super.onClose();
   }
 }

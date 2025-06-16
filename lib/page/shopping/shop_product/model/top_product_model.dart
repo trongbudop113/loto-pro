@@ -47,7 +47,7 @@ class TopProductModel extends BaseModel {
   Future<void> initData() async {
     streamGetListCategories();
     await streamGetListProduct(isFeature: true);
-    (Get.find<HomeController>().listModels[2] as TastyRecipeModel).setListCateFeature(listCakeTemp);
+    Get.find<HomeController>().tastyRecipeModel.setListCateFeature(listCakeTemp);
   }
 
   Future<void> streamGetListCategories() async {
@@ -61,7 +61,7 @@ class TopProductModel extends BaseModel {
           TopCategoriesRes.fromJson(products.data() as Map<String, dynamic>);
       listCategories.addAll(data.lsCategory ?? []);
       listCategories[previousIndex].isSelected.value = true;
-      (Get.find<HomeController>().listModels[1] as CategoryRecipeModel).setListCategory(listCategories);
+      Get.find<HomeController>().categoryRecipeModel.setListCategory(listCategories);
       isLoadingData.value = false;
     } catch (e) {
       print(e);

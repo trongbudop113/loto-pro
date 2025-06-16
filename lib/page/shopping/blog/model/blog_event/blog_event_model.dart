@@ -40,7 +40,7 @@ class BlogEventModel extends BaseModel{
 
       print(listTemp.length);
       listTestimonial.addAll(listTemp);
-      (Get.find<HomeController>().listModels[3] as TestimonialModel).setListTestimonial(listTemp);
+      Get.find<HomeController>().testimonialModel.setListTestimonial(listTemp);
     }catch(e){
       print(e);
     }

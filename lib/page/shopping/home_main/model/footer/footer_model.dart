@@ -27,4 +27,8 @@ class FooterModel extends BaseModel{
   void onGoToViewOrder() {
     Get.toNamed(PageConfig.VIEW_ORDER);
   }
+
+  void onGoToViewProfile() {
+    Get.toNamed(PageConfig.PROFILE);
+  }
 }

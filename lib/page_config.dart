@@ -171,6 +171,9 @@ class PageConfig {
         name: PROFILE,
         page: () => ProfilePage(),
         binding: ProfileBinding(),
+        middlewares: [
+          MyOrderMiddleware()
+        ]
       ),
       GetPage(
         name: CALL,

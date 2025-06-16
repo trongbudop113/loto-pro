@@ -13,70 +13,119 @@ class PickUserLayout extends StatelessWidget {
     final double width = MediaQuery.of(context).size.width < 650
         ? MediaQuery.of(context).size.width
         : 450;
-    return SizedBox(
+    return Container(
       width: width,
-      height: width * 1.5,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           _buildHeader(),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: controller.getListUser(),
-              builder: (context, snapshot){
-                if(!snapshot.hasData){
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return ListView.separated(
-                  separatorBuilder: (c, i){
-                    return const Divider();
-                  },
-                  padding: const EdgeInsets.all(15),
-                  itemBuilder: (c, i){
-                    var user = UserLogin.fromJson(snapshot.data?.docs[i].data() as Map<String, dynamic>);
-                    return InkWell(
-                      onTap: (){
-                        controller.onPickUser(user);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.name ?? '',
-                              style: const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 10),
-                            Visibility(
-                              visible: (user.phoneNumber ?? '').isNotEmpty,
-                              replacement: Text(
-                                user.email ?? '',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              child: Text(
-                                user.phoneNumber ?? '',
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: snapshot.data!.size,
-                );
-              },
-            ),
-          ),
+          _buildUserList(),
           _buildCloseButton(),
         ],
+      ),
+    );
+  }
+
+  Widget _buildUserList() {
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 400),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: controller.getListUser(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color(0xFFFF8E25),
+              ),
+            );
+          }
+          return ListView.separated(
+            padding: const EdgeInsets.all(16),
+            shrinkWrap: true,
+            itemBuilder: (c, i) {
+              var user = UserLogin.fromJson(
+                snapshot.data?.docs[i].data() as Map<String, dynamic>
+              );
+              return _buildUserItem(user);
+            },
+            separatorBuilder: (c, i) => const Divider(height: 1),
+            itemCount: snapshot.data!.size,
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildUserItem(UserLogin user) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => controller.onPickUser(user),
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFF8E25).withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  ((user.name ?? "").isNotEmpty ? user.name! : "No Name").substring(0, 1).toUpperCase(),
+                  style: const TextStyle(
+                    color: Color(0xFFFF8E25),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      (user.name ?? "").isNotEmpty ? user.name! : "No Name",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF333333),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      (user.phoneNumber ?? '').isNotEmpty
+                          ? user.phoneNumber!
+                          : user.email ?? '',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

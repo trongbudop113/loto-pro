@@ -37,7 +37,7 @@ class HomeMainPage extends GetView<HomeMainController> {
                     controller.scaffoldKey.currentState?.closeDrawer();
                   }
                 }
-                return Container(
+                return ColoredBox(
                   color: Colors.white,
                   child: Column(
                     children: [
