@@ -6,7 +6,9 @@ import 'package:loto/common/mesage_util.dart';
 import 'package:loto/common/utils.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/models/user_login.dart';
+import 'package:loto/page/profile/models/voucher_model.dart';
 import 'package:loto/page/shopping/cart/layout/pick_user_layout.dart';
+import 'package:loto/page/shopping/cart/layout/select_voucher_apply_layout.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/home_main/home_main_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
@@ -24,18 +26,49 @@ class CartBinding extends Bindings {
 
 class CartController extends GetxController {
   final RxDouble finalPrice = 0.0.obs;
+  final RxDouble cartPrice = 0.0.obs;
+  final RxDouble discountAmount = 0.0.obs;
+  final Rx<VoucherModel?> selectedVoucher = Rx<VoucherModel?>(null);
+  final RxList<VoucherModel> userVouchers = <VoucherModel>[].obs;
 
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final CollectionReference cakeRef = FirebaseFirestore.instance.collection(DataRowName.Cakes.name);
   final TextEditingController textNoteController = TextEditingController();
+
+  @override
+  void onInit() {
+    super.onInit();
+    countTotalPrice();
+    if (AppCommon.singleton.isLogin) {
+      loadUserVouchers();
+    }
+  }
 
   double countTotalPrice() {
     double price = 0.0;
     for (ProductOrder element in currentProductInCart) {
       price = price + (element.productPrice * element.quantity.value);
     }
-    finalPrice.value = price;
-    return price;
+    cartPrice.value = price;
+    
+    // Tính toán giảm giá từ voucher
+    double discount = 0.0;
+    if (selectedVoucher.value != null) {
+      VoucherModel voucher = selectedVoucher.value!;
+      if (voucher.minOrderAmount == null || price >= voucher.minOrderAmount!) {
+        if (voucher.discount >= 1) {
+          // Giảm giá theo số tiền cố định
+          discount = voucher.discount;
+        } else {
+          // Giảm giá theo phần trăm
+          discount = price * voucher.discount;
+        }
+      }
+    }
+    
+    discountAmount.value = discount;
+    finalPrice.value = price - discount;
+    return finalPrice.value;
   }
 
   String formatCurrency(double d) {
@@ -114,9 +147,9 @@ class CartController extends GetxController {
     orderCart.orderID = current.millisecondsSinceEpoch.toString();
     orderCart.listProductItem = AppCommon.singleton.currentProductInCart;
     orderCart.totalPrice = finalPrice.value;
-    orderCart.discountCart = 0.0;
+    orderCart.discountCart = discountAmount.value;
     orderCart.statusOrder = 1;
-    orderCart.cartPrice = finalPrice.value;
+    orderCart.cartPrice = cartPrice.value;
 
     orderCart.userOrder = currentUserLogin;
     orderCart.note = textNoteController.text.trim();
@@ -128,6 +161,13 @@ class CartController extends GetxController {
         .collection(orderOfDay)
         .doc(current.millisecondsSinceEpoch.toString())
         .set(orderCart.toJson());
+
+    // Đánh dấu voucher đã sử dụng nếu có
+    if (selectedVoucher.value != null) {
+      await _markVoucherAsUsed(selectedVoucher.value!.id);
+      selectedVoucher.value = null;
+      discountAmount.value = 0.0;
+    }
 
     // Cập nhật điểm thành viên sau khi đặt hàng thành công
     await _updateMembershipPoints(
@@ -179,7 +219,84 @@ class CartController extends GetxController {
     Get.back(result: user);
   }
 
-  /// Cập nhật điểm thành viên sau khi đặt hàng
+  /// Load voucher đã thu thập của user
+  Future<void> loadUserVouchers() async {
+    try {
+      if (!AppCommon.singleton.isLogin) return;
+      
+      final userId = AppCommon.singleton.userLoginData.uuid;
+      if (userId == null) return;
+      
+      final userDoc = await firestore
+          .collection(DataRowName.Users.name)
+          .doc(userId)
+          .get();
+      
+      if (!userDoc.exists) return;
+      
+      final userData = userDoc.data() as Map<String, dynamic>;
+      final collectedVouchers = List<String>.from(userData['collectedVouchers'] ?? []);
+      
+      if (collectedVouchers.isEmpty) {
+        userVouchers.clear();
+        return;
+      }
+      
+      // Load thông tin chi tiết của các voucher đã thu thập
+      final voucherSnapshot = await cakeRef
+          .doc(DataCollection.Vouchers.name)
+          .collection(DataCollection.Vouchers.name)
+          .get();
+      
+      List<VoucherModel> vouchers = [];
+      for (var doc in voucherSnapshot.docs) {
+        if (collectedVouchers.contains(doc.id)) {
+          var data = doc.data();
+          data['id'] = doc.id;
+          VoucherModel voucher = VoucherModel.fromJson(data);
+          
+          // Chỉ thêm voucher còn hiệu lực và chưa sử dụng
+          if (voucher.isValid && !(data['isUsed'] ?? false)) {
+            vouchers.add(voucher);
+          }
+        }
+      }
+      
+      userVouchers.value = vouchers;
+    } catch (e) {
+      print('Error loading user vouchers: $e');
+    }
+  }
+
+  /// Chọn voucher để áp dụng
+  void selectVoucher(VoucherModel? voucher) {
+    selectedVoucher.value = voucher;
+    countTotalPrice();
+  }
+
+  /// Hiển thị dialog chọn voucher
+  Future<void> showVoucherSelectionDialog() async {
+    await loadUserVouchers();
+    
+    Get.dialog(
+      SelectVoucherApplyLayout(controller: this),
+    );
+  }
+
+  /// Đánh dấu voucher đã sử dụng
+  Future<void> _markVoucherAsUsed(String voucherId) async {
+    try {
+      await cakeRef
+          .doc(DataCollection.Vouchers.name)
+          .collection(DataCollection.Vouchers.name)
+          .doc(voucherId)
+          .update({'isUsed': true});
+    } catch (e) {
+      print('Error marking voucher as used: $e');
+    }
+  }
+ 
+    /// Cập nhật điểm thành viên sau khi đặt hàng
   Future<void> _updateMembershipPoints({
     required String userId,
     required double orderAmount,

@@ -170,7 +170,8 @@ class CartPage extends GetView<CartController> {
     );
   }
 
-  Widget _buildPayment(BuildContext context, {required bool isWeb, required double width}) {
+  Widget _buildPayment(BuildContext context,
+      {required bool isWeb, required double width}) {
     return Obx(() => Visibility(
           visible: controller.currentProductInCart.isNotEmpty,
           child: Container(
@@ -199,9 +200,23 @@ class CartPage extends GetView<CartController> {
                   ),
                 ),
                 const SizedBox(height: 24),
-                _buildRowPrice(context, title: "Tạm tính", price: 0, isWeb: isWeb, width: width),
+                _buildVoucherSection(context),
                 const SizedBox(height: 16),
-                _buildRowPrice(context, title: "Giảm giá", price: 0, isWeb: isWeb, width: width),
+                Obx(() => _buildRowPrice(
+                      context,
+                      title: "Tạm tính",
+                      price: controller.cartPrice.value,
+                      isWeb: isWeb,
+                      width: width,
+                    )),
+                const SizedBox(height: 16),
+                Obx(() => _buildRowPrice(
+                      context,
+                      title: "Giảm giá",
+                      price: controller.discountAmount.value,
+                      isWeb: isWeb,
+                      width: width,
+                    )),
                 const SizedBox(height: 16),
                 Container(
                   height: 1,
@@ -209,12 +224,12 @@ class CartPage extends GetView<CartController> {
                   margin: const EdgeInsets.symmetric(vertical: 8),
                 ),
                 Obx(() => _buildRowPrice(
-                    context,
-                    title: "Tổng tiền",
-                    price: controller.finalPrice.value,
-                    isWeb: isWeb,
-                    width: width,
-                )),
+                      context,
+                      title: "Tổng tiền",
+                      price: controller.finalPrice.value,
+                      isWeb: isWeb,
+                      width: width,
+                    )),
                 const SizedBox(height: 24),
                 _buildNote(context),
               ],
@@ -232,7 +247,8 @@ class CartPage extends GetView<CartController> {
             child: GestureDetector(
               onTap: () => controller.onTapOrder(context),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                     colors: [Color(0xFFFF8E25), Color(0xFFFFB067)],
@@ -260,6 +276,56 @@ class CartPage extends GetView<CartController> {
               ),
             ),
           )),
+    );
+  }
+
+  Widget _buildVoucherSection(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFFFF8E25).withOpacity(0.3),
+        ),
+      ),
+      child: ListTile(
+        leading: Icon(
+          Icons.local_offer,
+          color: const Color(0xFFFF8E25),
+        ),
+        title: Obx(() => Text(
+              controller.selectedVoucher.value != null
+                  ? controller.selectedVoucher.value!.name
+                  : 'Chọn voucher',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: controller.selectedVoucher.value != null
+                    ? const Color(0xFFFF8E25)
+                    : Colors.grey[600],
+              ),
+            )),
+        subtitle: Obx(() => controller.selectedVoucher.value != null
+            ? Text(
+                'Giảm ${controller.selectedVoucher.value!.discountText}',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.green[600],
+                ),
+              )
+            : const Text(
+                'Nhấn để chọn voucher',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              )),
+        trailing: const Icon(
+          Icons.arrow_forward_ios,
+          size: 16,
+          color: Color(0xFFFF8E25),
+        ),
+        onTap: () => controller.showVoucherSelectionDialog(),
+      ),
     );
   }
 
