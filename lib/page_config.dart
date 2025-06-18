@@ -70,6 +70,7 @@ import 'page/profile/user_manager/user_manager_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'page/stories/stories_page.dart';
+import 'page/profile/voucher_collection_page.dart';
 
 class PageConfig {
   static String ROOM = '/room';
@@ -109,6 +110,7 @@ class PageConfig {
   static String RECIPE_DETAIL = '/recipe_detail';
   static String PAYMENT_INFO = '/payment_info';
   static String VIEW_ORDER = '/view_order';
+  static String VOUCHER_COLLECTION = '/voucher-collection';
 
   static List<GetPage> listPage(){
     return [
@@ -300,6 +302,11 @@ class PageConfig {
         middlewares: [
           MyOrderMiddleware()
         ]
+      ),
+      GetPage(
+        name: VOUCHER_COLLECTION,
+        page: () => const VoucherCollectionPage(),
+        binding: ProfileBinding(),
       ),
     ];
   }

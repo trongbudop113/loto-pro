@@ -11,6 +11,7 @@ import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/home_main/home_main_controller.dart';
 import 'package:loto/page/shopping/moon_cake/models/order_moon_cake.dart';
 import 'package:loto/page_config.dart';
+import 'package:loto/services/membership_service.dart';
 import 'package:loto/src/color_resource.dart';
 import 'package:loto/widget/loading/loading_overlay.dart';
 
@@ -128,6 +129,13 @@ class CartController extends GetxController {
         .doc(current.millisecondsSinceEpoch.toString())
         .set(orderCart.toJson());
 
+    // Cập nhật điểm thành viên sau khi đặt hàng thành công
+    await _updateMembershipPoints(
+      userId: currentUserLogin.uuid ?? '',
+      orderAmount: finalPrice.value,
+      userLogin: currentUserLogin,
+    );
+
     AppCommon.singleton.currentProductInCart.clear();
     MessageUtil.show(
       msg: "Mua hàng thành công",
@@ -169,5 +177,57 @@ class CartController extends GetxController {
 
   void onPickUser(UserLogin user) {
     Get.back(result: user);
+  }
+
+  /// Cập nhật điểm thành viên sau khi đặt hàng
+  Future<void> _updateMembershipPoints({
+    required String userId,
+    required double orderAmount,
+    required UserLogin userLogin,
+  }) async {
+    try {
+      if (userId.isEmpty) return;
+      
+      // Kiểm tra xem đây có phải đơn hàng đầu tiên không
+      bool isFirstOrder = (userLogin.totalOrders ?? 0) == 0;
+      
+      // Cập nhật điểm thành viên
+      await MembershipService.updatePointsForOrder(
+        userId: userId,
+        orderAmount: orderAmount,
+        isFirstOrder: isFirstOrder,
+      );
+      
+      // Kiểm tra và cập nhật cấp độ thành viên
+      bool tierChanged = await MembershipService.checkAndUpdateMembershipTier(userId);
+      
+      // Hiển thị thông báo nếu có thay đổi cấp độ
+      if (tierChanged) {
+        final updatedUser = await MembershipService.getUserMembershipInfo(userId);
+        if (updatedUser != null) {
+          _showTierUpgradeNotification(updatedUser);
+        }
+      }
+    } catch (e) {
+      print('Error updating membership points: $e');
+    }
+  }
+  
+  /// Hiển thị thông báo nâng cấp cấp độ thành viên
+  void _showTierUpgradeNotification(UserLogin user) {
+    Get.snackbar(
+      'Chúc mừng! 🎉',
+      'Bạn đã được nâng cấp lên ${user.membershipDisplayName}!',
+      backgroundColor: Color(user.membershipColor).withOpacity(0.9),
+      colorText: Colors.white,
+      duration: const Duration(seconds: 3),
+      snackPosition: SnackPosition.TOP,
+      icon: Text(
+        user.membershipIcon,
+        style: const TextStyle(fontSize: 24),
+      ),
+      margin: const EdgeInsets.all(16),
+      borderRadius: 12,
+    );
   }
 }

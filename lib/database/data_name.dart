@@ -21,5 +21,6 @@ enum DataCollection{
   ContactUs,
   Cart,
   Recipes,
-  Ingredients
+  Ingredients,
+  Vouchers,
 }

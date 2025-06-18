@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/page/profile/profile_controller.dart';
+import 'package:loto/page/profile/widgets/membership_card_widget.dart';
 import 'package:loto/src/color_resource.dart';
 import 'package:loto/src/style_resource.dart';
 
@@ -33,7 +34,12 @@ class ProfilePage extends GetView<ProfileController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildMemberCard(),
+                Obx(() => controller.userLogin.value.uuid != null
+                    ? MembershipCardWidget(
+                        userLogin: controller.userLogin.value,
+                        controller: controller,
+                      )
+                    : _buildMemberCard()),
                 const SizedBox(height: 24),
                 _buildUserInfo(context),
                 const SizedBox(height: 24),
