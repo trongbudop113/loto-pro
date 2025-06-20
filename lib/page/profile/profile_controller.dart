@@ -10,12 +10,13 @@ import 'package:loto/page/profile/dialog/select_option_layout.dart';
 import 'package:loto/page/profile/model/option_data.dart';
 import 'package:loto/page/profile/model/profile_block.dart';
 import 'package:loto/page/profile/models/voucher_model.dart';
+import 'package:loto/page/profile/widgets/collect_voucher_layout.dart';
 import 'package:loto/page/profile/widgets/member_info_layout.dart';
+import 'package:loto/page/profile/widgets/top_member_layout.dart';
 import 'package:loto/page/profile/widgets/voucher_layout.dart';
 import 'package:loto/page_config.dart';
-import 'package:loto/theme/theme_provider.dart';
 import 'package:loto/services/membership_service.dart';
-import 'package:loto/models/membership_tier.dart';
+import 'package:loto/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileBinding extends Bindings{
@@ -35,6 +36,7 @@ class ProfileController extends GetxController {
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
   final addressController = TextEditingController();
+  final RxString selectedGender = 'Nam'.obs;
 
   RxList<ProfileBlock> listBlock = <ProfileBlock>[].obs;
 
@@ -80,29 +82,6 @@ class ProfileController extends GetxController {
   RxString get currentLanguage{
     String value = listLanguage.firstWhere((e) => e.isSelected.value).value ?? '';
     return value.toUpperCase().obs;
-  }
-
-  void onTapBlock(BuildContext context, ProfileBlock block){
-    if(block.type == ProfileType.ThemeMode){
-      showDialogSelectThemeMode(context, block.blockName!);
-    }else if(block.type == ProfileType.Language){
-      showDialogSelectLanguage(context, block.blockName!);
-    }else if(block.type == ProfileType.Products){
-      //Get.toNamed(PageConfig.STATISTIC);
-      Get.toNamed(block.page ?? '/');
-    }else if(block.type == ProfileType.Contacts){
-      Get.toNamed(PageConfig.CONTACT_MANAGER);
-    }else if(block.type == ProfileType.Footer){
-      Get.toNamed(PageConfig.FOOTER_MANAGER);
-    }else if(block.type == ProfileType.Page){
-      Get.toNamed(block.page ?? '/');
-    }else if(block.type == ProfileType.Order){
-      Get.toNamed(block.page ?? '/');
-    } else if(block.type == ProfileType.Products){
-      Get.toNamed(block.page ?? '/');
-    } else if(block.type == ProfileType.User){
-      Get.toNamed(block.page ?? '/');
-    }
   }
 
   Future<void> showDialogSelectLanguage(BuildContext context, String title) async {
@@ -190,6 +169,7 @@ class ProfileController extends GetxController {
     phoneController.text = userInfo.phoneNumber ?? '';
     emailController.text = userInfo.email ?? '';
     addressController.text = userInfo.address ?? '';
+    selectedGender.value = userInfo.gender ?? 'Nam';
   }
 
   Future<void> goToLoginApp() async {
@@ -202,6 +182,60 @@ class ProfileController extends GetxController {
   Future<void> logOutApp() async {
     await FirebaseAuth.instance.signOut();
     Get.back();
+  }
+
+  Future<void> updateUserInfo() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId == null) {
+        Get.snackbar(
+          'Lỗi',
+          'Vui lòng đăng nhập để cập nhật thông tin',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        return;
+      }
+
+      // Cập nhật thông tin lên Firestore
+      await firestore.collection(DataRowName.Users.name)
+          .doc(userId)
+          .update({
+        'name': nameController.text.trim(),
+        'phoneNumber': phoneController.text.trim(),
+        'email': emailController.text.trim(),
+        'address': addressController.text.trim(),
+        'gender': selectedGender.value,
+        'updateTime': DateTime.now().millisecondsSinceEpoch,
+      });
+
+      // Cập nhật local state
+      userLogin.value.name = nameController.text.trim();
+      userLogin.value.phoneNumber = phoneController.text.trim();
+      userLogin.value.email = emailController.text.trim();
+      userLogin.value.address = addressController.text.trim();
+      userLogin.value.gender = selectedGender.value;
+      userLogin.value.updateTime = DateTime.now().millisecondsSinceEpoch;
+      userLogin.refresh();
+
+      Get.snackbar(
+        'Thành công',
+        'Đã cập nhật thông tin thành công',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+    } catch (e) {
+      print('Error updating user info: $e');
+      Get.snackbar(
+        'Lỗi',
+        'Không thể cập nhật thông tin',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void onEditProfile() {
@@ -446,7 +480,6 @@ class ProfileController extends GetxController {
     
     if (userLogin.value.membershipPoints == null) {
       await MembershipService.initializeMembership(userId);
-      await getDataUser(); // Refresh user data
     }
   }
   
@@ -455,7 +488,6 @@ class ProfileController extends GetxController {
     if (userId == null) return;
     
     await MembershipService.updatePointsForDailyLogin(userId);
-    await getDataUser(); // Refresh user data
   }
   
   Future<void> loadTopMembers() async {
@@ -479,67 +511,7 @@ class ProfileController extends GetxController {
 
   void showTopMembersLeaderboard() {
     Get.bottomSheet(
-      Container(
-        height: Get.height * 0.7,
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          children: [
-            const Text(
-              'Bảng xếp hạng thành viên',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Obx(() {
-                if (isLoadingMembership.value) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                
-                return ListView.builder(
-                  itemCount: topMembers.length,
-                  itemBuilder: (context, index) {
-                    final member = topMembers[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Color(member.membershipColor),
-                        child: Text(
-                          '${index + 1}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      title: Text(member.name ?? 'Ẩn danh'),
-                      subtitle: Text(member.membershipDisplayName),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(member.membershipIcon),
-                          const SizedBox(width: 8),
-                          Text(
-                            '${member.membershipPoints ?? 0}',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }),
-            ),
-          ],
-        ),
-      ),
+      TopMemberLayout(controller: this),
       isScrollControlled: true,
     );
   }
@@ -623,43 +595,7 @@ class ProfileController extends GetxController {
   // Hiển thị dialog thu thập voucher
   void showCollectVoucherDialog(VoucherModel voucher) {
     Get.dialog(
-      AlertDialog(
-        title: Text('Thu thập voucher'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Tên voucher: ${voucher.name}'),
-            SizedBox(height: 8),
-            Text('Mã: ${voucher.code}'),
-            SizedBox(height: 8),
-            Text('Giảm giá: ${voucher.discountText}'),
-            if ((voucher.minOrderAmount ?? 0) > 0)...[
-              SizedBox(height: 8),
-              Text('Đơn tối thiểu: ${(voucher.minOrderAmount ?? 0).toStringAsFixed(0)}đ'),
-            ],
-            const SizedBox(height: 8),
-            Text('Hạn sử dụng: ${voucher.expireDate}'),
-            if ((voucher.description ?? '').isNotEmpty)...[
-              const SizedBox(height: 8),
-              Text('Mô tả: ${voucher.description}'),
-            ],
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text('Hủy'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              collectVoucher(voucher.id);
-            },
-            child: Text('Thu thập'),
-          ),
-        ],
-      ),
+      CollectVoucherLayout(controller: this, voucher: voucher,),
     );
   }
 

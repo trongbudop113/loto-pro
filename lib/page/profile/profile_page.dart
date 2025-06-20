@@ -34,12 +34,15 @@ class ProfilePage extends GetView<ProfileController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Obx(() => controller.userLogin.value.uuid != null
-                    ? MembershipCardWidget(
-                        userLogin: controller.userLogin.value,
-                        controller: controller,
-                      )
-                    : _buildMemberCard()),
+                Obx(() {
+                  if (controller.userLogin.value.uuid != null) {
+                    return MembershipCardWidget(
+                      userLogin: controller.userLogin.value,
+                      controller: controller,
+                    );
+                  }
+                  return _buildMemberCard();
+                }),
                 const SizedBox(height: 24),
                 _buildUserInfo(context),
                 const SizedBox(height: 24),
@@ -88,17 +91,18 @@ class ProfilePage extends GetView<ProfileController> {
                   ),
                   const SizedBox(height: 4),
                   Obx(() => Text(
-                    controller.userLogin.value.name ?? '',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )),
+                        controller.userLogin.value.name ?? '',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20),
@@ -193,6 +197,10 @@ class ProfilePage extends GetView<ProfileController> {
           _buildTextField('Email', controller.emailController),
           const SizedBox(height: 12),
           _buildTextField('Địa chỉ', controller.addressController),
+          const SizedBox(height: 16),
+          _buildGenderSelection(),
+          const SizedBox(height: 20),
+          _buildUpdateButton(),
         ],
       ),
     );
@@ -263,6 +271,77 @@ class ProfilePage extends GetView<ProfileController> {
             onTap: () => controller.logOutApp(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGenderSelection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Giới tính',
+          style: TextStyleResource.textStyleBlack(Get.context!).copyWith(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Obx(() => Row(
+              children: [
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('Nam'),
+                    value: 'Nam',
+                    groupValue: controller.selectedGender.value,
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.selectedGender.value = value;
+                      }
+                    },
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                Expanded(
+                  child: RadioListTile<String>(
+                    title: const Text('Nữ'),
+                    value: 'Nữ',
+                    groupValue: controller.selectedGender.value,
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.selectedGender.value = value;
+                      }
+                    },
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+  }
+
+  Widget _buildUpdateButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: () => controller.updateUserInfo(),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFFF8E25),
+          foregroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+        ),
+        child: const Text(
+          'Cập nhật thông tin',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
     );
   }

@@ -13,6 +13,7 @@ class UserLogin {
   bool? isAdmin;
   String? phoneNumber;
   String? address;
+  String? gender;
 
   List<String>? listPaper;
 
@@ -91,6 +92,7 @@ class UserLogin {
         this.isAdmin,
         this.phoneNumber,
         this.address,
+        this.gender,
         this.membershipPoints,
         this.membershipLevel,
         this.totalSpent,
@@ -111,11 +113,13 @@ class UserLogin {
     joinRoomID = json['joinRoomID'];
     isAdmin = json['isAdmin'];
     address = json['address'];
+    gender = json['gender'];
     membershipPoints = json['membershipPoints'] ?? 0;
     membershipLevel = json['membershipLevel'];
     totalSpent = json['totalSpent'] ?? 0;
     totalOrders = json['totalOrders'] ?? 0;
     membershipJoinDate = json['membershipJoinDate'];
+    phoneNumber = json['phoneNumber'];
     if(json['listPaper'] != null){
       listPaper = (json['listPaper'] as List).map((item) => item as String).toList();
     }
@@ -138,12 +142,14 @@ class UserLogin {
     data['listPaper'] = this.listPaper;
     data['isAdmin'] = this.isAdmin;
     data['address'] = this.address;
+    data['gender'] = this.gender;
     data['membershipPoints'] = this.membershipPoints;
     data['membershipLevel'] = this.membershipLevel;
     data['totalSpent'] = this.totalSpent;
     data['totalOrders'] = this.totalOrders;
     data['membershipJoinDate'] = this.membershipJoinDate;
     data['collectedVouchers'] = this.collectedVouchers;
+    data['phoneNumber'] = this.phoneNumber;
     return data;
   }
 
