@@ -60,9 +60,7 @@ dependencies:
 
   quill_html_editor: ^2.1.8
   flutter_widget_from_html_core: 0.14.7
-  material_dialogs: ^1.1.4
   lottie:
-  flutter_admin_scaffold: ^1.2.0
   fluttertoast: ^8.2.6
   tiengviet: ^1.0.0
 

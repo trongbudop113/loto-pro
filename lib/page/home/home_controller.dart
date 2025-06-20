@@ -1,13 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/database/data_name.dart';
 import 'package:loto/page/home/models/item_model.dart';
 import 'package:loto/page/select/models/select_paper.dart';
-import 'package:lottie/lottie.dart';
-import 'package:material_dialogs/dialogs.dart';
-import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 
 class HomeBinding extends Bindings{
@@ -48,30 +44,30 @@ class HomeController extends GetxController {
   }
 
   void showDialogCong(BuildContext context) {
-    Dialogs.materialDialog(
-      color: Colors.white,
-      msg: 'Congratulations, you won 500 points',
-      title: 'Congratulations',
-      lottieBuilder: Lottie.asset(
-        'assets/cong_example.json',
-        fit: BoxFit.contain,
-      ),
-      barrierDismissible: false,
-      dialogWidth: kIsWeb ? 0.3 : null,
-      context: context,
-      actions: [
-        IconsButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          text: 'Claim',
-          iconData: Icons.done,
-          color: Colors.blue,
-          textStyle: TextStyle(color: Colors.white),
-          iconColor: Colors.white,
-        ),
-      ],
-    );
+    // Dialogs.materialDialog(
+    //   color: Colors.white,
+    //   msg: 'Congratulations, you won 500 points',
+    //   title: 'Congratulations',
+    //   lottieBuilder: Lottie.asset(
+    //     'assets/cong_example.json',
+    //     fit: BoxFit.contain,
+    //   ),
+    //   barrierDismissible: false,
+    //   dialogWidth: kIsWeb ? 0.3 : null,
+    //   context: context,
+    //   actions: [
+    //     IconsButton(
+    //       onPressed: () {
+    //         Navigator.of(context).pop();
+    //       },
+    //       text: 'Claim',
+    //       iconData: Icons.done,
+    //       color: Colors.blue,
+    //       textStyle: TextStyle(color: Colors.white),
+    //       iconColor: Colors.white,
+    //     ),
+    //   ],
+    // );
   }
 
   Stream<DocumentSnapshot<Object?>> streamGetDataRoom() {

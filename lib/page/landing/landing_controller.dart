@@ -5,8 +5,6 @@ import 'package:get/get.dart';
 import 'package:loto/common/common.dart';
 import 'package:loto/core/custom_get_controller.dart';
 import 'package:loto/database/data_name.dart';
-import 'package:loto/models/user_login.dart';
-import 'package:loto/page/admin/dashboard/dashboard_page.dart';
 import 'package:loto/page/landing/models/block_menu.dart';
 import 'package:loto/page/landing/provider/banner_provider.dart';
 import 'package:loto/page/landing/provider/block_body_provider.dart';
