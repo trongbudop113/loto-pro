@@ -259,6 +259,19 @@ class ProfilePage extends GetView<ProfileController> {
           const Divider(height: 1),
           ListTile(
             leading: const Icon(
+              Icons.admin_panel_settings,
+              color: Color(0xFFFF8E25),
+            ),
+            title: Text(
+              'Quản lý Voucher',
+              style: TextStyleResource.textStyleBlack(context),
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => controller.onVoucherManagerTap(),
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(
               Icons.logout,
               color: Colors.red,
             ),

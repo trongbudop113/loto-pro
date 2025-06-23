@@ -71,6 +71,12 @@ import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'page/stories/stories_page.dart';
 import 'page/profile/voucher_collection_page.dart';
+import 'page/profile/voucher_manager/voucher_manager_controller.dart';
+import 'page/profile/voucher_manager/voucher_manager_page.dart';
+import 'page/profile/voucher_manager/voucher_detail_manager_controller.dart';
+import 'page/profile/voucher_manager/voucher_detail_manager_page.dart';
+import 'package:loto/page/admin/admin_controller.dart';
+import 'package:loto/page/admin/admin_page.dart';
 
 class PageConfig {
   static String ROOM = '/room';
@@ -111,6 +117,9 @@ class PageConfig {
   static String PAYMENT_INFO = '/payment_info';
   static String VIEW_ORDER = '/view_order';
   static String VOUCHER_COLLECTION = '/voucher-collection';
+  static String VOUCHER_MANAGER = '/voucher-manager';
+  static String VOUCHER_DETAIL_MANAGER = '/voucher-detail-manager';
+  static String ADMIN = '/admin';
 
   static List<GetPage> listPage(){
     return [
@@ -307,6 +316,21 @@ class PageConfig {
         name: VOUCHER_COLLECTION,
         page: () => const VoucherCollectionPage(),
         binding: ProfileBinding(),
+      ),
+      GetPage(
+        name: VOUCHER_MANAGER,
+        page: () => const VoucherManagerPage(),
+        binding: VoucherManagerBinding(),
+      ),
+      GetPage(
+        name: VOUCHER_DETAIL_MANAGER,
+        page: () => const VoucherDetailManagerPage(),
+        binding: VoucherDetailManagerBinding(),
+      ),
+      GetPage(
+        name: ADMIN,
+        page: () => const AdminPage(),
+        binding: AdminBinding(),
       ),
     ];
   }

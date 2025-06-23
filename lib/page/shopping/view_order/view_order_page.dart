@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loto/common/utils.dart';
+import 'package:loto/page/admin/mixin/appbar_mixin.dart';
 import 'package:loto/page/shopping/cart/models/order_cart.dart';
 import 'package:loto/page/shopping/view_order/view_order_controller.dart';
 
-class ViewOrderPage extends GetView<ViewOrderController> {
+class ViewOrderPage extends GetView<ViewOrderController> with AppbarMixin {
   const ViewOrderPage({super.key});
 
   @override
@@ -18,7 +19,7 @@ class ViewOrderPage extends GetView<ViewOrderController> {
             builder: (c, constraint) {
               return Column(
                 children: [
-                  _buildAppBar(context),
+                  buildAppBar(context, constraint, title: "Đơn hàng của tôi"),
                   _buildBody(),
                 ],
               );
@@ -134,71 +135,6 @@ class ViewOrderPage extends GetView<ViewOrderController> {
           },
         );
       }),
-    );
-  }
-
-  Widget _buildAppBar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top,
-      ),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [Color(0xFFFF7A00), Color(0xFFFF8E25),],
-        ),
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        height: 97,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildMenuButton(),
-            _buildTitle(),
-            const SizedBox(width: 77, height: 44),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Text _buildTitle() {
-    return const Text(
-      "Đơn hàng của tôi",
-      style: TextStyle(
-        fontSize: 22,
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
-        letterSpacing: 0.5,
-      ),
-    );
-  }
-
-  Widget _buildMenuButton() {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          Get.back();
-        },
-        borderRadius: BorderRadius.circular(30),
-        child: Container(
-          width: 70,
-          height: 44,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.white.withOpacity(0.2),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.3),
-              width: 1,
-            ),
-          ),
-          child: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.white,
-          ),
-        ),
-      ),
     );
   }
 

@@ -247,6 +247,10 @@ class ProfileController extends GetxController {
     Get.toNamed(PageConfig.PRODUCT_MANAGER);
   }
 
+  void onVoucherManagerTap() {
+    Get.toNamed(PageConfig.VOUCHER_MANAGER);
+  }
+
   Future<void> showMyVoucher() async {
     await loadVouchers(); // Refresh vouchers when showing
     Get.bottomSheet(

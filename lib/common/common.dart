@@ -159,8 +159,8 @@ class AppCommon {
   String blogRoute = "";
   String shopRoute = "";
 
-  String formatCurrency(double d) {
+  String formatCurrency(double d, {String unit = 'đ'}) {
     d.roundToDouble();
-    return "${FormatUtils.oCcy.format(d)}đ";
+    return "${FormatUtils.oCcy.format(d)}$unit";
   }
 }

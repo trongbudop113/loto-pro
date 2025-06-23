@@ -23,16 +23,17 @@ Future<void> main() async {
           storageBucket: "loto-fb7ac.appspot.com",
           messagingSenderId: "223090207254",
           appId: "1:223090207254:web:6359fe5d6c4127447ce337",
-          measurementId: "G-GFQGZC5BQ1"
-      )
-  );
+          measurementId: "G-GFQGZC5BQ1"));
   initializeDateFormatting("vi_VN", "");
   await GetStorage.init();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then(
+    (value) => runApp(
+      const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget  {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -44,21 +45,21 @@ class MyApp extends StatelessWidget  {
         ),
       ],
       child: Consumer<ThemeProvider>(
-          builder: (ctx, themeObject, _) => GetMaterialApp(
-            title: 'Bug Cake',
-            themeMode: themeObject.mode,
-            debugShowCheckedModeBanner: false,
-            theme: ThemeResource.lightTheme(),
-            darkTheme: ThemeResource.darkTheme(),
-            home: const HomeMainPage(),
-            initialBinding: HomeMainBinding(),
-            getPages: PageConfig.listPage(),
-            smartManagement: SmartManagement.keepFactory,
-            locale: LocalizationService.locale,
-            fallbackLocale: LocalizationService.fallbackLocale,
-            translations: LocalizationService(),
-          )
-      )
+        builder: (ctx, themeObject, _) => GetMaterialApp(
+          title: 'Bug Cake',
+          themeMode: themeObject.mode,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeResource.lightTheme(),
+          darkTheme: ThemeResource.darkTheme(),
+          home: const HomeMainPage(),
+          initialBinding: HomeMainBinding(),
+          getPages: PageConfig.listPage(),
+          smartManagement: SmartManagement.keepFactory,
+          locale: LocalizationService.locale,
+          fallbackLocale: LocalizationService.fallbackLocale,
+          translations: LocalizationService(),
+        ),
+      ),
     );
   }
 }
