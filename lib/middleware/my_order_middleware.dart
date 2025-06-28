@@ -12,19 +12,36 @@ class MyOrderMiddleware extends GetMiddleware {
     if (!isAuthenticated) {
       return RouteSettings(name: PageConfig.LOGIN);
     }
-    final currentUser = AppCommon.singleton.userLoginData;
-
-    syncCart();
-    if((route ?? '').contains("profile")){
+    
+    // Đồng bộ cart một cách an toàn
+    _syncCartSafely();
+    
+    if ((route ?? '').contains("profile")) {
       return RouteSettings(name: PageConfig.ADMIN);
-
     }
-    return RouteSettings(name: route);
+    
+    return RouteSettings(name: PageConfig.VIEW_ORDER);
   }
 
   Future<void> syncCart() async {
     await AppCommon.singleton.syncProductCart();
-    Get.find<CartController>().countTotalPrice();
+    // Kiểm tra xem CartController đã được đăng ký chưa trước khi sử dụng
+    if (Get.isRegistered<CartController>()) {
+      Get.find<CartController>().countTotalPrice();
+    }
+  }
+  
+  // Phương thức đồng bộ cart một cách an toàn không chặn luồng chính
+  void _syncCartSafely() {
+    // Chạy đồng bộ trong background để không chặn navigation
+    Future.microtask(() async {
+      try {
+        await syncCart();
+      } catch (e) {
+        // Log lỗi nhưng không làm gián đoạn navigation
+        print('Error syncing cart: $e');
+      }
+    });
   }
 
   @override

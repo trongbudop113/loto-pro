@@ -39,6 +39,7 @@ import 'package:loto/page/profile/profile_controller.dart';
 import 'package:loto/page/profile/profile_manager/profile_manager_controller.dart';
 import 'package:loto/page/profile/profile_page.dart';
 import 'package:loto/page/profile/user_manager/user_manager_controller.dart';
+import 'package:loto/page/profile/user_manager/user_detail_controller.dart';
 import 'package:loto/page/room/room_controller.dart';
 import 'package:loto/page/room/room_page.dart';
 import 'package:loto/page/select/select_controller.dart';
@@ -67,6 +68,7 @@ import 'page/profile/order_manager/order_manager/order_manager_controller.dart';
 import 'page/profile/order_manager/order_manager/order_manager_page.dart';
 import 'page/profile/profile_manager/profile_manager_page.dart';
 import 'page/profile/user_manager/user_manager_page.dart';
+import 'page/profile/user_manager/user_detail_page.dart';
 import 'page/shopping/moon_cake/controller/moon_cake_controller.dart';
 import 'page/shopping/moon_cake/page/moon_cake_page.dart';
 import 'page/stories/stories_page.dart';
@@ -105,6 +107,7 @@ class PageConfig {
   static String PRODUCT_MANAGER = '/product_manager';
   static String PAGE_MANAGER = '/page_manager';
   static String USER_MANAGER = '/user_manager';
+  static String USER_DETAIL = '/user_detail';
   static String EDIT_PAGE_MANAGER = '/edit_page_manager';
   static String PROFILE_MANAGER = '/profile_manager';
   static String COOKING = '/cooking';
@@ -250,6 +253,11 @@ class PageConfig {
         name: USER_MANAGER,
         page: () => UserManagerPage(),
         binding: UserManagerBinding(),
+      ),
+      GetPage(
+        name: USER_DETAIL,
+        page: () => UserDetailPage(),
+        binding: UserDetailBinding(),
       ),
       GetPage(
         name: EDIT_PAGE_MANAGER,

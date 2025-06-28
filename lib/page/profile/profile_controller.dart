@@ -244,7 +244,7 @@ class ProfileController extends GetxController {
   }
 
   void onMyOrdersTap() {
-    Get.toNamed(PageConfig.PRODUCT_MANAGER);
+    Get.toNamed(PageConfig.VIEW_ORDER);
   }
 
   void onVoucherManagerTap() {
